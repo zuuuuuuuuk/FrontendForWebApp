@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+body {
+    background-image: url('https://img.freepik.com/premium-photo/white-concrete-wall-background-vintage-style-graphic-design-wallpaper-pattern-soft-cement-floor-retro-concept-gray-abstract-texture-detail-construction_226189-5963.jpg');
+    background-attachment: fixed;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+
+  }

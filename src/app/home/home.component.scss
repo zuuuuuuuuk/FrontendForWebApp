@@ -1,0 +1,772 @@
+
+
+.decorDiv {
+    width: 100%;
+    height: 8.51rem;
+}
+
+.mainDiv {
+    height: auto;
+}
+
+.navOfCategories {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;  
+    justify-self: center;    
+    gap: 0.1rem;
+    font-family: cursive;
+    box-sizing: border-box;
+    width: fit-content;
+    margin-left: 19%;
+    margin-top: 2.5rem;
+    margin-right: 1rem;
+    margin-bottom: 5.1rem;
+    box-shadow: 0 22px 22px rgba(241, 200, 111, 0.574);
+    border-radius: 1rem;
+}
+
+.categoryName.active {
+    background-color: rgb(255, 255, 255); /* or any highlight you want */
+    font-weight: bold;
+    box-shadow: 0 22px 22px rgba(0, 28, 43, 0.151);
+  }
+
+  .categoryNName {
+    position: absolute;
+    margin-top: -2.1rem;
+    font-family: cursive;
+    font-size: 1.5rem;
+    font-weight: bold;
+    left: 51%;
+    color: #002846d5;
+    text-shadow: -2px 3.5px 9px rgba(1, 63, 117, 0.528);
+  }
+
+.categoryDiv ul {
+    position: relative;
+    margin: 0;      /* 👈 Removes default margin */
+    padding: 0;     /* 👈 Removes default padding */
+    list-style: none;
+    border-radius: 1rem;
+}
+
+.categoryName {
+background-color: rgba(255, 255, 255, 0.334);
+width: 8rem;
+height: 3.8rem;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+font-size: 1.25rem;
+position:relative;
+border: 2px rgb(226, 142, 142);
+border-radius: 0.5rem;
+box-shadow: 0 22px 22px rgba(193, 200, 209, 0.574);
+cursor: pointer;
+transition: 0.25s;
+}
+
+.categoryDiv {
+    cursor: pointer;
+position: relative;
+transition: 0.5s;
+}
+
+.expandedcategDiv {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 1.1rem;
+    top: 100%; /* Right under the category name */
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.39);
+    right: 0;
+    border-radius: 0.3rem;
+    z-index: 10;
+    box-shadow: 10px 10px 10px rgba(0,0,0,0.1);
+    transition: 0.5s;
+    text-align: center;
+  }
+
+  .expandedcategDiv li {
+    padding: 0.3rem 0.5rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  
+  .expandedcategDiv li:hover {
+    background-color: rgba(66, 111, 155, 0.141);
+    color: rgba(0, 51, 90, 0.882);
+  }
+
+.categoryNameDiv {
+    background-color: rgba(250, 3, 3, 0.976);
+}
+
+.allCategs:hover {
+  background-color: rgb(255, 255, 255); /* or any highlight you want */
+    font-weight: bold;
+    box-shadow: 0 22px 22px rgba(0, 166, 255, 0.151);
+    border-radius: 0.3rem;
+}
+
+.subcateg {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.subcateg:hover {
+    color: rgba(0, 50, 91, 0.87);
+
+}
+
+.filterForm {
+    position: relative;
+    display: inline-block;
+    width: 250px;
+    height: fit-content;
+    margin-left: 0.5rem;
+    background-color:rgba(40, 78, 87, 0.066);
+    margin: 1rem;
+    padding: 0.5rem;
+    top: 0.55rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 22px 22px rgba(31, 106, 146, 0.151);
+    transition: 0.35s;
+}
+
+.filterForm:hover {
+  box-shadow: 0 22px 22px rgba(0, 102, 157, 0.298);
+  transform: scale(1.02);
+  cursor: pointer;
+}
+
+
+.resetButtonContainer {
+  text-align: center;
+  margin-bottom: 0.7rem;
+}
+
+.resetButton {
+  background-color: #002f707a;
+  color: rgba(255, 255, 255, 0.78);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.resetButton:hover {
+  background-color: #0035718a;
+  color: rgb(0, 62, 124);
+}
+.resetButton:active {
+  transform: scale(0.9);
+}
+
+
+.contentDiv {
+   height: auto;
+   width: 100%;
+}
+
+.filterRenderDiv {
+    position: relative;
+    display: flex;
+    height: auto;
+    justify-self: center;
+    width: 100%;
+    padding-right: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    font-family: cursive;
+}
+
+.priceSearch {
+  display: flex;
+ gap: 0.5rem; 
+}
+
+
+
+.insideFilterDiv {
+  color: rgb(0, 64, 99);
+  margin: 0.1rem;
+  padding: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+}
+
+.insideFilterDiv p {
+position: relative;
+left: 29%;
+top: 1.1rem;
+}
+
+.searchByName {
+  border-bottom: 4px solid rgba(0, 53, 86, 0.101);
+  padding-bottom: 2rem;
+}
+
+.searchByName input {
+  width: 13rem;
+  position: relative;
+  top: 1rem;
+  height: 2.7rem;
+  background-color: rgba(0, 78, 101, 0.226);
+  border: 1px solid rgba(0, 43, 80, 0.312);
+  border-radius: 0.3rem;
+  color: rgb(0, 59, 95);
+  padding: 0.5rem;
+}
+
+.insideFilterDiv h5 {
+  display: inline-block;
+  position: relative;
+  top: 0.1rem;
+  left: 17%;
+}
+
+.priceRangeContainer {
+  position: relative;
+  align-self: flex-end;
+}
+
+
+.price-slider {
+  position: absolute;
+  height: 5px;
+  background-color: #4CAF50;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.range-wrapper {
+  position: relative;
+  width: 100%;
+  height: 2.5rem;
+  margin-top: 0.5rem;
+}
+
+.range-wrapper input[type="range"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-appearance: none;
+  background: none;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.range-wrapper input[type="range"]::-webkit-slider-thumb {
+  pointer-events: all;
+  -webkit-appearance: none;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  background-color: #045d7a;
+  border: 2px solid white;
+  box-shadow: 0 0 2px #000;
+  z-index: 4;
+}
+
+.range-wrapper input[type="range"]::-moz-range-thumb {
+  pointer-events: all;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  background-color: #045d7a;
+  border: 2px solid white;
+}
+
+
+.priceSearch input {
+  width: 80%;
+  background-color: rgba(0, 78, 101, 0.226);
+  border: 1px solid rgba(0, 43, 80, 0.312);
+  border-radius: 0.3rem;
+  color: rgb(0, 59, 95);
+}
+
+
+
+.renderDiv {
+    
+    width: 100%;
+    height: auto;
+    margin: 1.3rem 1.3rem 1.3rem 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgba(79, 116, 148, 0.057);
+    padding: 1.7rem;
+    box-sizing: border-box;  
+    border-radius: 0.5rem;
+    gap: 2rem;
+    
+}
+.card {
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(34, 48, 62, 0.1);
+  width: 16.7rem!important;
+  max-height: 210px fit-content; /* Set a fixed height for all cards */
+  border: none;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 0 25%;
+  transition: 0.3s;
+  box-shadow: 0 22px 22px rgba(1, 72, 110, 0.151);
+  color: #011728;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 22px 22px rgba(0, 102, 157, 0.298);
+}
+
+.card-text {
+  position: relative;
+  margin-bottom: 1%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #588d99;
+}
+
+
+.card:img:active {
+  transform: scale(1);
+  transition: 0.05s;
+}
+
+.cardEnd:active {
+  transform: scale(1);
+  transition: 0.05s;
+}
+
+.discounted-price {
+  position: relative;
+  top: 1rem;
+  color: rgb(1, 208, 25);
+}
+.price {
+  color: rgb(0, 43, 98);
+  font-style:oblique;
+}
+
+.description-text {
+  max-height: 60px; /* limit height */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines you want */
+  -webkit-box-orient: vertical;
+  color: #00356b5f;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* This pushes all content to the bottom */
+ 
+}
+
+.card-img-top {
+  width: 100%;
+  object-fit: contain; /* This maintains aspect ratio */
+  max-height: 280px;
+  border-radius: 0.3rem;
+  box-shadow: 0 22px 22px rgba(66, 124, 155, 0.151);
+  transition: 0.35s;
+}
+
+.image-slider {
+  position: relative;
+  width: 100%;
+  height: 270px; /* or whatever your image height is */
+}
+
+.image-slider img {
+  width: 100%;
+  height: fit-content;
+  object-fit: cover;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  color: rgba(0, 37, 80, 0.131);
+  font-size: 34px;
+  font-family: cursive;
+  cursor: pointer;
+  padding: 8px 12px;
+  z-index: 1;
+  
+}
+
+.slider-arrow:hover {
+ font-size: 39px; 
+ color: rgba(0, 195, 146, 0.701);
+}
+.slider-arrow:active {
+  font-size: 34px;
+}
+
+.left-arrow {
+  left: 5px;
+}
+
+.right-arrow {
+  right: 5px;
+}
+
+.card-img-top:hover {
+  box-shadow: 0 22px 22px rgba(0, 102, 157, 0.298);
+  transform: scale(1.05);
+}
+
+.heart-container {
+  display: inline-block;
+  z-index: 555;
+}
+.heart-container .fa-heart:active {
+  font-size: 2.3rem;
+  color: aquamarine!important
+}
+
+.heart-container .fa-heart {
+  font-size: 2rem;
+  color: #043d9952; /* Unfilled heart color */
+  cursor: pointer;
+  transition: color 0.3s;
+  position: absolute;
+  margin: 0.3rem;
+  text-shadow: 4px 4px 6px rgba(0, 23, 35, 0.638);
+}
+
+/* Fill heart on hover */
+.heart-container .fa-heart:hover {
+  color: rgb(255, 242, 0);
+  position: absolute;
+  margin: 0.3rem;
+  text-shadow: 4px 4px 6px rgba(0, 23, 35, 0.732);
+}
+
+/* Filled heart style */
+.heart-container .fa-heart.filled {
+  color: rgb(179, 158, 39);
+  position: absolute;
+  margin: 0.3rem;
+  text-shadow: 4px 4px 6px rgba(0, 23, 35, 0.638);
+}
+.heart-container .fa-heart.filled:hover {
+  color: rgba(149, 29, 3, 0.266)
+}
+
+.card-title {
+  margin: 0!important;
+}
+.stars {
+    
+    font-size: 1.21rem;
+    margin-top: 0.3rem;
+    
+  }
+
+  .full-star {
+    color: rgb(176, 150, 0);
+  }
+  .half-star {
+    color: goldenrod;
+  }
+  .empty-star {
+    color: lightgr;
+  }
+
+
+  .productViewMainDiv {
+    z-index: 999;
+    top: 0;
+    left: 0;
+    background-color: #002633cc;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  .decoratorDiv{
+    border-radius: 15px;
+    padding: 1rem;
+    z-index: 1000;
+    background-color: #2a6071ce;
+    left: 17%;
+    top: 13%;
+    width: 67.1%;
+    height: 85%;
+    position: fixed;
+  }
+  .mainImg {
+    position: relative;
+    width: 330px;
+    height: 370px;
+    cursor: pointer;
+    border-radius: 0.3rem;
+  }
+
+  .imgsDiv {
+    display: flex;
+   flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mainImg img {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+  }
+  .smallImg {
+    position: relative;
+    width: 70px;
+    height: 70px;
+
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .smallImg:hover {
+    transform: scale(1.1);
+  }
+
+  .smallImgs {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .smallImg img {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 0.3rem;
+  }
+
+
+  .image-container {
+ 
+    overflow: hidden; /* super important */
+    position: relative;
+  }
+  
+  .image-container img {
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .image-container:hover img {
+    transform: scale(1.2); /* zoom 20% */
+  }
+
+  .productView {
+    display: flex;
+    height: 60%;
+  }
+
+
+  .discounted-priceView {
+    position: relative;
+    top: 1rem;
+    color: rgb(1, 208, 25);
+  }
+  .priceView {
+    color: rgb(0, 43, 98);
+    font-style:oblique;
+    font-size: larger;
+  }
+
+  .card-titleView {
+    font-size: 1.9rem;
+  }
+  
+  .productViewTextBody {
+    position: relative;
+    left: 0;
+    padding: 1rem;
+ 
+    gap: 0.3rem;
+  }
+
+  .card-textView {
+    color: #ab9700dd;
+  }
+
+  .description-textView {
+    max-height: 10rem; /* limit height */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #d0bb00;
+    font-size: larger;
+    white-space: normal;   /* allow wrapping */
+  word-break: break-word; /* break long words if needed */
+  
+    white-space: normal;
+    width: 400px;
+    
+  }
+
+  .fa-starView {
+    font-size: larger;
+  }
+
+
+  .seeAlso {
+    position: relative;
+    padding: 1rem;
+    width: 61.5%;
+    padding: 0.5rem;
+    left: 1rem;
+    top: 1rem;
+    bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.3rem;
+    gap: 2rem;
+  }
+
+  .seeAlsoProductsDiv {
+    display: flex;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    gap: 1.3rem;
+    left: 1rem;
+
+  }
+
+  .seeAlsoProduct {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    cursor: pointer;
+    transition: 0.3s;
+    
+    border-radius: 0.3rem;
+
+  }
+
+  .seeAlsoProduct:hover {
+    transform: scale(1.1);
+  }
+
+  .seeAlsoProduct h5 {
+    display: inline-block;
+    justify-self: start;
+font-weight: bold;
+
+  }
+
+  .seeAlsoProduct h4 {
+    margin: 0;
+    display: inline-block;
+    justify-self: start;
+  }
+
+  .seeAlso img {
+    position: relative;
+    width: 80px;
+    height: 80px;
+justify-self: center;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .suggestedDescription {
+    max-height: 60px; /* limit height */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines you want */
+    -webkit-box-orient: vertical;
+    color: #ff5900e2;
+  }
+
+
+  .addReview {
+    position: relative;
+    
+    display: flex;
+    flex-direction: column;
+gap: 1rem;
+  }
+  .addReview textarea {
+    width: 80%;
+    height: 8rem;
+    text-align: top; /* Aligns text inside the input box */
+    background-color: rgba(0, 140, 178, 0.165);
+    resize: none;
+  }
+  
+  .addReview button {
+    position: absolute;
+    bottom: -0.3rem;
+    right: 5rem;
+    height: 2.5rem;
+    position: absolute;
+    height: 2.7rem;
+    width: 4.5rem;
+    border-radius: 0.3rem;
+    background-color: rgba(0, 162, 255, 0.426);
+    transition: 0.3s;
+  }
+
+  .addReview button:hover {
+    background-color: rgba(0, 162, 255, 0.722);
+    transform: scale(1.1);
+  }
+
+  
+  .filled-heart {
+    color: rgba(200, 255, 0, 0.443);
+    font-size: 24px;
+  }
+  
+  .empty-heart {
+    color: gray;
+    font-size: 24px;
+  }
+  
+  .review-input {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+  }
+
+
+  .cartAddButton {
+    position: absolute;
+    bottom: 4rem;
+    right: 4.5rem;
+    height: 3.7rem;
+    width: 7.5rem;
+    border-radius: 0.3rem;
+    background-color: rgba(0, 162, 255, 0.426);
+    transition: 0.3s;
+  }
+
+  .cartAddButton:hover {
+    background-color: rgba(0, 162, 255, 0.722);
+    transform: scale(1.1);
+  }

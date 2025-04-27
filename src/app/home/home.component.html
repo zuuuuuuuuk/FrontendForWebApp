@@ -1,0 +1,236 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+<div class="decorDiv"></div>
+
+<div class="mainDiv">
+
+
+<div class="contentDiv">
+
+
+
+
+<nav class="navOfCategories" (mouseleave)="collapseAllCategories()">
+  
+  <div class="categoryDiv allCategs" (mouseleave)="collapseAllCategories()">
+    <ul>
+        <li class="categoryName"
+         (click)="fetchProducts()">
+            All
+        </li>
+      </ul>
+</div>
+    <div class="categoryDiv" *ngFor="let category of mainCategories" (mouseleave)="collapseAllCategories()" >
+        <ul>
+            <li class="categoryName" [class.active]="activeCategoryId === category.id"  (mouseenter)="hoverCategory(category)"
+            (click)="hoverCategory(category)">
+                {{category.name}}
+               
+            </li>
+            <div class="expandedcategDiv" *ngIf="category.expanded" (mouseleave)="collapseAllCategories()">
+                <li class="subCateg" *ngFor="let subCategory of getSubCategories(category.id)" (click)="renderSubcategoryData(subCategory.id,subCategory.name)">
+                 {{subCategory.name}}
+                  </li>
+            </div>
+          </ul>
+    </div>
+</nav>
+<span class="categoryNName" *ngIf="subCategoryName">{{subCategoryName}}</span>
+<div class="filterRenderDiv">
+  
+<form #f="ngForm" name="filterForm" class="filterForm">
+    <div class="insideFilterDiv">
+      <div class="searchByName">
+        <h5>search product</h5>
+      <input type="text" [(ngModel)]="searchName" name="searchName" (input)="applyFilters()" placeholder="by name...">
+    </div>
+    <p>price range</p>
+      <div class="priceRangeContainer"> 
+        <div class="price-input">
+            <span>from: </span>
+            <div class="priceSearch">
+            <input type="number" [(ngModel)]="minPrice" name="minPrice" (input)="onPriceInputChange()" />
+         $ </div>
+            <span>to: </span>
+            <div class="priceSearch">
+            <input type="number" [(ngModel)]="maxPrice" name="maxPrice" (input)="onPriceInputChange()" />
+          $</div>
+        </div>
+        <div class="range-wrapper">
+          <div
+            class="price-slider"
+            [ngStyle]="{
+              left: ((minPrice - minLimit) / (maxLimit - minLimit)) * 100 + '%',
+              right: ((maxLimit - maxPrice) / (maxLimit - minLimit)) * 100 + '%'
+            }"
+          ></div>
+          <input
+            type="range"
+            [min]="minLimit"
+            [max]="maxLimit"
+            [(ngModel)]="minPrice"
+            name="minPriceRange"
+            (input)="onSliderChange()"
+          />
+          <input
+            type="range"
+            [min]="minLimit"
+            [max]="maxLimit"
+            [(ngModel)]="maxPrice"
+            name="maxPriceRange"
+            (input)="onSliderChange()"
+          />
+        </div>
+        
+      </div>
+      
+    </div>
+    <div class="resetButtonContainer">
+      <button type="button" class="resetButton" (click)="resetFilters()">Reset Filters</button>
+    </div>
+        </form>
+
+
+
+        <div class="productViewMainDiv" *ngIf="showProductView" @fadeInOut (click) ="showProductView = false; reviewRating = 0">
+          <div class="decoratorDiv" (click)="$event.stopPropagation()" @fadeInOut>
+            <div class="productView" @fadeInOut>
+          
+              <div class="imgsDiv" @fadeInOut>
+             
+                <div class="mainImg image-container">
+                  <img [src]="currentProductViewImage" alt="">
+                </div>
+            
+                <div class="smallImgs" *ngIf="productView != null && productView.images.length > 1">
+                  <div class="smallImg" *ngFor="let img of productView?.images">
+                    <img alt="productViewImg" src="{{img.url}}" (click)="setMainImage(img.url)">
+                  </div>
+         
+                </div>
+         
+              </div>
+           <div class="productViewTextBody">
+           
+            <h5 class="card-title card-titleView">{{productView?.name}}</h5>
+            <div class="stars">
+              <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                <i 
+                  class="fa"
+                  [ngClass]="{
+                    'fa-star full-star fa-starView': productView && productView.averageRating >= star,
+                    'fa-star-half-o half-star fa-starView': productView && productView.averageRating >= star - 0.5 && productView.averageRating < star,
+                    'fa-star-o empty-star fa-starView': productView && productView.averageRating < star - 0.5
+                  }"
+                  aria-hidden="true">
+                </i>
+              </ng-container>
+            </div>
+            <p class="card-text description-textView">Description: {{productView?.description}}</p>
+            <p class="card-text card-textView">In stock: {{productView?.stock}}</p>
+            <p class="card-text priceView">Price: {{productView?.originalPrice}} $</p>
+            <p class="discounted-priceView" *ngIf="productView && productView.discountedPrice > 0">discounted price: {{productView?.discountedPrice}} $</p>
+            
+
+            <div class="addReview">
+              <textarea class="review-inputt" placeholder="share your thoughts about this product..."></textarea>
+              <button class="revButton" (click)="submitReview()">submit</button>
+              <div class="rating">
+                <ng-container *ngFor="let heart of [1, 2, 3, 4, 5]">
+                  <i 
+                    class="fa"
+                    [ngClass]="{
+                      'fa-heart filled-heart': reviewRating >= heart || hoverRating >= heart,
+                      'fa-heart-o empty-heart': reviewRating < heart && hoverRating < heart
+                    }"
+                    (mouseenter)="setHoverRating(heart)"
+                    (mouseleave)="resetHoverRating()"
+                    (click)="setReviewRating(heart)">
+                  </i>
+                </ng-container>
+              </div>
+            </div>
+
+            </div>
+          
+            </div>
+
+            <div class="seeAlso">
+              <h4>See also:</h4>
+              <div class="seeAlsoProductsDiv">
+                <div class="seeAlsoProduct" *ngFor="let product of suggestedProductsView" (click)="openProductView(product)">
+                  
+                  <img class="seeAlsoImg" [src]="product.images[0]?.url || 'assets/no-image.jpg'" alt="">
+                  <h5>{{product.name}}</h5>
+                  <p class="suggestedDescription">{{product.description}}</p>
+                </div>
+              </div>
+            </div>
+
+           <button class="cartAddButton">Add to cart</button>
+      
+           
+          </div>
+      
+          
+
+        </div>
+
+
+
+
+        
+        <div class="renderDiv" >
+          
+            <div class="card" style="width: 18rem;" *ngFor="let product of products" (click)="openProductView(product)">
+              <div class="heart-container" (click)="$event.stopPropagation()">
+                <i class="fa fa-heart" 
+   [ngClass]="{ 'filled': isProductFavorite(product.id) }" 
+   (click)="toggleFavorite(product.id)">
+</i>
+              </div>
+             <div class="fitimageDiv">
+  <div class="image-slider">
+    <button class="slider-arrow left-arrow" (click)="prevImage(product)" (click)="$event.stopPropagation()">&#10094;</button>
+    
+    <img class="card-img-top" 
+         [src]="product.images[product.currentImageIndex || 0]?.url || 'assets/no-image.jpg'" 
+         alt="Product Image" />
+    
+    <button class="slider-arrow right-arrow" (click)="nextImage(product)" (click)="$event.stopPropagation()">&#10095;</button>
+  </div>
+</div>
+                <div class="card-body cardEnd">
+                  <p class="discounted-price" *ngIf="product.discountedPrice > 0">discounted price: {{product.discountedPrice}} $</p>
+                  <h5 class="card-title">{{product.name}}</h5>
+                  <div class="stars">
+                    <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                      <i 
+                        class="fa"
+                        [ngClass]="{
+                          'fa-star full-star': product.averageRating >= star,
+                          'fa-star-half-o half-star': product.averageRating >= star - 0.5 && product.averageRating < star,
+                          'fa-star-o empty-star': product.averageRating < star - 0.5
+                        }"
+                        aria-hidden="true">
+                      </i>
+                    </ng-container>
+                  </div>
+                  <p class="card-text description-text">Description: {{product.description}}</p>
+                  <p class="card-text">In stock: {{product.stock}}</p>
+                  <p class="card-text price">Price: {{product.originalPrice}} $</p>
+                  
+                  
+                </div>
+              </div>
+        </div>
+    </div>
+
+</div>
+
+</div>

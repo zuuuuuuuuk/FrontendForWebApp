@@ -1,0 +1,372 @@
+nav {
+    position: fixed;
+    top: 0.5rem; left: 1rem; right: 1rem;
+    padding: 1rem 2rem;
+    background-color: rgba(255, 255, 255, 0.816);
+    border-radius: 1.5rem;
+    box-shadow: 0 22px 22px rgba(156, 146, 119, 0.27);
+    z-index: 888;
+    width: auto;
+    max-width: 100%;
+    transition: 0.5s;
+  }
+
+  nav:hover {
+    background-color: rgb(255, 255, 255);
+  }
+  
+  nav:hover .navLogo {
+    transform: rotate(360deg);
+    color: rgb(0, 105, 150);
+  }
+
+  .navContent {
+    display: grid;
+    grid-template-columns: min-content 1fr min-content; /* 3 columns: 1 for logo, 1 for nav, 1 for right */
+    gap: 3rem;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Logo Section */
+  .navLogoDiv {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navLogo {
+    font-size: 4.5rem;
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .navLogoDiv:active {
+    transform: scale(0.95);
+  }
+
+  
+  .navLogo:active {
+    transform: rotate(360deg);
+    color: rgb(0, 174, 248);
+    transition: 0.1s;
+  }
+  
+  /* Navigation Links Section */
+  .navelementss {
+    display: flex;
+    gap: clamp(0.3rem, 1vw, 1rem);
+    overflow: hidden;
+    min-width: 0;
+  }
+  
+  .navElement {
+    white-space: nowrap;
+    font-family: cursive;
+    font-size: clamp(1rem, 1.5vw, 1.8rem);
+    color: rgb(41, 49, 90);
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .navElement:hover {
+    color: rgb(0, 74, 105);
+    animation: bounce 0.5s;
+  }
+  
+
+  .rightNav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    white-space: nowrap;
+    position: absolute;
+    right: 3.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+ 
+  .logInForm {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s ease;
+    display: flex;
+    margin-top: 0.29rem;
+    flex-direction: column;
+    border-radius: 0.3rem;
+    padding-right: 1rem;
+    box-shadow: 0 6px 10px 0 rgba(115, 180, 199, 0.241);
+    font-family: cursive;
+    background-color: #5a7e950f;
+  }
+
+  .logInForm.visible {
+    opacity: 1;
+    transform: translateY(-20px);
+  }
+
+.log {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    gap: 1rem;
+    right: 5rem;
+}
+
+  .logInForm.hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+   
+  .login {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+
+  .logInForm input
+  {
+    box-shadow: 0 6px 10px 0 rgba(0, 56, 73, 0.241);
+    border-radius: 0.3rem;
+    border: 1px solid rgba(1, 30, 87, 0.209);
+    background-color: #7bc0c021;
+  }
+  
+  .logInForm button {
+  border-radius: 6.5px;
+  border: 1px solid rgb(0, 51, 80);
+  background-color: #73b2cd2f;
+  border: none;
+  position: absolute;
+  cursor: pointer;
+  }
+
+  .logInForm button:active {
+    background-color: rgba(0, 39, 84, 0.3);
+    transform: scale(0.80); 
+    
+}
+  
+
+  .logInForm button:first-child {
+    left: 0.1rem
+  }
+  
+
+  .logInForm button:last-child {
+    left: 3.7rem;
+  }
+
+  .loginError {
+    position: absolute;
+    align-self: flex-end;
+    top: 4.1rem;
+    font-size: 0.9rem;
+    color: red;
+  }
+
+.logRegButtonsDiv {
+    position: relative;
+    display: flex;
+    top: 0.5rem;
+}
+
+.emailDiv {
+display: flex;
+gap: 0.3rem;
+}
+.passwordDiv {
+    display: flex;
+    gap: 0.3rem;
+}
+  
+  .logInForm button:hover {
+    color: rgb(0, 39, 84);
+    background-color: rgba(0, 98, 98, 0.195);
+    box-shadow: 0 6px 10px 0 rgba(0, 38, 60, 0.391);
+    border: 1px solid rgba(0, 52, 97, 0.106);
+  }
+  
+  /* Hover effects */
+  .primaryLoginButton {
+    margin-left: 0.3rem;
+    font-size: 2rem;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  
+  .loginDiv {
+    position: relative;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+
+  .loggedInDiv {
+    position: relative;
+    top: 0.85rem;
+    display: flex;
+    gap: 0.2rem;
+    flex-direction: column;
+    align-items: center;
+    font-family: cursive;
+    cursor: pointer;
+    transition: 0.5s;
+  }
+
+// Registration||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  .registerDiv {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #19232f9e; // or rgba(0, 0, 0, 0.5) for dark overlay
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+    border: 2px solid black;
+  }
+  .registerDiv.show {
+    opacity: 0.93;
+    pointer-events: all;
+    background-color: #1c2229dc;
+  }
+
+
+
+  .registerForm {
+    background-color: rgba(196, 227, 252, 0.828);
+    display: flex;
+    flex-direction: column;
+    gap: 0.1%;
+    border: 1px solid rgba(0, 35, 117, 0.976);
+    font-family: cursive;
+    font-size: 1.1rem;
+    border-radius: 0.45rem;
+    color: rgb(0, 36, 48);
+    width: 27%;
+    height: 60%;
+    opacity: 1;
+    position: relative;
+    padding: 1rem;
+    justify-content: space-between;
+  }
+
+
+  .registerForm div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin: 0.3rem;
+    position: relative;
+    width: 100%;
+    height: 17%;
+    left: 7.55%;
+  }
+
+
+  .regError {
+    position: relative;
+    align-self: center;
+    color: rgb(196, 150, 0);
+    word-wrap: break-word;
+  }
+
+
+  .registerForm input {
+    border-radius: 0.3rem;
+    border: 1px solid rgba(1, 35, 73, 0.2);
+    background-color: #143559f0;
+    color: rgb(233, 194, 0);
+    box-shadow: 0 6px 10px 0 rgba(0, 38, 60, 0.391);
+    width: 81%;
+    height: 100%;
+    font-size: 1.5rem;
+    position: relative;
+  }
+
+  .error {
+    color: red;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    justify-self: center;
+    align-self: center;
+  }
+
+  .regButton {
+    position: relative;
+    left: 30%;
+    width: 40%;
+    height: 10%;
+    font-size: 100%;
+    border-radius: 0.3rem;
+    background-color: rgba(0, 61, 101, 0.546);
+    color: rgb(0, 44, 73);
+  }
+
+  .regButton:hover {
+    box-shadow: 0 6px 10px 0 rgba(0, 38, 60, 0.391);
+    text-shadow: 4px 4px 6px rgba(0, 23, 35, 0.638);
+  }
+  
+
+// Registration ---- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  
+
+.logOutIcon {
+    font-size: 1.3rem;
+    color: #000000;
+    position: relative;
+    cursor: pointer;
+  }
+  .logOutIcon:hover {
+    color: rgb(0, 74, 105);
+    animation: bounce 0.5s;
+  }
+
+  .loggedInDiv:hover {
+    color: rgb(0, 74, 105);
+    animation: bounce 0.5s;
+  }
+
+  .loginDiv:hover i,
+  .loginDiv:hover p {
+    animation: bounce 0.5s;
+    color: rgb(0, 74, 105);
+  }
+  
+  .cartIcon i {
+    font-size: 2rem;
+    position: relative;
+    color: rgb(40, 23, 0);
+    transition: 0.3s;
+    top: 0.1rem;
+  }
+  
+  .cartIcon i:hover {
+    animation: bounce 0.5s;
+    color: rgb(0, 74, 105);
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  /* Bounce animation for hover effects */
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }

@@ -1,0 +1,105 @@
+<nav>
+    <div class="navContent">
+      
+      <div class="navLogoDiv">
+        <i class="fa-solid fa-code-commit navLogo" [routerLink]="['']"></i>
+      </div>
+  
+      <div class="navelementss">
+        <a class="navElement" [routerLink]="['/Sales']">Sales</a>
+        <a class="navElement" [routerLink]="['/Special']">Special</a>
+        <a class="navElement" [routerLink]="['/Contact']">Contact</a>
+        <a class="navElement" [routerLink]="['/About']">About</a>
+        <a class="navElement" [routerLink]="['/Blog']">Blog</a>
+      </div>
+  
+      
+      <div class="rightNav">
+        <form #logInForm="ngForm" (ngSubmit)="onSubmit(logInForm)" [ngClass]="{'logInForm': true, 'visible': showLogin, 'hidden': !showLogin}">
+         
+            <div class="login">
+            <div class="emailDiv">
+              <input placeholder="@" type="email" name="eMail" [(ngModel)]="userAuth.email" class="emailInput loginInput" required #eMail="ngModel">
+              <label for="email">Email</label>
+            </div>
+            <div class="passwordDiv">
+              <input placeholder="********" type="password" name="password"  [(ngModel)]="userAuth.password" class="passwordInput loginInput" required #password="ngModel">
+              <label for="password">Password</label>
+            </div>
+          </div>
+          <div class="logRegButtonsDiv">
+            
+            <button type="submit">log in</button>
+            <button type="button" (click)="showRegister = true">register</button>
+            
+          </div>
+          <p class="loginError" *ngIf="errorMessage">{{errorMessage}}</p>
+        </form>
+  
+        <div class="loginDiv" (click)="showLogin = !showLogin" *ngIf="!showLogin && !loggedIn">
+          <i class="fa-solid fa-circle-user primaryLoginButton"></i>
+          <p>Log In</p>
+        </div>
+
+        <div class="log">
+        <div class="loggedInDiv" *ngIf="loggedIn">
+            <i class="fa-solid fa-circle-user primaryLoginButton"></i>
+            <p>{{userResponse.email}}</p>
+        </div>
+        <i class="fa-solid fa-arrow-right-from-bracket logOutIcon" (click)="logout()" *ngIf="loggedIn"></i>
+    </div>
+       
+
+
+        <div class="cartIcon">
+          <a [routerLink]="['/Cart']">
+            <i class="fa-solid fa-cart-flatbed cartic"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="registerDiv" [ngClass]="{ 'show': showRegister }" (click)="showRegister = false">
+        <form class="registerForm" (click)="$event.stopPropagation()" #registerForm = "ngForm" (ngSubmit)="onRegister(registerForm)">
+
+            <div class="firstNameReg">
+                <label for="firstName">firstname</label>
+                <input type="text" [(ngModel)]="registerData.firstName" name="firstName" required #firstName="ngModel"> 
+                <span *ngIf="firstName.invalid && firstName.touched" class="error">
+                  this field is required
+                </span>
+              </div>
+              
+              <div class="lastNameReg">
+                <label for="lastName">lastname</label>
+                <input type="text" [(ngModel)]="registerData.lastName" name="lastName" required #lastName="ngModel"> 
+                <span *ngIf="lastName.invalid && lastName.touched" class="error">
+                  this field is required
+                </span>
+              </div>
+                
+
+          <div class="emailReg">
+            <label for="email">email</label>
+            <input type="email" [(ngModel)]="registerData.email" name="email" required email #email="ngModel">
+            <span *ngIf="email.invalid && email.touched" class="error">
+              this field is required
+            </span>
+          </div>
+          
+
+          <div class="passwordReg">
+            <label for="regpassword">password</label>
+            <input type="password" [(ngModel)]="registerData.password" name="regpassword" required #regpassword="ngModel">
+            <span *ngIf="regpassword.touched && regpassword.invalid" class="error">
+              this field is required
+            </span>
+          </div>
+
+          
+       <p class="regError">{{regError}}</p>
+          <button type="submit" class="regButton">Register</button>
+        </form>
+    </div>
+
+  </nav>
