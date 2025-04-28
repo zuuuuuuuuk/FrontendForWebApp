@@ -1,5 +1,6 @@
 <div class="decorDiv"></div>
-<div class="cartMainDiv">
+<h3 class="emptyCart" *ngIf="cartItemsDetailed.length < 1">cart is empty...</h3>
+<div class="cartMainDiv" *ngIf="cart">
     <div class="cartItemDiv" *ngFor="let item of cartItemsDetailed">
         <img [src]="item.images[0].url" alt="img">
 <h5>{{item.name}}</h5>
@@ -37,14 +38,36 @@
 <span class="removeProduct" (click)="removeProductFromCart(item.id)">X</span>
 
 </div>
-<div class="lastCasa">
-    <div class="promoDiv">
-    <p>enter promo code:</p>
-    <input type="text">
-</div>
+<div class="lastCasa" *ngIf="cartItemsDetailed.length > 0">
 <div class="finalCart">
     <h3>total price: {{cartTotalPrice}}</h3>
-    <button>Go checkout</button>
+    <button (click)="goToCheckOut()">Go checkout</button>
     </div>
 </div>
+
+
+</div>
+
+<div class="checkOutDiv" *ngIf="checkOutPage" (click)="checkOutPage = false">
+
+    <div class="paymentDiv" (click)="$event.stopPropagation()">
+        <div class="shippingAddress">
+            <label for="shippingAddress">enter shipping address</label>
+            <input type="text" name="shippingAddress"  [(ngModel)]="shippingAddress">
+        </div>
+        <div class="paymentMethodAndCardNumber">
+            <label for="paymentMethod">enter payment method</label>
+            <input type="text" name="paymentMethod"  [(ngModel)]="paymentMethod">
+            <label for="cardNumber">enter card number (16 digits)</label>
+            <input type="text" name="cardNumber"  [(ngModel)]="cardNumber">
+            <label for="cvv">enter CVV</label>
+            <input type="text" name="cvv"  [(ngModel)]="cvv">
+            <label for="promoCode">enter promo code</label>
+            <input type="text" name="promoCode"  [(ngModel)]="promoCode">
+            <label for="expirationDate">enter expiration date</label>
+            <input type="text" name="expirationDate"  [(ngModel)]="expirationDate">
+        </div>
+        <button (click)="checkOut()">pay</button>
+    </div>
+
 </div>

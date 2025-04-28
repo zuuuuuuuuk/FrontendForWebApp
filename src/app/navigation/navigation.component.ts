@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { HomeComponent } from '../home/home.component';
 import { Token } from '@angular/compiler';
 import Swal from 'sweetalert2';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -44,7 +45,8 @@ export class NavigationComponent implements OnInit {
     token: ''
   };
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  constructor(private router: Router, private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit(): void {
     const loggedInUser = localStorage.getItem('userauthinterface');
@@ -59,6 +61,16 @@ export class NavigationComponent implements OnInit {
       console.log("user not working : ",loggedInUser);
     }
   }
+
+  goToCart() {
+    if (!this.authService.getUserId) {
+      alert('You must be logged in to view the cart.');
+      return;
+    } else {
+    this.router.navigate(['/Cart']);
+    }
+  }
+
 
   onSubmit(logInForm: NgForm) {
     if (logInForm.invalid) {

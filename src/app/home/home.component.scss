@@ -267,6 +267,8 @@ top: 1.1rem;
   z-index: 3;
 }
 
+
+
 .range-wrapper input[type="range"]::-webkit-slider-thumb {
   pointer-events: all;
   -webkit-appearance: none;
@@ -769,4 +771,8 @@ gap: 1rem;
   .cartAddButton:hover {
     background-color: rgba(0, 162, 255, 0.722);
     transform: scale(1.1);
+  }
+
+  .cartAddButton:active {
+    transform: scale(1);
   }

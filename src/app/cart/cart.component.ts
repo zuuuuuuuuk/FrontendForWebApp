@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { CartInterface } from '../interfaces/cart-interface';
 import { CartItemInterface } from '../interfaces/cart-item-interface'; // You can define a CartItemInterface if necessary
@@ -9,28 +9,44 @@ import { ProductInterface } from '../interfaces/product-interface';
 import { ProductService } from '../services/product.service';
 import { CartItemCreateInterface } from '../interfaces/cart-item-create-interface';
 import { CartCreationInterface } from '../interfaces/cart-create-interface';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import { GetorderInterface } from '../interfaces/getorder-interface';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   
   cart?: CartCreationInterface | null;
+  order?: GetorderInterface | null;
   userId: number = 0;
   cartId: number = 0;
   cartItems: CartItemCreateInterface[] = [];
   cartItemsDetailed: ProductInterface[] = [];
 
-  cartTotalPrice: number = 0;
 
+  checkOutPage: boolean = false;
+
+  cartTotalPrice: number = 0;
+  discountedTotal: number = 0;
+  private subscriptions: Subscription[] = [];
   error: string = '';
+  promoCode: string = '';
+  shippingAddress: string = '';
+  paymentMethod: string = '';
+  cardNumber: string = '';
+  expirationDate: string = '';
+  cvv: string ='';
+  total: number = 0;
+  
 
   constructor(private cartService: CartService, private productService: ProductService,private authService: AuthService) { }
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
-    this.cartService.getCartByUserrId(this.userId).subscribe(
+    const cartSub = this.cartService.getCartByUserrId(this.userId).subscribe(
       (cart: CartCreationInterface) => {
         console.log(cart);
         this.cart = cart;
@@ -47,7 +63,7 @@ export class CartComponent implements OnInit {
         console.error("Error loading cart", error);
       }
     );
-   
+    this.subscriptions.push(cartSub);
   }
 
   fetchProductDetails(): void {
@@ -127,44 +143,43 @@ recalculateCartTotal(): void {
 
 
 removeQuantityFromProduct(productId: number) {
-  if (!this.cart || !this.cart.id) {
-    console.error("Cart or Cart ID is undefined");
-    return;
-  }
+  if (!this.cart?.id) return;
 
   const cartId = this.cart.id;
-  
-  // Find the product in the cart
   const cartItem = this.cartItemsDetailed.find(item => item.id === productId);
-  
-  if (cartItem && cartItem.quantity > 1) {
-    // Update UI optimistically first
-    cartItem.quantity -= 1;
-    
-    // Calculate price to subtract
-    const priceToSubtract = cartItem.discountedPrice > 0 ? cartItem.discountedPrice : cartItem.originalPrice;
-    this.cartTotalPrice -= priceToSubtract;
-    
-    // Then update on server
+
+  if (!cartItem) return;
+
+  if (cartItem.quantity > 1) {
+    cartItem.quantity--;
+    const priceChange = cartItem.discountedPrice > 0 ? cartItem.discountedPrice : cartItem.originalPrice;
+    this.cartTotalPrice -= priceChange;
+
     this.cartService.removeFromCart(cartId, productId).subscribe({
       next: () => {
-        // No need to refresh everything, we've already updated the UI
-        // Just log success or do minimal updates if needed
         console.log("Quantity decreased successfully");
+        // NO refresh here
       },
       error: (error) => {
-        // Revert the UI change if there's an error
         console.error('Failed to decrease quantity:', error);
-        cartItem.quantity += 1;
-        this.cartTotalPrice += priceToSubtract;
-        // Now refresh from server to ensure synchronization
-        this.refreshCartData();
+        cartItem.quantity++;
+        this.cartTotalPrice += priceChange;
       }
     });
-  } else if (cartItem && cartItem.quantity === 1) {
-    // If quantity is 1, prompt user to remove item instead
+  } else {
     if (confirm("Remove item from cart?")) {
-      this.removeProductFromCart(productId);
+      this.cartItemsDetailed = this.cartItemsDetailed.filter(item => item.id !== productId);
+
+      const priceChange = cartItem.discountedPrice > 0 ? cartItem.discountedPrice : cartItem.originalPrice;
+      this.cartTotalPrice -= priceChange;
+
+      this.cartService.removeFromCart(cartId, productId).subscribe({
+        next: () => console.log('Item removed'),
+        error: (error) => {
+          console.error('Failed to remove item:', error);
+          // Optional: fetch cart again if needed
+        }
+      });
     }
   }
 }
@@ -197,6 +212,69 @@ refreshCartData(): void {
       console.error("Error refreshing cart", error);
     }
   );
+}
+
+goToCheckOut() {
+this.checkOutPage = true;
+}
+
+checkOut() {
+  const orderSub = this.cartService.createOrder(this.userId, this.cartItems, this.shippingAddress, this.paymentMethod, this.promoCode).subscribe({
+    next: (order) => {
+      console.log('order created successfully', order);
+      Swal.fire({  
+        position: 'center',  
+        icon: 'success',  
+        title: `Order created successfully`,  
+        showConfirmButton: false,  
+        timer: 3000  
+      });
+
+      this.order = order;
+      this.cartItemsDetailed = [];
+      this.cartTotalPrice = 0;
+      this.checkOutPage = false;
+
+      // NOW after order is created, process payment
+      if (this.order && this.order.id !== null && this.order.id > 0) {
+        if (this.discountedTotal > 0) {
+          this.total = this.discountedTotal;
+        } else {
+          this.total = this.cartTotalPrice;
+        }
+
+        const paymentSub = this.cartService.processPayment(this.order.id, this.cardNumber, this.expirationDate, this.cvv, this.total).subscribe({
+          next: (payment) => {
+            console.log('payment successful', payment);
+            Swal.fire({  
+              position: 'center',  
+              icon: 'success',  
+              title: `Payment successful`,  
+              showConfirmButton: false,  
+              timer: 3000  
+            });
+          },
+          error: (error) => {
+            alert('Error on payment');
+            console.error('Payment error:', error);
+          }
+        });
+
+        this.subscriptions.push(paymentSub);
+      }
+    },
+    error: (error) => {
+      console.error('Order creation failed', error);
+    }
+  });
+
+  this.subscriptions.push(orderSub);
+  console.log(this.cartId, this.cart );
+}
+
+ngOnDestroy(): void {
+  // Unsubscribe from all subscriptions
+  this.subscriptions.forEach(sub => sub.unsubscribe());
 }
 }
 

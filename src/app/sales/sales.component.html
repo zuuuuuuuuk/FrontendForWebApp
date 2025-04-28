@@ -1,1 +1,24 @@
-<p>sales works!</p>
+<div class="decorDiv"></div>
+<h1>products on Sale</h1>
+
+<p *ngIf="productsOnSale.length === 0">
+    no products on sale for now...
+</p>
+
+<div class="mainDiv">
+<div *ngFor="let product of productsOnSale">
+  <div class="product">
+    <img [src]="product.images[0].url" alt="{{ product.name }}" />
+    <h5>{{ product.name }}</h5>
+    <p>Original Price: <span class="original-price">{{ product.originalPrice | currency }}</span></p>
+    <p *ngIf="product.discountedPrice > 0">
+      Discounted Price: <span class="discounted-price">{{ product.discountedPrice | currency }}</span>
+    </p>
+  </div>
+</div>
+</div>
+
+
+<div class="advertisementsDiv">
+   <h4>Ads goes here O,,O</h4>
+</div>

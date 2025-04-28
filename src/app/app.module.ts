@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CartComponent } from './cart/cart.component';
 import { SalesComponent } from './sales/sales.component';
+import { UserInterfaceComponent } from './user-interface/user-interface.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SalesComponent } from './sales/sales.component';
     NavigationComponent,
     HomeComponent,
     CartComponent,
-    SalesComponent
+    SalesComponent,
+    UserInterfaceComponent
   ],
   imports: [
     BrowserModule,

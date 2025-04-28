@@ -421,7 +421,13 @@ addToCart(productId: number): void {
     // User has a cart already
     this.cartService.addToCart(this.cart.id, [productId]).subscribe({
       next: (res) => {
-        console.log('Product added to existing cart');
+        Swal.fire({  
+          position: 'center',  
+          icon: 'success',  
+          title: `product added successfuly`,  
+          showConfirmButton: false,  
+          timer: 3000  
+        });
       },
     });
   } else {
