@@ -20,4 +20,5 @@ export interface ProductInterface {
     reviews: ReviewInterface [];
     productAvailability: ProductAvailability;
     currentImageIndex?: number;
+    quantity: number;
 }

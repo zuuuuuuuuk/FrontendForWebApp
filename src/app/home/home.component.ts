@@ -7,7 +7,12 @@ import { ProductService } from '../services/product.service';
 import { AuthService } from '../services/auth.service';
 import Swal from 'sweetalert2';
 import { trigger, transition, style, animate } from '@angular/animations';
-
+import { ReviewInterface } from '../interfaces/review-interface';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { CartService } from '../services/cart.service';
+import { CartInterface } from '../interfaces/cart-interface';
+import { CartCreationInterface } from '../interfaces/cart-create-interface';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +41,7 @@ activeProductId: number | null = 0;
   products: ProductInterface [] = [];
   allProducts: ProductInterface[] = [];
 
-  
+  private searchSubject = new Subject<void>();
 
   private categorySub: Subscription = new Subscription(); 
   private productSub: Subscription = new Subscription();
@@ -60,6 +65,14 @@ activeProductId: number | null = 0;
  reviewText: string = ''; // Track the review text input by the user
  hoverRating: number = 0;
 
+
+
+ cart: CartInterface | null = null;
+
+
+
+
+
   minLimit = 0;
 maxLimit = 15000;
 
@@ -67,7 +80,7 @@ minPrice = 0;
 maxPrice = 5000;
 
 
-  constructor(private categoryService: CategoryService, private productService : ProductService, private authService : AuthService) {}
+  constructor(private cartService: CartService, private categoryService: CategoryService, private productService : ProductService, private authService : AuthService) {}
 
 
 
@@ -77,6 +90,19 @@ maxPrice = 5000;
     this.fetchCategories();
     this.fetchProducts();
     this.getUserId();
+
+    this.cartService.getCartByUserId(this.userId).subscribe({
+      next: c => {
+        this.cart = c;
+
+      },
+      error: () => {
+        // no existing cart → will create on first add
+        this.cart = null;
+      }
+    });
+
+
     // Set up login status subscription
     this.loginStatusSub = this.authService.loggedIn$.subscribe(loggedIn => {
       if (loggedIn) {
@@ -244,19 +270,22 @@ this.subCategProductSub = this.productService.getProductsByCategoryId(subCategId
 
 
 
+onPriceInputBlur() {
+  if (this.minPrice > this.maxPrice) {
+    [this.minPrice, this.maxPrice] = [this.maxPrice, this.minPrice];
+    this.applyFilters(); // Re-apply after swap
+  }
+}
+
+onPriceInputChange() {
+  this.applyFilters();
+}
 
 onSliderChange() {
   if (this.minPrice > this.maxPrice) {
     [this.minPrice, this.maxPrice] = [this.maxPrice, this.minPrice];
   }
-  this.applyFilters();
-}
-
-onPriceInputChange() {
-  if (this.minPrice > this.maxPrice) {
-    [this.minPrice, this.maxPrice] = [this.maxPrice, this.minPrice];
-  }
-  this.applyFilters();
+  this.applyFilters(); // Apply filters immediately
 }
 
 applyFilters() {
@@ -335,22 +364,90 @@ setReviewRating(rating: number) {
 
 // Submit the review
 submitReview() {
-  if (this.reviewRating > 0 && this.reviewText) {
-    // Call the backend service to submit the review
-    this.saveReviewToServer(this.reviewRating, this.reviewText);
+  if (this.reviewText && this.reviewRating > 0) {
+    
+    this.saveReviewToServer();
+    console.log('Review submitted:', this.reviewText, this.reviewRating);
   } else {
-    alert("Please provide a rating and a review!");
+    alert("no");
   }
+  // Code to submit the review, e.g., call a service to save it.
+  
 }
 
 // Method to save the review to the backend (e.g., update the product in the database)
-saveReviewToServer(rating: number, text: string) {
-  // You can call your service here to save the review
-  console.log('Review submitted with rating:', rating, 'and text:', text);
+saveReviewToServer() {
+ 
+  if (!this.productView?.id) {
+    console.error('Product ID is missing');
+    return;
+  } else {
+    
+ const review: ReviewInterface = {
+  rating: this.reviewRating,
+  comment: this.reviewText, 
+};
+
+this.productService.submitReview(this.userId, this.productView?.id, review)
+.subscribe({
+  next: (response) => {
+    console.log(response.message);
+    alert('review added <3');
+  },
+  error: (error) => {
+    alert('you already submitted review on this product');
+  }
+}); // You can call your service here to save the review
+  console.log('Review submitted with rating:', review.rating, 'and text:', review.comment);
 
   // Example: this.productService.submitReview(this.productView.id, rating, text).subscribe(...);
 }
+}
 
+loadCart(): void {
+  this.cartService.getCartByUserId(this.userId).subscribe({
+    next: (cart) => {
+      this.cart = cart;
+    },
+    error: (err) => {
+      this.cart = null; // no cart yet
+    }
+  });
+}
+
+
+addToCart(productId: number): void {
+  if (this.cart) {
+    // User has a cart already
+    this.cartService.addToCart(this.cart.id, [productId]).subscribe({
+      next: (res) => {
+        console.log('Product added to existing cart');
+      },
+    });
+  } else {
+    // User does NOT have a cart -> Initiate first
+    const newCart: CartCreationInterface = {
+      userId: this.userId,
+      cartItems: [{ productId: this.productView?.id || 0, quantity: 1 }],  // Wrap in an array // Optional expiry time
+    };
+    
+
+    this.cartService.initiateCart(newCart).subscribe({
+      next: (createdCart) => {
+        const createdcart = {
+          id: createdCart.id,
+          userId: this.userId,
+          cartItems: createdCart.cartItems
+        }
+        this.cart = createdcart; // save the new cart
+        console.log('Cart created and product added');
+      },
+      error: (err) => {
+        console.error('Failed to create cart', err);
+      }
+    });
+  }
+}
 
 
   ngOnDestroy(): void {

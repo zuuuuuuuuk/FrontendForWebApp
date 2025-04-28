@@ -1,1 +1,50 @@
-<p>cart works!</p>
+<div class="decorDiv"></div>
+<div class="cartMainDiv">
+    <div class="cartItemDiv" *ngFor="let item of cartItemsDetailed">
+        <img [src]="item.images[0].url" alt="img">
+<h5>{{item.name}}</h5>
+<div class="stars">
+    <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+      <i 
+        class="fa"
+        [ngClass]="{
+          'fa-star full-star': item.averageRating >= star,  
+          'fa-star-half-o half-star': item.averageRating >= star - 0.5 && item.averageRating < star,
+          'fa-star-o empty-star': item.averageRating < star - 0.5  
+        }"
+        aria-hidden="true">
+      </i>
+    </ng-container>
+  </div>
+  
+<p class="description-text">description: {{item.description}}</p>
+<div class="rightProd">
+<div class="quantityDiv">
+    <button (click)="removeQuantityFromProduct(item.id)">-</button>
+    <p class="quantity">{{item.quantity}}</p>
+    <button (click)="addQuantityToProduct(item.id)">+</button>
+    </div>  
+    
+<div class="ILovePriceField">
+<p class="price">price: {{item.originalPrice}} $</p>
+<p *ngIf="item.discountedPrice > 0" class="discountedPrice">discounted price: {{item.discountedPrice}} $</p>
+<p *ngIf="!item.discountedPrice" class="fullPrice">total: {{(item.originalPrice * item.quantity)}} $</p>
+<p *ngIf="item.discountedPrice > 0" class="fullDiscounted">discaunted total: {{(item.discountedPrice * item.quantity)}}</p>
+
+</div>
+
+</div>
+<span class="removeProduct" (click)="removeProductFromCart(item.id)">X</span>
+
+</div>
+<div class="lastCasa">
+    <div class="promoDiv">
+    <p>enter promo code:</p>
+    <input type="text">
+</div>
+<div class="finalCart">
+    <h3>total price: {{cartTotalPrice}}</h3>
+    <button>Go checkout</button>
+    </div>
+</div>
+</div>

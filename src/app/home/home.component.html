@@ -54,11 +54,11 @@
         <div class="price-input">
             <span>from: </span>
             <div class="priceSearch">
-            <input type="number" [(ngModel)]="minPrice" name="minPrice" (input)="onPriceInputChange()" />
+            <input type="number" [(ngModel)]="minPrice" name="minPrice" (input)="onPriceInputChange()" (blur)="onPriceInputBlur()" />
          $ </div>
             <span>to: </span>
             <div class="priceSearch">
-            <input type="number" [(ngModel)]="maxPrice" name="maxPrice" (input)="onPriceInputChange()" />
+            <input type="number" [(ngModel)]="maxPrice" name="maxPrice" (input)="onPriceInputChange()" (blur)="onPriceInputBlur()" />
           $</div>
         </div>
         <div class="range-wrapper">
@@ -134,11 +134,11 @@
             <p class="card-text description-textView">Description: {{productView?.description}}</p>
             <p class="card-text card-textView">In stock: {{productView?.stock}}</p>
             <p class="card-text priceView">Price: {{productView?.originalPrice}} $</p>
-            <p class="discounted-priceView" *ngIf="productView && productView.discountedPrice > 0">discounted price: {{productView?.discountedPrice}} $</p>
+            <p class="discounted-priceView" *ngIf="productView && productView.discountedPrice > 0">discounted price: {{productView.discountedPrice}} $</p>
             
 
             <div class="addReview">
-              <textarea class="review-inputt" placeholder="share your thoughts about this product..."></textarea>
+              <textarea [(ngModel)]="reviewText" class="review-inputt" placeholder="share your thoughts about this product..."></textarea>
               <button class="revButton" (click)="submitReview()">submit</button>
               <div class="rating">
                 <ng-container *ngFor="let heart of [1, 2, 3, 4, 5]">
@@ -165,14 +165,14 @@
               <div class="seeAlsoProductsDiv">
                 <div class="seeAlsoProduct" *ngFor="let product of suggestedProductsView" (click)="openProductView(product)">
                   
-                  <img class="seeAlsoImg" [src]="product.images[0]?.url || 'assets/no-image.jpg'" alt="">
+                  <img class="seeAlsoImg" [src]="product.images[0].url || 'assets/no-image.jpg'" alt="">
                   <h5>{{product.name}}</h5>
                   <p class="suggestedDescription">{{product.description}}</p>
                 </div>
               </div>
             </div>
 
-           <button class="cartAddButton">Add to cart</button>
+           <button class="cartAddButton" (click)="addToCart(productView?.id || 0)">Add to cart</button>
       
            
           </div>
@@ -199,7 +199,7 @@
     <button class="slider-arrow left-arrow" (click)="prevImage(product)" (click)="$event.stopPropagation()">&#10094;</button>
     
     <img class="card-img-top" 
-         [src]="product.images[product.currentImageIndex || 0]?.url || 'assets/no-image.jpg'" 
+         [src]="product.images[product.currentImageIndex || 0].url || 'assets/no-image.jpg'" 
          alt="Product Image" />
     
     <button class="slider-arrow right-arrow" (click)="nextImage(product)" (click)="$event.stopPropagation()">&#10095;</button>

@@ -1,0 +1,160 @@
+.decorDiv {
+    width: 100%;
+    height: 8.51rem;
+}
+
+.cartMainDiv {
+ position: relative;
+ margin-left: 5rem;
+ right: 3rem;
+ gap: 2rem;
+
+display: flex;
+flex-direction: column;
+    height: auto;
+}
+
+.cartItemDiv {
+position: relative;
+    border-radius: 0.9rem;
+    background-color: rgba(0, 92, 121, 0.293);
+    display: flex;
+font-family: cursive;
+gap: 3rem;
+
+}
+
+.stars {
+    position: relative;
+    top: 4.1rem;
+
+}
+
+.cartMainDiv img{
+    overflow: hidden;
+    height: 170px;
+}
+.cartItemDiv h5 {
+    font-size: 1.5rem;
+position: relative;
+top: 0.9rem;
+}
+
+.quantityDiv{
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+   
+}
+.ILovePriceField {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    
+}
+.rightProd {
+    display: flex;
+    position: absolute;
+    right: 9rem;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    gap: 5rem;
+    top: 2.5rem;
+}
+.discountedPrice {
+    color: rgb(0, 184, 0);
+}
+.fullDiscounted {
+    color: rgb(210, 218, 0);
+}
+.removeProduct{
+    position: absolute;
+    right: 2rem;
+    top: 1.55rem;
+    font-size: 1.5rem;
+    color: rgb(0, 64, 110);
+    cursor: pointer;
+}
+.removeProduct:hover {
+    color: rgb(0, 145, 255);
+}
+.quantity {
+    margin-top: 1rem;
+
+}
+.quantityDiv button {
+    width: 2.3rem;
+    height: 2.3rem;
+    color:rgb(0, 58, 159);
+    border: none;
+    border-radius: 0.3rem;
+    box-shadow: 4px 4px 4px rgba(0, 54, 98, 0.657);
+}
+.quantityDiv button:hover {
+    transform: scale(1.1);
+} 
+.quantityDiv button:active {
+    transform: scale(1);
+}
+
+.description-text {
+    max-width: 400px; /* limit height */
+    position: relative;
+    top: 4.3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines you want */
+    -webkit-box-orient: horizontal;
+    color: #00356b5f;
+}
+
+.stars {
+    
+    font-size: 1.21rem;
+    margin-top: 0.3rem;
+    
+  }
+
+  .full-star {
+    color: rgb(176, 150, 0);
+  }
+  .half-star {
+    color: goldenrod;
+  }
+  .empty-star {
+    color: lightgray;
+  }
+
+  .fa-star {
+    font-size: larger;
+  }
+
+  .description-text {
+    max-height: 60px; /* limit height */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines you want */
+    -webkit-box-orient: vertical;
+    color: #00356b5f;
+  }
+
+  .finalCart {
+    width: fit-content;
+    position: relative;
+    color: rgb(0, 145, 114);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .lastCasa {
+    display: flex;
+    gap: 3rem;
+    position: relative;
+    top: 2rem;
+    margin-bottom: 2rem;
+    left: 75%;
+    z-index: 444;
+  }
