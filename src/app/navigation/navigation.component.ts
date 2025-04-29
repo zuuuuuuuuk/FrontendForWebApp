@@ -24,7 +24,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   regError: string = '';
   showRegister: boolean = false;
-
+  showProdInp: boolean = false;
 
   registerData = {
     firstName: '',
@@ -68,6 +68,10 @@ export class NavigationComponent implements OnInit, OnDestroy {
       this.showLogin = false;
       console.log("user not working : ",loggedInUser);
     }
+  }
+
+  goToAddProduct() {
+this.showProdInp = !this.showProdInp;
   }
 
   goToCart() {
