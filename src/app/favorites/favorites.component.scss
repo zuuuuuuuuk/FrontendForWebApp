@@ -2,3 +2,25 @@
     width: 100%;
     height: 8.51rem;
 }
+.favProdsDiv {
+display: flex;
+flex-wrap: wrap;
+gap: 2rem;
+background-color: rgba(2, 117, 109, 0.088);
+position: relative;
+left: 1rem;
+}
+.favProd {
+background-color: rgba(0, 47, 70, 0.157);
+border-radius: 0.35rem;
+padding: 1rem;
+margin: 0.5rem;
+}
+p {
+   width: 300px;
+}
+
+.favProd img {
+    width: 150px;
+    height: 160px;
+}

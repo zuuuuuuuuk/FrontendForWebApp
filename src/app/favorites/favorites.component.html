@@ -1,1 +1,14 @@
 <div class="decorDiv"></div>
+<div class="mainDiv">
+<div class="favProdsDiv">
+    <div class="favProd" *ngFor="let prod of favProds">
+        <img [src]="prod.images[0].url" alt="">
+        <p>name:{{prod.name}}</p>
+        <p>av.rating:{{prod.averageRating}}</p>
+        <p>price:{{prod.originalPrice}}</p>
+        
+        <p>discounted price: {{prod.discountedPrice}}</p>
+        <p>description: {{prod.description}}</p>
+    </div>
+</div>
+</div>
