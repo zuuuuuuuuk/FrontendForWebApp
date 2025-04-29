@@ -4,7 +4,8 @@ import { CartInterface } from '../interfaces/cart-interface';
 import { CartItemInterface } from '../interfaces/cart-item-interface'; // You can define a CartItemInterface if necessary
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ProductInterface } from '../interfaces/product-interface';
 import { ProductService } from '../services/product.service';
 import { CartItemCreateInterface } from '../interfaces/cart-item-create-interface';
@@ -46,24 +47,37 @@ export class CartComponent implements OnInit, OnDestroy {
   constructor(private cartService: CartService, private productService: ProductService,private authService: AuthService) { }
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
+
+
+    if(this.userId > 0){
+      
     const cartSub = this.cartService.getCartByUserrId(this.userId).subscribe(
       (cart: CartCreationInterface) => {
+        if(cart != null) {
         console.log(cart);
         this.cart = cart;
         if (cart.id != null){ 
         this.cartId = cart.id; // Set cart data from response
-        }
+        } 
         this.cartItems = cart.cartItems || [];
         this.fetchProductDetails(); // Fetch product details after cart is set
         console.log("this.cart::", this.cart);
         // Log cart after it's set
+      } else {
+        console.log("user has no cart yet");
+      }
       },
       (error) => {
-        this.error = 'Failed to load cart';
-        console.error("Error loading cart", error);
+        if (error.status === 400) {
+          console.log("No cart found for this user.");
+          this.cart = null;
+        } 
       }
     );
     this.subscriptions.push(cartSub);
+  } else {
+    console.log("user is not logged in yet to load cart");
+  }
   }
 
   fetchProductDetails(): void {
@@ -208,8 +222,12 @@ refreshCartData(): void {
       this.fetchProductDetails();
     },
     (error) => {
-      this.error = 'Failed to refresh cart';
-      console.error("Error refreshing cart", error);
+      if (error.status === 404) {
+        this.cart = null;  // Handle cart not found
+        console.log("Cart is empty or deleted.");
+      } else {
+        console.error("Error loading cart", error);
+      }
     }
   );
 }
@@ -219,9 +237,39 @@ this.checkOutPage = true;
 }
 
 checkOut() {
-  const orderSub = this.cartService.createOrder(this.userId, this.cartItems, this.shippingAddress, this.paymentMethod, this.promoCode).subscribe({
+  const orderSub = this.cartService.createOrder(this.userId,this.cartItems,this.shippingAddress,this.paymentMethod,this.promoCode).subscribe({
     next: (order) => {
-      console.log('order created successfully', order);
+
+      console.log("order: ", order)
+      const paymentSub = this.cartService.processPayment(order.id,this.cardNumber,this.expirationDate,this.cvv,this.total).subscribe({
+        next: (payment) => {
+          console.log('Payment successful', payment);
+          Swal.fire({  
+            position: 'center',  
+            icon: 'success',  
+            title: `Payment successful`,  
+            showConfirmButton: false,  
+            timer: 3000  
+          });
+          
+        },
+        error: (error) => {
+          console.error('Payment error:', error);
+          Swal.fire({  
+            position: 'center',  
+            icon: 'error',  
+            title: `Payment failed`,  
+            text: 'Please check your payment details',
+            showConfirmButton: true  
+          });
+        }
+        
+        
+      });
+      this.subscriptions.push(paymentSub);
+
+      console.log('Order created successfully', order);
+      this.order = order;
       Swal.fire({  
         position: 'center',  
         icon: 'success',  
@@ -229,52 +277,34 @@ checkOut() {
         showConfirmButton: false,  
         timer: 3000  
       });
-
-      this.order = order;
+    
       this.cartItemsDetailed = [];
       this.cartTotalPrice = 0;
       this.checkOutPage = false;
-
-      // NOW after order is created, process payment
-      if (this.order && this.order.id !== null && this.order.id > 0) {
-        if (this.discountedTotal > 0) {
-          this.total = this.discountedTotal;
-        } else {
-          this.total = this.cartTotalPrice;
-        }
-
-        const paymentSub = this.cartService.processPayment(this.order.id, this.cardNumber, this.expirationDate, this.cvv, this.total).subscribe({
-          next: (payment) => {
-            console.log('payment successful', payment);
-            Swal.fire({  
-              position: 'center',  
-              icon: 'success',  
-              title: `Payment successful`,  
-              showConfirmButton: false,  
-              timer: 3000  
-            });
-          },
-          error: (error) => {
-            alert('Error on payment');
-            console.error('Payment error:', error);
-          }
-        });
-
-        this.subscriptions.push(paymentSub);
-      }
     },
     error: (error) => {
       console.error('Order creation failed', error);
+      Swal.fire({  
+        position: 'center',  
+        icon: 'error',  
+        title: `Order creation failed`,  
+        showConfirmButton: true  
+      });
     }
   });
-
+  
   this.subscriptions.push(orderSub);
-  console.log(this.cartId, this.cart );
 }
+
+
+  
+
+
+
 
 ngOnDestroy(): void {
   // Unsubscribe from all subscriptions
   this.subscriptions.forEach(sub => sub.unsubscribe());
 }
-}
-
+  
+ }

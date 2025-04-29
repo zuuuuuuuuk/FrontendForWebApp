@@ -18,8 +18,7 @@ export class NavigationComponent implements OnInit {
 
 
   userId: number = 0;
-
-
+  AdminLoggedIn: boolean = false;
   showLogin: boolean = true;
   loggedIn: boolean = false;
   errorMessage: string = '';
@@ -49,12 +48,20 @@ export class NavigationComponent implements OnInit {
   constructor(private router: Router, private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit(): void {
+    
+     
     const loggedInUser = localStorage.getItem('userauthinterface');
     this.showRegister = false;
     if (loggedInUser) {
       this.userResponse = JSON.parse(loggedInUser);
+      this.userId = this.userResponse.id
       this.loggedIn = true;
       this.showLogin = false;
+
+      const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+      if (adminLoggedIn === 'true') {
+        this.AdminLoggedIn = true;
+      }
     }
     else {
       this.showLogin = false;
@@ -63,8 +70,9 @@ export class NavigationComponent implements OnInit {
   }
 
   goToCart() {
-    if (!this.authService.getUserId) {
+    if (!this.userId) {
       alert('You must be logged in to view the cart.');
+
       return;
     } else {
     this.router.navigate(['/Cart']);
@@ -80,9 +88,15 @@ export class NavigationComponent implements OnInit {
     
     this.authService.logIn(this.userAuth).subscribe(
       (response) => {
+        location.reload();
         console.log('Login successful', response);
         this.userResponse = response;
         this.loggedIn = true;
+        if (response.role === 2) {
+          this.AdminLoggedIn = true;
+          // Save adminLoggedIn to localStorage
+          localStorage.setItem('adminLoggedIn', 'true');
+        }
         this.showLogin = false;
         this.errorMessage = '';
         this.userAuth = {
@@ -91,6 +105,9 @@ export class NavigationComponent implements OnInit {
         };
         this.userId = response.id;
         // The auth service will handle emitting the login success event
+
+
+        localStorage.setItem('userauthinterface', JSON.stringify(response));
       },
       (error) => {
         console.error('Login failed', this.userAuth, this.userResponse, error);
@@ -98,6 +115,7 @@ export class NavigationComponent implements OnInit {
         console.log(error.error?.message);
       }
     );
+
   }
 
   onRegister(registerForm: NgForm) {
@@ -145,6 +163,10 @@ logout(): void {
     token: ''
   };
   this.showLogin = false;
+  this.userId = 0;
+  localStorage.removeItem('adminLoggedIn');
+  this.AdminLoggedIn = false;
+  location.reload();
 }
 
   

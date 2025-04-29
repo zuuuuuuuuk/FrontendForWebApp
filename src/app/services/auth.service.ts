@@ -1,10 +1,11 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { UserAuth } from '../interfaces/Auth-interfaces/userAuth';
 import { LoginResponse } from '../interfaces/Auth-interfaces/login-response';
 import { RegisterRequest } from '../interfaces/Auth-interfaces/register-request';
 import { BehaviorSubject } from 'rxjs';
+import { Token } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,13 @@ export class AuthService {
 
   private userId: number = 0;
   private email: string = '';
-  private role: string = '';
+  public role: string = '';
 
   private loggedInSubject = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedInSubject.asObservable();
 
   public loginSuccess = new EventEmitter<void>();
+  userRole$: any;
 
   constructor(private http: HttpClient) {
     this.loadUserFromToken();
@@ -36,6 +38,7 @@ export class AuthService {
     
     return this.http.post<LoginResponse>(this.apiUrl, loginModel).pipe(
       tap(response => {
+        localStorage.setItem('token', response.token)
         localStorage.setItem('userauthinterface', JSON.stringify(response));
         this.loadUserFromToken(); // Ensure user data is loaded
         this.loggedInSubject.next(true);
@@ -49,7 +52,7 @@ export class AuthService {
     this.userId = 0; // Reset user ID to 0
     this.email = '';
     this.role = '';
-     
+     localStorage.removeItem('token');
       // Ensure user data is loaded
         this.loggedInSubject.next(false);
       
@@ -63,6 +66,30 @@ export class AuthService {
     }
 
 
+    private getAuthHeaders(): HttpHeaders {
+      const token = this.getToken();
+      if (token) {
+        return new HttpHeaders({
+          'Authorization': `Bearer ${token}`
+        });
+      }
+      return new HttpHeaders(); // Return empty headers if no token
+    }
+
+    getProtectedResource(): Observable<any> {
+      const headers = this.getAuthHeaders();
+      return this.http.get('https://localhost:7219/api/protected', { headers });
+    }
+
+    getToken(): string | null {
+      const userAuthString = localStorage.getItem('userauthinterface');
+      if (!userAuthString) {
+        return null;
+      }
+      const userAuth = JSON.parse(userAuthString);
+      return userAuth.token || null;
+    }
+    
     private loadUserFromToken(): void {
       const userAuthString = localStorage.getItem('userauthinterface');
       if (!userAuthString) {

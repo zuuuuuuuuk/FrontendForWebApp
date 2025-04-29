@@ -69,7 +69,7 @@ activeProductId: number | null = 0;
 
  cart: CartInterface | null = null;
 
-
+ private subscriptions: Subscription[] = [];
 
 
 
@@ -90,19 +90,24 @@ maxPrice = 5000;
     this.fetchCategories();
     this.fetchProducts();
     this.getUserId();
+    this.userId = this.authService.getUserId();
 
-    this.cartService.getCartByUserId(this.userId).subscribe({
-      next: c => {
-        this.cart = c;
+   if (this.userId > 0) {
+    const cartSubHome = this.cartService.getCartByUserId(this.userId).subscribe({
+      next: (cart: CartInterface) => {
+        
+        if(cart !== null){
+          this.cart = cart;
+        } else {
+          console.log("no cart");
+        }
 
       },
-      error: () => {
-        // no existing cart → will create on first add
-        this.cart = null;
-      }
+      
+    
     });
-
-
+    this.subscriptions.push(cartSubHome);
+  }
     // Set up login status subscription
     this.loginStatusSub = this.authService.loggedIn$.subscribe(loggedIn => {
       if (loggedIn) {
@@ -469,5 +474,6 @@ addToCart(productId: number): void {
   if (this.subCategProductSub) {
     this.subCategProductSub.unsubscribe();
   }
+  this.subscriptions.forEach(sub => sub.unsubscribe());
 }
 }

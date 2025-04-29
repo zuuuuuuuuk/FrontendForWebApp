@@ -42,14 +42,17 @@
         </div>
 
         <div class="log">
+          <button class="adminButton" *ngIf="AdminLoggedIn">Admin Panel</button>
         <div class="loggedInDiv" *ngIf="loggedIn">
+          
+          
             <i class="fa-solid fa-circle-user primaryLoginButton"></i>
             <p>{{userResponse.email}}</p>
         </div>
         <i class="fa-solid fa-arrow-right-from-bracket logOutIcon" (click)="logout()" *ngIf="loggedIn"></i>
     </div>
        
-
+     
 
         <div class="cartIcon">
           <a (click)="goToCart()">
