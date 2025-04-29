@@ -1,1 +1,21 @@
-<p>user-interface works!</p>
+<div class="decorDiv"></div>
+<div class="mainDiv">
+    <div class="ordersDiv">
+        <h4>my orders:</h4>
+        <div class="divDec">
+        <p *ngIf="fullOrders.length === 0">you dont have any orders</p>
+        <div class="ordersContainer" *ngFor="let order of fullOrders">
+            <div class="orderCard">
+                <p>order id: #{{order.id}}</p>
+                <p class="status">order status: {{ order.status === 1 ? 'paid' : order.status === 0 ? 'pending' : '' }}</p>
+                <div class="orderItems" *ngFor="let item of order.orderItems">
+                    <p>product name: {{item.productName}}</p>
+                    <p>quantity: {{item.quantity}}</p>
+                    <p>price: {{item.price}} $</p>
+                    <p *ngIf="item.discountedPrice > 0">discounted price: {{item.discountedPrice}} $</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

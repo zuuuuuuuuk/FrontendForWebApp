@@ -79,6 +79,12 @@ export class NavigationComponent implements OnInit {
     }
   }
 
+  goToUserPanel(): void {
+    this.router.navigate(['/User']); 
+  }
+  goToAdminPanel(): void {
+    this.router.navigate(['/Admin']);
+  }
 
   onSubmit(logInForm: NgForm) {
     if (logInForm.invalid) {
@@ -166,7 +172,7 @@ logout(): void {
   this.userId = 0;
   localStorage.removeItem('adminLoggedIn');
   this.AdminLoggedIn = false;
-  location.reload();
+  this.router.navigate(['']);
 }
 
   

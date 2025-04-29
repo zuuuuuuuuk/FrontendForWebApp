@@ -42,7 +42,8 @@
         </div>
 
         <div class="log">
-          <button class="adminButton" *ngIf="AdminLoggedIn">Admin Panel</button>
+          <button class="adminButton" *ngIf="AdminLoggedIn" (click)="goToAdminPanel()">Admin Panel</button>
+          <button class="userButton" *ngIf="!AdminLoggedIn && loggedIn" (click)="goToUserPanel()">My Orders</button>
         <div class="loggedInDiv" *ngIf="loggedIn">
           
           

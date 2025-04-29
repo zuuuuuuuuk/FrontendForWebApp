@@ -110,6 +110,21 @@ top: 0.9rem;
     color: #00356b5f;
 }
 
+.seeOrders {
+  position: relative;
+  left: 44.5%;
+  top: 5rem;
+  color: red;
+  font-family: cursive;
+  font-size: larger;
+  cursor: pointer;
+  
+}
+
+.seeOrders:hover {
+  font-size: 1.29rem;
+}
+
 .emptyCart {
     position: relative;
     left: 43.5%;

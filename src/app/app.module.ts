@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CartComponent } from './cart/cart.component';
 import { SalesComponent } from './sales/sales.component';
 import { UserInterfaceComponent } from './user-interface/user-interface.component';
+import { AdminInterfaceComponent } from './admin-interface/admin-interface.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { UserInterfaceComponent } from './user-interface/user-interface.componen
     HomeComponent,
     CartComponent,
     SalesComponent,
-    UserInterfaceComponent
+    UserInterfaceComponent,
+    AdminInterfaceComponent
   ],
   imports: [
     BrowserModule,

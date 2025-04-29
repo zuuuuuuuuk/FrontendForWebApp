@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { GetorderInterface } from '../interfaces/getorder-interface';
 
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -42,12 +43,12 @@ export class CartComponent implements OnInit, OnDestroy {
   expirationDate: string = '';
   cvv: string ='';
   total: number = 0;
+  router: any;
   
 
   constructor(private cartService: CartService, private productService: ProductService,private authService: AuthService) { }
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
-
 
     if(this.userId > 0){
       
@@ -82,7 +83,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   fetchProductDetails(): void {
     this.cartItemsDetailed = []; // Clear previous product details
-    this.cartTotalPrice = 0; // Reset total price
+    this.total = 0; // Reset total price
   
     // Map cartItems to product details
     this.cartItems.forEach(item => {
@@ -97,7 +98,10 @@ export class CartComponent implements OnInit, OnDestroy {
           
           // Update total price (use discounted price if available)
           const price = product.discountedPrice > 0 ? product.discountedPrice : product.originalPrice;
-          this.cartTotalPrice += price * item.quantity;
+          this.total += price * item.quantity;
+          
+          console.log("total=================",this.total);
+          
         },
         (error) => {
           console.error(`Failed to fetch product with ID ${item.productId}`);
@@ -123,7 +127,7 @@ addQuantityToProduct(productId: number) {
         
         // Use discounted price if available, otherwise use original price
         const priceToAdd = product.discountedPrice > 0 ? product.discountedPrice : product.originalPrice;
-        this.cartTotalPrice += priceToAdd; // Add the price to the total price
+        this.total += priceToAdd; // Add the price to the total price
 
         // Update the cart
         this.cartService.addToCart(cartId, [productId]).subscribe({
@@ -135,7 +139,7 @@ addQuantityToProduct(productId: number) {
             console.error('Failed to add quantity:', error);
             // Revert local changes if the server update fails
             cartItem.quantity -= 1;
-            this.cartTotalPrice -= priceToAdd;
+            this.total -= priceToAdd;
           }
         });
       }
@@ -167,7 +171,7 @@ removeQuantityFromProduct(productId: number) {
   if (cartItem.quantity > 1) {
     cartItem.quantity--;
     const priceChange = cartItem.discountedPrice > 0 ? cartItem.discountedPrice : cartItem.originalPrice;
-    this.cartTotalPrice -= priceChange;
+    this.total -= priceChange;
 
     this.cartService.removeFromCart(cartId, productId).subscribe({
       next: () => {
@@ -177,8 +181,9 @@ removeQuantityFromProduct(productId: number) {
       error: (error) => {
         console.error('Failed to decrease quantity:', error);
         cartItem.quantity++;
-        this.cartTotalPrice += priceChange;
+        this.total += priceChange;
       }
+      
     });
   } else {
     if (confirm("Remove item from cart?")) {
@@ -234,6 +239,7 @@ refreshCartData(): void {
 
 goToCheckOut() {
 this.checkOutPage = true;
+
 }
 
 checkOut() {
@@ -241,8 +247,10 @@ checkOut() {
     next: (order) => {
 
       console.log("order: ", order)
+      console.log("total", this.total);
       const paymentSub = this.cartService.processPayment(order.id,this.cardNumber,this.expirationDate,this.cvv,this.total).subscribe({
         next: (payment) => {
+          
           console.log('Payment successful', payment);
           Swal.fire({  
             position: 'center',  
@@ -251,9 +259,10 @@ checkOut() {
             showConfirmButton: false,  
             timer: 3000  
           });
-          
+          this.cartService.clearCart();   /// importaaaaaaaaaaaaaaaaaaaaaaant
         },
         error: (error) => {
+          console.log("totaaaaaaaaaaaaaal",this.total,"cardnum",this.cardNumber,"exp",this.expirationDate,"cvv",this.cvv,);
           console.error('Payment error:', error);
           Swal.fire({  
             position: 'center',  
@@ -279,8 +288,10 @@ checkOut() {
       });
     
       this.cartItemsDetailed = [];
-      this.cartTotalPrice = 0;
+      this.total = 0;
       this.checkOutPage = false;
+      this.cartId = 0;
+      this.cart = null;
     },
     error: (error) => {
       console.error('Order creation failed', error);
@@ -294,7 +305,11 @@ checkOut() {
   });
   
   this.subscriptions.push(orderSub);
+  
+  location.reload();
+
 }
+
 
 
   

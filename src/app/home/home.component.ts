@@ -67,7 +67,7 @@ activeProductId: number | null = 0;
 
 
 
- cart: CartInterface | null = null;
+ cart: CartCreationInterface | null = null;
 
  private subscriptions: Subscription[] = [];
 
@@ -87,14 +87,24 @@ maxPrice = 5000;
 
   
   ngOnInit(): void {
+    // this.cartService.cart$.subscribe(cart => {
+    //   this.cart = cart;
+    //   if(!cart){
+    //     console.log("cart waishalaaa");
+    //   }
+    // });
+    const cartSubscription = this.cartService.cartUpdated$.subscribe(cart => {
+      this.cart = cart;
+      console.log('Cart updated in home component:', cart);
+    });
     this.fetchCategories();
     this.fetchProducts();
     this.getUserId();
     this.userId = this.authService.getUserId();
 
    if (this.userId > 0) {
-    const cartSubHome = this.cartService.getCartByUserId(this.userId).subscribe({
-      next: (cart: CartInterface) => {
+    const cartSubHome = this.cartService.getCartByUserrId(this.userId).subscribe({
+      next: (cart: CartCreationInterface) => {
         
         if(cart !== null){
           this.cart = cart;
@@ -109,20 +119,17 @@ maxPrice = 5000;
     this.subscriptions.push(cartSubHome);
   }
     // Set up login status subscription
-    this.loginStatusSub = this.authService.loggedIn$.subscribe(loggedIn => {
-      if (loggedIn) {
-        this.userId = this.authService.getUserId();
-        this.fetchUserFavProds();
-      } else {
-        this.favoriteProductIds = [];
-      }
-    });
-    this.authService.loginSuccess.subscribe(() => {
-       console.log('Login success event received in HomeComponent');
-        this.userId = this.authService.getUserId();
-         console.log('User ID in home after login:', this.userId); 
-      this.fetchUserFavProds();
-     });
+    if (this.userId > 0) {
+      this.cartService.getCartByUserrId(this.userId).subscribe({
+        next: (cart) => {
+          // The subscription above will handle updating the cart
+          console.log('Initial cart loaded in home component');
+        },
+        error: (err) => {
+          console.error('Failed to load initial cart:', err);
+        }
+      });
+    }
   
     // Check if user is already logged in
     const loggedInUser = localStorage.getItem('userauthinterface');
@@ -410,7 +417,7 @@ this.productService.submitReview(this.userId, this.productView?.id, review)
 }
 
 loadCart(): void {
-  this.cartService.getCartByUserId(this.userId).subscribe({
+  this.cartService.getCartByUserrId(this.userId).subscribe({
     next: (cart) => {
       this.cart = cart;
     },
@@ -422,44 +429,90 @@ loadCart(): void {
 
 
 addToCart(productId: number): void {
-  if (this.cart) {
-    // User has a cart already
+  // Check if user is logged in
+  if (!this.userId) {
+    Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: `Please log in to add products to cart`,
+      showConfirmButton: true
+    });
+    return; // Exit if not logged in
+  }
+  
+  // Check if there's a valid cart with an ID > 0
+  if (this.cart && this.cart.id && this.cart.id > 0) {
+    console.log("Adding to existing cart:", this.cart.id);
+    
     this.cartService.addToCart(this.cart.id, [productId]).subscribe({
-      next: (res) => {
-        Swal.fire({  
-          position: 'center',  
-          icon: 'success',  
-          title: `product added successfuly`,  
-          showConfirmButton: false,  
-          timer: 3000  
+      next: () => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: `Product added successfully`,
+          showConfirmButton: false,
+          timer: 3000
         });
       },
-    });
-  } else {
-    // User does NOT have a cart -> Initiate first
-    const newCart: CartCreationInterface = {
-      userId: this.userId,
-      cartItems: [{ productId: this.productView?.id || 0, quantity: 1 }],  // Wrap in an array // Optional expiry time
-    };
-    
-
-    this.cartService.initiateCart(newCart).subscribe({
-      next: (createdCart) => {
-        const createdcart = {
-          id: createdCart.id,
-          userId: this.userId,
-          cartItems: createdCart.cartItems
-        }
-        this.cart = createdcart; // save the new cart
-        console.log('Cart created and product added');
-      },
       error: (err) => {
-        console.error('Failed to create cart', err);
+        console.error('Failed to add to cart:', err);
+        
+        // If we get a 404, it means the cart was deleted on the server
+        if (err.status === 404) {
+          console.log('Cart not found on server, creating new one');
+          this.createNewCart(productId);
+        } else {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: `Failed to add product to cart`,
+            showConfirmButton: true
+          });
+        }
       }
     });
+  } else {
+    // No valid cart, create a new one
+    console.log('No valid cart exists, creating new one');
+    this.createNewCart(productId);
   }
 }
 
+private createNewCart(productId: number): void {
+  // Ensure we have the product data
+  const productIdToAdd = this.productView?.id || productId;
+  
+  const newCart: CartCreationInterface = {
+    userId: this.userId,
+    cartItems: [{ productId: productIdToAdd, quantity: 1 }]
+  };
+  
+  const cartSub = this.cartService.initiateCart(newCart).subscribe({
+    next: (createdCart) => {
+      console.log('New cart created:', createdCart);
+      // The cart will be updated through the subscription to cartUpdated$
+      
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: `Product added successfully`,
+        showConfirmButton: false,
+        timer: 3000
+      });
+    },
+    error: (err) => {
+      console.error('Failed to create new cart:', err);
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: `Failed to create cart`,
+        showConfirmButton: true
+      });
+    }
+  });
+    this.subscriptions.push(cartSub);
+  
+}
 
   ngOnDestroy(): void {
     if (this.categorySub) {
