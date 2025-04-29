@@ -14,7 +14,7 @@ export class ProductService {
   private toggleFavoritesApiUrl = 'https://localhost:7219/api/User';
   private getProductsByCategoryApiUrl = 'https://localhost:7219/api/Product/category';
   private postReview = 'https://localhost:7219/api/Review';
-
+  private updateProductApiUrl = 'https://localhost:7219/api/Product';
   constructor(private http: HttpClient) { }
 
 
@@ -28,6 +28,15 @@ export class ProductService {
 
   getProductById(id: number): Observable<ProductInterface> {
     return this.http.get<ProductInterface>(`${this.ProductByIdApiUrl}/${id}`)
+  }
+
+  updateProductById(id: number | null, name: string | null, description: string | null, originalPrice: number | null):Observable<ProductInterface> {
+    const product = {
+      name: name,
+      description: description,
+      originalPrice: originalPrice
+    }
+    return this.http.put<ProductInterface>(`${this.updateProductApiUrl}/${id}`, product)
   }
 
   getFavorites(userId: number): Observable<number[]> {

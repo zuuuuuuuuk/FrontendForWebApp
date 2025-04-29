@@ -53,6 +53,9 @@ activeProductId: number | null = 0;
   userId: number = 0;
   subCategoryName: string = '';
   searchName:string = '';
+  
+
+
 
 
  productView:ProductInterface | null = null; 
@@ -65,12 +68,13 @@ activeProductId: number | null = 0;
  reviewText: string = ''; // Track the review text input by the user
  hoverRating: number = 0;
 
-
+adminLoggedIn: boolean = false;
 
  cart: CartCreationInterface | null = null;
 
  private subscriptions: Subscription[] = [];
 
+ editing: boolean = false;
 
 
   minLimit = 0;
@@ -93,6 +97,11 @@ maxPrice = 5000;
     //     console.log("cart waishalaaa");
     //   }
     // });
+    if (this.authService.getUserRole() == "Admin"){
+      this.adminLoggedIn = true;
+    } else {
+      this.adminLoggedIn = false;
+    }
     const cartSubscription = this.cartService.cartUpdated$.subscribe(cart => {
       this.cart = cart;
       console.log('Cart updated in home component:', cart);
@@ -101,7 +110,7 @@ maxPrice = 5000;
     this.fetchProducts();
     this.getUserId();
     this.userId = this.authService.getUserId();
-
+    
    if (this.userId > 0) {
     const cartSubHome = this.cartService.getCartByUserrId(this.userId).subscribe({
       next: (cart: CartCreationInterface) => {
@@ -140,6 +149,9 @@ maxPrice = 5000;
   }
 
 
+  enableEditingForAdmin() {
+    this.editing = !this.editing;
+  }
 
 getUserId() {
   this.userId = this.authService.getUserId();
@@ -345,7 +357,22 @@ prevImage(product: any) {
 }
 
 
-
+updateProduct(id: number, name: string | null, description: string | null, originalPrice: number | null){
+const prodUpdateSub = this.productService.updateProductById(id,name,description,originalPrice).subscribe({
+  next: (response) =>{
+    console.log("product updated", response);
+    Swal.fire({  
+      position: 'center',  
+      icon: 'info',  
+      title: 'you need to be logged in',
+      text: 'press OK',  
+      showConfirmButton: true });
+  },
+  error: (err) => {
+    console.log("error", err);
+  }
+});
+}
 
 openProductView(product: ProductInterface) {
   this.productView = product;

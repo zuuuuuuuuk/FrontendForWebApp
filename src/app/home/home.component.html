@@ -15,7 +15,7 @@
 
 
 
-<nav class="navOfCategories" (mouseleave)="collapseAllCategories()">
+<nav class="navOfCategories" (mouseleave)="collapseAllCategories()" *ngIf="adminLoggedIn">
   
   <div class="categoryDiv allCategs" (mouseleave)="collapseAllCategories()">
     <ul>
@@ -183,11 +183,14 @@
 
 
 
-
+        <div class="buttonDiv" *ngIf="adminLoggedIn" (click)="$event.stopPropagation()">
+          <button class="editAdmin"   (click)="enableEditingForAdmin()">Edit(Admin)</button>
+        </div>
         
         <div class="renderDiv" >
           
             <div class="card" style="width: 18rem;" *ngFor="let product of products" (click)="openProductView(product)">
+            
               <div class="heart-container" (click)="$event.stopPropagation()">
                 <i class="fa fa-heart" 
    [ngClass]="{ 'filled': isProductFavorite(product.id) }" 
@@ -207,7 +210,8 @@
 </div>
                 <div class="card-body cardEnd">
                   <p class="discounted-price" *ngIf="product.discountedPrice > 0">discounted price: {{product.discountedPrice}} $</p>
-                  <h5 class="card-title">{{product.name}}</h5>
+                  <h5 *ngIf="!editing" class="card-title">{{product.name}}</h5>
+                  <input placeholder=" Name" class="editInput" *ngIf="editing" type="text" name="nameEdit" id="" (click)="$event.stopPropagation()">
                   <div class="stars">
                     <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
                       <i 
@@ -221,12 +225,17 @@
                       </i>
                     </ng-container>
                   </div>
-                  <p class="card-text description-text">Description: {{product.description}}</p>
+                  <p *ngIf="!editing" class="card-text description-text" >Description: {{product.description}}</p>
+                  <input class="editInput" placeholder=" Description" (click)="$event.stopPropagation()" *ngIf="editing" type="editDescription" >
                   <p class="card-text">In stock: {{product.stock}}</p>
-                  <p class="card-text price">Price: {{product.originalPrice}} $</p>
+                  <p *ngIf="!editing" class="card-text price">Price: {{product.originalPrice}} $</p>
+                  <input placeholder=" Price" *ngIf="editing"  class="editInput" type="priceEdit">
                   
                   
                 </div>
+                <div class="editButtonLastDiv" (click)="$event.stopPropagation()">
+                <button class="editButtonLast" *ngIf="editing">upload</button>
+              </div>
               </div>
         </div>
     </div>

@@ -8,6 +8,52 @@
 .mainDiv {
     height: auto;
 }
+.editButtonLastDiv {
+  position: absolute;
+  top: 17rem;
+  right: 0.5rem;
+  z-index: 444;
+}
+
+.editInput {
+  border-radius: 0.35rem;
+  border: none;
+  background-color: rgba(47, 96, 134, 0.072);
+}
+
+.editButtonLast {
+border-radius: 0.3rem;
+background-color: rgb(147, 0, 0);
+}
+.editButtonLast:hover {
+  border-radius: 0.3rem;
+  background-color: rgba(40, 170, 0, 0.709);
+  }
+.editButtonLast:active {
+ transform: scale(0.9);
+}
+
+.buttonDiv{
+  position: absolute;
+  top: -2rem;
+  left: 16%;
+}
+.buttonDiv button {
+  border-radius: 0.3rem;
+  background-color: rgb(147, 0, 0);
+  width: 7rem;
+  height: 2.3rem;
+}
+.buttonDiv button:hover {
+  color: rgba(0, 79, 128, 0.851);
+  background-color: rgba(255, 0, 0, 0.599);
+  transform: scale(1.1);
+}
+.buttonDiv button:active {
+  transform: scale(1);
+  color: rgba(198, 205, 5, 0.851);
+  background-color: rgba(255, 0, 0, 0.599);
+}
 
 .navOfCategories {
     display: flex;
