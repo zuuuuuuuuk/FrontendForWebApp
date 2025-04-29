@@ -5,6 +5,7 @@ import { CartComponent } from './cart/cart.component';
 import { SalesComponent } from './sales/sales.component';
 import { AdminInterfaceComponent } from './admin-interface/admin-interface.component';
 import { UserInterfaceComponent } from './user-interface/user-interface.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,11 @@ const routes: Routes = [
   {
     path: 'User',
     component: UserInterfaceComponent,
-  }
+  },
+  {
+path: 'Favorites',
+    component: FavoritesComponent,
+  },
 ];
 
 @NgModule({

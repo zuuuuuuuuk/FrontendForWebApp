@@ -14,6 +14,7 @@ import { CartComponent } from './cart/cart.component';
 import { SalesComponent } from './sales/sales.component';
 import { UserInterfaceComponent } from './user-interface/user-interface.component';
 import { AdminInterfaceComponent } from './admin-interface/admin-interface.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { AdminInterfaceComponent } from './admin-interface/admin-interface.compo
     CartComponent,
     SalesComponent,
     UserInterfaceComponent,
-    AdminInterfaceComponent
+    AdminInterfaceComponent,
+    FavoritesComponent
   ],
   imports: [
     BrowserModule,

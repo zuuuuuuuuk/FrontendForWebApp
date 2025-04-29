@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import { Route, Router } from '@angular/router';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, OnDestroy {
 
 
   userId: number = 0;
@@ -46,6 +46,7 @@ export class NavigationComponent implements OnInit {
 
 
   constructor(private router: Router, private http: HttpClient, private authService: AuthService) {}
+ 
 
   ngOnInit(): void {
     
@@ -175,6 +176,8 @@ logout(): void {
   this.router.navigate(['']);
 }
 
-  
+ngOnDestroy(): void {
+  throw new Error('Method not implemented.');
+}
 
 }

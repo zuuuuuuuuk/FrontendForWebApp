@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductInterface } from '../interfaces/product-interface';
 import { ProductService } from '../services/product.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-interface',
@@ -9,7 +10,7 @@ import { ProductService } from '../services/product.service';
 })
 export class AdminInterfaceComponent implements OnInit, OnDestroy {
   productsOnSale: ProductInterface[] = [];
-
+  private subscriptions: Subscription[] = [];
   constructor(private productService: ProductService) {}
 
 
@@ -18,7 +19,7 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   }
   
   fetchProductsOnSale(): void {
-    this.productService.getAllProducts().subscribe(
+   const prodSub = this.productService.getAllProducts().subscribe(
       (products: ProductInterface[]) => {
         // Filter products that have a discounted price
         this.productsOnSale = products.filter(product => product.discountedPrice > 0);
@@ -27,11 +28,12 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
         console.error('Error fetching products on sale:', error);
       }
     );
+    this.subscriptions.push(prodSub);
   }
 
 
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
