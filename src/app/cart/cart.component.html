@@ -1,6 +1,6 @@
 <div class="decorDiv"></div>
 <h3 class="emptyCart" *ngIf="cartItemsDetailed.length < 1">cart is empty...</h3>
-<p class ="seeOrders" [routerLink]="['/User']">See my orders</p>
+<p class ="seeOrders" [routerLink]="['/User']" *ngIf="cart?.cartItems?.length === 0">See my orders</p>
 <div class="cartMainDiv" *ngIf="cart">
     <div class="cartItemDiv" *ngFor="let item of cartItemsDetailed">
         <img [src]="item.images[0].url" alt="img">

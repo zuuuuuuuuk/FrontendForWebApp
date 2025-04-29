@@ -11,7 +11,6 @@ import { ProductService } from '../services/product.service';
 import { CartItemCreateInterface } from '../interfaces/cart-item-create-interface';
 import { CartCreationInterface } from '../interfaces/cart-create-interface';
 import { Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
 import { GetorderInterface } from '../interfaces/getorder-interface';
 
 
@@ -19,7 +18,7 @@ import { GetorderInterface } from '../interfaces/getorder-interface';
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
-})
+})     
 export class CartComponent implements OnInit, OnDestroy {
   
   cart?: CartCreationInterface | null;
@@ -250,27 +249,15 @@ checkOut() {
       console.log("total", this.total);
       const paymentSub = this.cartService.processPayment(order.id,this.cardNumber,this.expirationDate,this.cvv,this.total).subscribe({
         next: (payment) => {
-          
+          alert("order paid <3");
           console.log('Payment successful', payment);
-          Swal.fire({  
-            position: 'center',  
-            icon: 'success',  
-            title: `Payment successful`,  
-            showConfirmButton: false,  
-            timer: 3000  
-          });
+         
           this.cartService.clearCart();   /// importaaaaaaaaaaaaaaaaaaaaaaant
         },
         error: (error) => {
           console.log("totaaaaaaaaaaaaaal",this.total,"cardnum",this.cardNumber,"exp",this.expirationDate,"cvv",this.cvv,);
           console.error('Payment error:', error);
-          Swal.fire({  
-            position: 'center',  
-            icon: 'error',  
-            title: `Payment failed`,  
-            text: 'Please check your payment details',
-            showConfirmButton: true  
-          });
+         
         }
         
         
@@ -279,13 +266,7 @@ checkOut() {
 
       console.log('Order created successfully', order);
       this.order = order;
-      Swal.fire({  
-        position: 'center',  
-        icon: 'success',  
-        title: `Order created successfully`,  
-        showConfirmButton: false,  
-        timer: 3000  
-      });
+    
     
       this.cartItemsDetailed = [];
       this.total = 0;
@@ -295,18 +276,13 @@ checkOut() {
     },
     error: (error) => {
       console.error('Order creation failed', error);
-      Swal.fire({  
-        position: 'center',  
-        icon: 'error',  
-        title: `Order creation failed`,  
-        showConfirmButton: true  
-      });
+    
     }
   });
   
   this.subscriptions.push(orderSub);
   
-  location.reload();
+  
 
 }
 
