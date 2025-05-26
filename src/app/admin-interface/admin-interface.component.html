@@ -1,22 +1,48 @@
 <div class="decorDiv"></div>
-<div class="decorDiv"></div>
-<h1>sales for admin:</h1>
 
-<p *ngIf="productsOnSale.length === 0">
-    no products on sale for now...
-</p>
 
-<div class="mainDiv">
-<div *ngFor="let product of productsOnSale">
-  <div class="product">
-    <img [src]="product.images[0].url" alt="{{ product.name }}" />
-    <h5>{{ product.name }}</h5>
-    <p>Original Price: <span class="original-price">{{ product.originalPrice | currency }}</span></p>
-    <p *ngIf="product.discountedPrice > 0">
-      Discounted Price: <span class="discounted-price">{{ product.discountedPrice | currency }}</span>
-    </p>
+
+
+<div class="adminDiv">
+  <h1>Orders:</h1>
+  <div class="ords">
+<div *ngFor="let order of allOrders">
+  <div class="order">
+<h5>order Id: {{order.id}}</h5>
+<p>user Id: {{order.userId}}</p>
+<p>created at: {{order.createdAt}}</p>
+<li *ngFor="let item of order.orderItems">
+  <ul>product id: {{item.productId}}</ul>
+  <ul>quantity: {{item.quantity}}</ul>
+  <ul>price: {{item.price}} $</ul>
+  <ul>discounted price: {{item.discountedPrice}} $</ul>
+</li>
+<p>total amount: {{order.totalAmount}} $</p>
+<p>payment info: {{order.paymentInfo}}</p>
+<p>shipping address: {{order.shippingAddress}}</p>
+<p>order status: {{ order.status === 1 ? 'paid' : order.status === 0 ? 'pending' : order.status === 2 ? 'shipped' : order.status === 3 ? 'delivered' : ''}}</p>
+<div class="changeOrderStatus">
+  <div class="comments">
+  <p>0--pending</p>
+  <p>1--paid</p>
+  <p>2--shipped</p>
+  <p>3--delivered</p>
+  </div>
+  <div class="submitStatus">
+<input  #statusInput type="number" min="0" max="3">
+<button (click)="changeOrderStatus(order.id, +statusInput.value)">change</button>
+</div>
+</div>
   </div>
 </div>
+</div>
+
+
+<div class="Users">
+<h1>Users: </h1>
+</div>
+
+
 </div>
 
 

@@ -26,7 +26,7 @@ private getCartByUserIdApiUrl = 'https://localhost:7219/api/Cart/userId?userId='
 private removeProductFromCartApiUrl = 'https://localhost:7219/api/Cart/remove-product';
 private createOrderApiUrl = 'https://localhost:7219/api/Order';
 private processPaymentApiUrl = 'https://localhost:7219/api/Payment/process';
-private getAllOrdersApiUrl = '';
+private getAllOrdersApiUrl = 'https://localhost:7219/api/Order';
 private getOrdersByUserIdApiUrl = 'https://localhost:7219/api/Order/get-orders';
 
   constructor(private http: HttpClient) { }
@@ -166,10 +166,14 @@ private getOrdersByUserIdApiUrl = 'https://localhost:7219/api/Order/get-orders';
     return this.http.get<GetorderInterface[]>(`https://localhost:7219/api/Order/get-orders/${userId}`);
   }
 
+  getAllOrders(): Observable<GetorderInterface[]> {
+    return this.http.get<GetorderInterface[]>(this.getAllOrdersApiUrl);
+  }
 
 
-
-  
+  changeOrderStatus(orderId: number, orderStatus: number): Observable <number> {
+    return this.http.put<number>(`https://localhost:7219/api/Order/${orderId}/status?status=${orderStatus}`, {}, { responseType: 'text' as 'json' });
+  }
 
   
 }

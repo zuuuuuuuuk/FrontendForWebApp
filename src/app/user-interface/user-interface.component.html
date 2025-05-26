@@ -7,7 +7,7 @@
         <div class="ordersContainer" *ngFor="let order of fullOrders">
             <div class="orderCard">
                 <p>order id: #{{order.id}}</p>
-                <p class="status">order status: {{ order.status === 1 ? 'paid' : order.status === 0 ? 'pending' : '' }}</p>
+                <p class="status">order status: {{ order.status === 1 ? 'paid' : order.status === 0 ? 'pending' : order.status === 2 ? 'shipped' : order.status === 3 ? 'delivered' : ''}}</p>
                 <div class="orderItems" *ngFor="let item of order.orderItems">
                     <p>product name: {{item.productName}}</p>
                     <p>quantity: {{item.quantity}}</p>

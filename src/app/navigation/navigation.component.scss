@@ -2,9 +2,9 @@ nav {
     position: fixed;
     top: 0.5rem; left: 1rem; right: 1rem;
     padding: 1rem 2rem;
-    background-color: rgba(255, 255, 255, 0.816);
+    background-color: rgba(211, 248, 239, 0.753);
     border-radius: 1.5rem;
-    box-shadow: 0 22px 22px rgba(156, 146, 119, 0.27);
+    box-shadow: 0 22px 22px rgba(119, 156, 147, 0.27);
     z-index: 888;
     width: auto;
     max-width: 100%;
@@ -12,7 +12,7 @@ nav {
   }
 
   nav:hover {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(204, 255, 251);
   }
   
   nav:hover .navLogo {
@@ -391,7 +391,27 @@ gap: 0.3rem;
     animation: bounce 0.5s;
     color: rgb(0, 74, 105);
   }
-  
+
+
+
+  .adminButtonn {
+        color: rgb(0, 75, 122);
+    border-radius: 0.5rem;
+    background-color: rgba(48, 0, 73, 0.285);
+    border: none;
+    height: 1.7rem;
+    position: relative;
+    top: 1rem;
+    left: 7.25rem;
+  }
+.adminButtonn:hover {
+   transform: scale(1.1);
+    color: red;
+} 
+  .adminButtonn:active {
+    transform: scale(1);
+    color: rgb(0, 75, 122);
+  }
 
   .adminButton {
     color: rgb(0, 75, 122);
@@ -399,6 +419,7 @@ gap: 0.3rem;
     background-color: rgba(48, 0, 73, 0.285);
     border: none;
     margin-right: 1rem;
+    margin-bottom: 2.3rem;
   }
   .adminButton:hover {
     transform: scale(1.1);

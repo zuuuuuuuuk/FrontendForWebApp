@@ -37,7 +37,13 @@ background-color: rgb(147, 0, 0);
   position: absolute;
   top: -2rem;
   left: 16%;
+  display: flex;
+  gap: 1rem;
 }
+.ordersButtonForAdmin {
+background-color: rgba(0, 255, 179, 0.576)!important;
+}
+
 .buttonDiv button {
   border-radius: 0.3rem;
   background-color: rgb(147, 0, 0);

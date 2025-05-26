@@ -178,6 +178,7 @@ logout(): void {
   localStorage.removeItem('adminLoggedIn');
   this.AdminLoggedIn = false;
   this.router.navigate(['']);
+  location.reload();
 }
 
 ngOnDestroy(): void {

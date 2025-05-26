@@ -185,6 +185,7 @@
 
         <div class="buttonDiv" *ngIf="adminLoggedIn" (click)="$event.stopPropagation()">
           <button class="editAdmin"   (click)="enableEditingForAdmin()">Edit(Admin)</button>
+          <button [routerLink]="['/Admin']" class="ordersButtonForAdmin">Orders</button>
         </div>
         
         <div class="renderDiv" >
@@ -209,7 +210,7 @@
   </div>
 </div>
                 <div class="card-body cardEnd">
-                  <p class="discounted-price" *ngIf="product.discountedPrice > 0">discounted price: {{product.discountedPrice}} $</p>
+                  <p class="discounted-price" *ngIf="product.discountedPrice > 0 && product.discountedPrice != product.originalPrice">discounted price: {{product.discountedPrice}} $</p>
                   <h5 *ngIf="!editing" class="card-title">{{product.name}}</h5>
                   <input placeholder=" Name" class="editInput" *ngIf="editing" type="text" name="nameEdit" id="" (click)="$event.stopPropagation()">
                   <div class="stars">

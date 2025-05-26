@@ -29,6 +29,10 @@ const routes: Routes = [
     component: UserInterfaceComponent,
   },
   {
+    path: 'Admin',
+    component: AdminInterfaceComponent,
+  },
+  {
 path: 'Favorites',
     component: FavoritesComponent,
   },
