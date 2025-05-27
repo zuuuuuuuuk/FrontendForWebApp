@@ -4,8 +4,17 @@
 
 
 <div class="adminDiv">
-  <h1>Orders:</h1>
-  <div class="ords">
+
+  <div class="adminNav">
+    <ul [class.active]="activePanel === 'orders'" (click)="switchPanel('orders')">Orders</ul>
+    <ul [class.active]="activePanel === 'users'" (click)="switchPanel('users')">Users</ul>
+    <ul [class.active]="activePanel === 'categories'" (click)="switchPanel('categories')">Categories</ul>
+  </div>
+
+  
+  <div class="ords" *ngIf="activePanel === 'orders'">
+    <h1>Orders:</h1>
+    <div class="ordss">
 <div *ngFor="let order of allOrders">
   <div class="order">
 <h5>order Id: {{order.id}}</h5>
@@ -36,12 +45,44 @@
   </div>
 </div>
 </div>
-
-
-<div class="Users">
-<h1>Users: </h1>
 </div>
 
+
+<div class="Users" *ngIf="activePanel === 'users'">
+<h1>Users: </h1>
+<div class="userssDiv">
+<div class="userDiv" *ngFor="let user of allUsers">
+  <h4>user Id: {{user.id}}</h4>
+  <h5>first name: {{user.firstName}}</h5>
+  <h5>last name: {{user.lastName}}</h5>
+  <h5>email: {{user.email}}</h5>
+<div class="userFavProdIdsDiv">
+  <h5>user favorite product Ids: <p *ngFor="let id of user.favoriteProductIds">{{id}}</p></h5>
+</div>
+<p>password-hash: {{user.passwordHash}}</p>
+<p>user creation date: {{user.createdAt}}</p>
+</div>
+</div>
+</div>
+
+<div class="categories" *ngIf="activePanel === 'categories'">
+   <button class="addCategButton">add category</button>
+
+  <h1>Categories:</h1>
+  <div class="categoriesDiv">
+    <div class="categ" *ngFor="let category of mainCategories">
+      <div class="mainCateg">
+    <h3>{{category.name}}</h3>
+    <p>{{category.id}}</p>
+    </div>
+    <h5 *ngFor="let subCategory of getSubcategoriesForParent(category.id)">
+      subcategory name: {{subCategory.name}}
+      subcategory id: {{subCategory.id}}
+    </h5>
+   
+    </div>
+  </div>
+</div>
 
 </div>
 

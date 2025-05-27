@@ -6,6 +6,7 @@ import { LoginResponse } from '../interfaces/Auth-interfaces/login-response';
 import { RegisterRequest } from '../interfaces/Auth-interfaces/register-request';
 import { BehaviorSubject } from 'rxjs';
 import { Token } from '@angular/compiler';
+import { GetUserInterface } from '../interfaces/get-user-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ import { Token } from '@angular/compiler';
 export class AuthService {
   private apiUrl = 'https://localhost:7219/api/Auth/login';
   private registerUrl = 'https://localhost:7219/api/Auth/register';
+  private getAllUsersApiUrl = 'https://localhost:7219/api/User';
 
   private userId: number = 0;
   private email: string = '';
@@ -60,6 +62,9 @@ export class AuthService {
   }
   
 
+    getAllUsers(): Observable<GetUserInterface[]> {
+      return this.http.get<GetUserInterface[]>(this.getAllUsersApiUrl);
+    }
 
     register(data: RegisterRequest): Observable<any> {
       return this.http.post(`${this.registerUrl}`, data);

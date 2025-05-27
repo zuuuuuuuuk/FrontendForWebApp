@@ -4,6 +4,10 @@ import { ProductService } from '../services/product.service';
 import { CartService } from '../services/cart.service';
 import { Subscription } from 'rxjs';
 import { GetorderInterface } from '../interfaces/getorder-interface';
+import { GetUserInterface } from '../interfaces/get-user-interface';
+import { AuthService } from '../services/auth.service';
+import { CategoryInterface } from '../interfaces/category-interface';
+import { CategoryService } from '../services/category.service';
 
 @Component({
   selector: 'app-admin-interface',
@@ -13,17 +17,28 @@ import { GetorderInterface } from '../interfaces/getorder-interface';
 export class AdminInterfaceComponent implements OnInit, OnDestroy {
   productsOnSale: ProductInterface[] = [];
   allOrders: GetorderInterface[] = [];
+  allUsers: GetUserInterface[] = [];
+  categories: CategoryInterface[] = [];
+  mainCategories: CategoryInterface[] = [];
+  subCategories: CategoryInterface[] = [];
   private subscriptions: Subscription[] = [];
-  constructor(private productService: ProductService, private cartService: CartService) {}
+
+  activePanel: string = 'categories';
+
+  constructor(private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
 
 
   ngOnInit(): void {
-    this.fetchProductsOnSale();
-    this.fetchAllOrders();
+   this.fetchAllOrders();
+   if (this.activePanel === 'users') {
+    this.fetchAllUsers();
+   } else if (this.activePanel === 'categories') {
+    this.fetchCategoriesForAdmin();
+   }
   }
 
   fetchAllOrders(): void {
-    const orderSub = this.cartService.getAllOrders().subscribe(
+    this.cartService.getAllOrders().subscribe(
       (orders: GetorderInterface[]) => {
         this.allOrders = orders;
       },
@@ -33,10 +48,24 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
     )
   }
 
+  fetchAllUsers(): void {
+    this.authService.getAllUsers().subscribe({
+      next: (response) => {
+      this.allUsers = response;
+      console.log("user fetching worksss");
+      },
+     
+      error: (error) => {
+        console.log("user fetching error");
+      }
+      
+    })
+  }
+
   changeOrderStatus(orderId: number, statusInput: number) {
   const value = statusInput;
-  if (value >= 0 && value <= 3) {
-    this.cartService.changeOrderStatus(orderId, value).subscribe({
+  if (value >= 0 && value <= 3 && value != null) {
+      this.cartService.changeOrderStatus(orderId, value).subscribe({
       next: (response) => {
         console.log('Success:', response);
         this.fetchAllOrders(); // Refresh data instead of page reload
@@ -46,14 +75,16 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
         console.log('Error updating order status:', error);
         alert('Error updating order status');
       }
+      
     });
   } else {
     alert('please enter a number from 0 to 3');
   }
+  
 }
   
   fetchProductsOnSale(): void {
-   const prodSub = this.productService.getAllProducts().subscribe(
+   this.productService.getAllProducts().subscribe(
       (products: ProductInterface[]) => {
         // Filter products that have a discounted price
         this.productsOnSale = products.filter(product => product.discountedPrice > 0);
@@ -62,12 +93,53 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
         console.error('Error fetching products on sale:', error);
       }
     );
-    this.subscriptions.push(prodSub);
+  }
+
+  switchPanel(panel: string): void {
+    this.activePanel = panel;
+
+    if (panel === 'orders') {
+      this.fetchAllOrders();
+    } else if (panel === 'users') {
+      this.fetchAllUsers();
+    } else if (panel === 'categories') {
+      this.fetchCategoriesForAdmin();
+    }
   }
 
 
+  fetchCategoriesForAdmin() {
+  this.categoryService.getCategories().subscribe({
+   next: (response) => {
+    this.categories = response;
+    this.mainCategories = response.filter(c => c.parentId === null);
+    this.subCategories = response.filter(c => c.parentId !== null);
+   },
+   error: (error) => {
+   console.error('categories fetching errr', error);
+   }
+  });
+  }
+
+getSubcategoriesForParent(parentId: number): CategoryInterface[] {
+  return this.subCategories?.filter(c => c.parentId === parentId) || [];
+}
+
+addCategory(category: CategoryInterface): void {
+  this.categoryService.addCategory(category).subscribe({
+    next: (response) => {
+      console.log('Category added successfully:', response);
+      this.fetchCategoriesForAdmin(); 
+      alert('Category added successfully!');
+    },
+   error: (error) => {
+console.log('error while adding');
+alert('error with adding');
+   }
+  });
+}
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    // araa sachiro unsubscribe http tied requestebistvis 
   }
 }

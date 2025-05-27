@@ -1,6 +1,6 @@
 export interface CategoryInterface {
     id: number;
-    parentId: number;
+    parentId?: number;
     name: string;
     description: string;
     image: string;
