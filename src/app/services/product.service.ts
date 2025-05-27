@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductInterface } from '../interfaces/product-interface';
 import { ReviewInterface } from '../interfaces/review-interface';
+import { UpdateProductInterface } from '../interfaces/update-product-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,13 +31,9 @@ export class ProductService {
     return this.http.get<ProductInterface>(`${this.ProductByIdApiUrl}/${id}`)
   }
 
-  updateProductById(id: number | null, name: string | null, description: string | null, originalPrice: number | null):Observable<ProductInterface> {
-    const product = {
-      name: name,
-      description: description,
-      originalPrice: originalPrice
-    }
-    return this.http.put<ProductInterface>(`${this.updateProductApiUrl}/${id}`, product)
+  updateProductById(id: number, updatedProduct: UpdateProductInterface):Observable<UpdateProductInterface> {
+  
+    return this.http.put<UpdateProductInterface>(`${this.updateProductApiUrl}/${id}`, updatedProduct)
   }
 
   getFavorites(userId: number): Observable<number[]> {

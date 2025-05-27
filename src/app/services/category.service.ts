@@ -22,4 +22,8 @@ export class CategoryService {
    return this.http.post<CategoryInterface>(this.addCategoryApiUrl, category);
   }
 
+  removeCategory(categoryId: number): Observable<void> {
+    return this.http.delete<void>(`https://localhost:7219/api/Category/${categoryId}`);
+  }
+
 }

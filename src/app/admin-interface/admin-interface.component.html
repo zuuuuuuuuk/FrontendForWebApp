@@ -66,24 +66,36 @@
 </div>
 
 <div class="categories" *ngIf="activePanel === 'categories'">
-   <button class="addCategButton">add category</button>
-
+   <button class="addCategButton" *ngIf="!showAddCategory" (click)="showAddCategory = !showAddCategory">add category</button>
+   <div class="addCategoryDiv" *ngIf="showAddCategory">
+     <input #categoryNameInput placeholder="category name" type="text">
+    <input #parentIdInput placeholder="parent id (optional)" type="number">
+    <input #descriptionInput placeholder="description" type="text">
+    <input #imageUrlInput placeholder="image url" type="text">
+    <input  #subCategoryIdsInput placeholder="sub category ids (optional)" type="text">
+    <button (click)="addCategory(categoryNameInput.value, parentIdInput.value, descriptionInput.value, imageUrlInput.value, subCategoryIdsInput.value); 
+                     categoryNameInput.value=''; parentIdInput.value=''; descriptionInput.value=''; imageUrlInput.value=''; subCategoryIdsInput.value=''; 
+                     showAddCategory = false">add</button>
+   </div>
   <h1>Categories:</h1>
   <div class="categoriesDiv">
     <div class="categ" *ngFor="let category of mainCategories">
       <div class="mainCateg">
     <h3>{{category.name}}</h3>
-    <p>{{category.id}}</p>
+    <h5>category id: {{category.id}}</h5>
     </div>
-    <h5 *ngFor="let subCategory of getSubcategoriesForParent(category.id)">
-      subcategory name: {{subCategory.name}}
-      subcategory id: {{subCategory.id}}
-    </h5>
-   
+    <div *ngFor="let subCategory of getSubcategoriesForParent(category.id)">
+      <div class="subCateg">
+      <p>subcategory name: {{subCategory.name}}</p>
+      <p>subcategory id: {{subCategory.id}}</p>
+      <p class="subDescription">description: {{subCategory.description}}</p>
     </div>
   </div>
+   <button class="deleteCategButton" (click)="removeCategory(category.id)">remove</button>
+    </div>
+    
+  </div>
 </div>
-
 </div>
 
 

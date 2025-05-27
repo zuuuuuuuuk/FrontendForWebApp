@@ -188,11 +188,20 @@
           <button [routerLink]="['/Admin']" class="ordersButtonForAdmin">Orders</button>
         </div>
         
+
+
+        
+
+
         <div class="renderDiv" >
           
-            <div class="card" style="width: 18rem;" *ngFor="let product of products" (click)="openProductView(product)">
-            
-              <div class="heart-container" (click)="$event.stopPropagation()">
+        
+        <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+        
+          <div class="card" style="width: 18rem;" *ngFor="let product of products" (click)="openProductView(product)">
+            <!-- /// -->
+            <div class="testtt" *ngIf="!editing">
+            <div class="heart-container" (click)="$event.stopPropagation()">
                 <i class="fa fa-heart" 
    [ngClass]="{ 'filled': isProductFavorite(product.id) }" 
    (click)="toggleFavorite(product.id)">
@@ -209,10 +218,12 @@
     <button class="slider-arrow right-arrow" (click)="nextImage(product)" (click)="$event.stopPropagation()">&#10095;</button>
   </div>
 </div>
+
+
                 <div class="card-body cardEnd">
                   <p class="discounted-price" *ngIf="product.discountedPrice > 0 && product.discountedPrice != product.originalPrice">discounted price: {{product.discountedPrice}} $</p>
                   <h5 *ngIf="!editing" class="card-title">{{product.name}}</h5>
-                  <input placeholder=" Name" class="editInput" *ngIf="editing" type="text" name="nameEdit" id="" (click)="$event.stopPropagation()">
+                  
                   <div class="stars">
                     <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
                       <i 
@@ -227,20 +238,82 @@
                     </ng-container>
                   </div>
                   <p *ngIf="!editing" class="card-text description-text" >Description: {{product.description}}</p>
-                  <input class="editInput" placeholder=" Description" (click)="$event.stopPropagation()" *ngIf="editing" type="editDescription" >
+                 
                   <p class="card-text">In stock: {{product.stock}}</p>
                   <p *ngIf="!editing" class="card-text price">Price: {{product.originalPrice}} $</p>
-                  <input placeholder=" Price" *ngIf="editing"  class="editInput" type="priceEdit">
+                  
                   
                   
                 </div>
+
+
                 <div class="editButtonLastDiv" (click)="$event.stopPropagation()">
-                <button class="editButtonLast" *ngIf="editing">upload</button>
+    
               </div>
+</div>
+<!-- /// -->
+
+<!-- /// -->
+ <div class="testtt" *ngIf="editing">
+            <div class="heart-container" (click)="$event.stopPropagation()">
+                <i class="fa fa-heart" 
+   [ngClass]="{ 'filled': isProductFavorite(product.id) }" 
+   (click)="toggleFavorite(product.id)">
+</i>
               </div>
+             <div class="fitimageDiv">
+  <div class="image-slider">
+    <button class="slider-arrow left-arrow" (click)="prevImage(product)" (click)="$event.stopPropagation()">&#10094;</button>
+    
+    <img class="card-img-top" 
+         [src]="product.images[product.currentImageIndex || 0].url || 'assets/no-image.jpg'" 
+         alt="Product Image" />
+    
+    <button class="slider-arrow right-arrow" (click)="nextImage(product)" (click)="$event.stopPropagation()">&#10095;</button>
+  </div>
+</div>
+
+
+                <div class="card-body cardEnd">
+                  <p class="discounted-price" *ngIf="product.discountedPrice > 0 && product.discountedPrice != product.originalPrice">discounted price: {{product.discountedPrice}} $</p>
+                  <input #nameInput placeholder="Name" type="text" (click)="$event.stopPropagation()" name="" id="">
+                  
+                  <div class="stars">
+                    <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                      <i 
+                        class="fa"
+                        [ngClass]="{
+                          'fa-star full-star': product.averageRating >= star,
+                          'fa-star-half-o half-star': product.averageRating >= star - 0.5 && product.averageRating < star,
+                          'fa-star-o empty-star': product.averageRating < star - 0.5
+                        }"
+                        aria-hidden="true">
+                      </i>
+                    </ng-container>
+                  </div>
+                  <input #descriptionInput  placeholder="Description" (click)="$event.stopPropagation()" type="text" name="" id="">
+                 
+                  <p class="card-text">In stock: {{product.stock}}</p>
+                  <input #priceInput placeholder="Price" (click)="$event.stopPropagation()" type="text" name="" id="">
+                  
+                  
+                  
+                </div>
+
+
+                <div class="editButtonLastDiv" (click)="$event.stopPropagation()">
+                <button class="editButtonLast" (click)="updateProduct(product.id, nameInput.value, descriptionInput.value, priceInput.value)">upload</button>
+              </div>
+</div>
+
+              </div>
+
         </div>
     </div>
 
 </div>
+
+
+
 
 </div>

@@ -31,6 +31,7 @@ import { CartCreationInterface } from '../interfaces/cart-create-interface';
   ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
+[x: string]: any;
  
 activeCategoryId: number | null = 0;
 activeProductId: number | null = 0;
@@ -74,7 +75,7 @@ adminLoggedIn: boolean = false;
 
  private subscriptions: Subscription[] = [];
 
- editing: boolean = false;
+ editing: boolean = true;
 
 
   minLimit = 0;
@@ -82,6 +83,7 @@ maxLimit = 15000;
 
 minPrice = 0;
 maxPrice = 5000;
+
 
 
   constructor(private cartService: CartService, private categoryService: CategoryService, private productService : ProductService, private authService : AuthService) {}
@@ -357,14 +359,30 @@ prevImage(product: any) {
 }
 
 
-updateProduct(id: number, name: string | null, description: string | null, originalPrice: number | null){
-const prodUpdateSub = this.productService.updateProductById(id,name,description,originalPrice).subscribe({
+updateProduct(id: number, name: string, description: string, originalPrice: string): void {
+   const existing = this.products.find(p => p.id === id);
+
+  if (!name || !name.trim()) {
+    name = existing?.name || '';  // fallback empty string just in case
+  }
+
+  if (!description || !description.trim()) {
+    description = existing?.description || '';
+  }
+
+  const updatedProduct = {
+    name: name?.trim(),
+    description: description?.trim(),
+    originalPrice: +originalPrice
+  }
+
+this.productService.updateProductById(id, updatedProduct).subscribe({
   next: (response) =>{
     console.log("product updated", response);
     Swal.fire({  
       position: 'center',  
       icon: 'info',  
-      title: 'you need to be logged in',
+      title: 'product updated',
       text: 'press OK',  
       showConfirmButton: true });
   },
@@ -505,6 +523,8 @@ addToCart(productId: number): void {
   }
 }
 
+
+
 private createNewCart(productId: number): void {
   // Ensure we have the product data
   const productIdToAdd = this.productView?.id || productId;
@@ -540,6 +560,9 @@ private createNewCart(productId: number): void {
     this.subscriptions.push(cartSub);
   
 }
+
+
+
 
   ngOnDestroy(): void {
     if (this.categorySub) {

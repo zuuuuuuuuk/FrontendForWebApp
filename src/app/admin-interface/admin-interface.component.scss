@@ -118,7 +118,14 @@ gap: 2rem;
 
 }
 
-
+.subCateg {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 72, 106, 0.234);
+    border-radius: 0.5rem;
+    margin-bottom: 0.3rem;
+    padding: 0.3rem;
+}
 .categoriesDiv {
     display: flex;
     flex-wrap: wrap;
@@ -127,14 +134,63 @@ gap: 2rem;
 .addCategButton {
     border-radius: 0.7rem;
     background-color: rgba(1, 96, 173, 0.383);
+    margin-bottom: 0.4rem;
 }
 .addCategButton:hover {
     scale: 1.1;
     background-color: rgba(1, 173, 133, 0.383);
 }
 
+.addCategButton:active {
+    scale: 1;
+}
+
 .categ {
     background-color: rgba(0, 116, 183, 0.18);
     padding: 0.5rem;
     border-radius: 0.7rem;
+    max-width: 17rem;
+}
+
+.addCategoryDiv {
+    display: flex;
+    gap: 0.3rem;
+}
+.addCategoryDiv input {
+    border-radius: 0.3rem;
+    background-color: rgba(0, 85, 154, 0.229);
+}
+
+.addCategoryDiv button {
+    border-radius: 0.3rem;  
+    background-color: rgba(0, 39, 71, 0.294);
+}
+
+.addCategoryDiv button:hover {
+    scale: 1.1;
+}
+
+.addCategoryDiv button:active {
+scale: 1;
+}
+
+.deleteCategButton {
+    border-radius: 0.5rem;
+    background-color: rgba(126, 0, 0, 0.486);
+}
+
+.deleteCategButton:hover {
+    background-color: rgba(255, 47, 0, 0.767);
+    scale: 1.1;
+}
+.deleteCategButton:active {
+    scale: 1;
+}
+
+.subDescription {
+  white-space: normal !important;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%; /* ensures it doesn't overflow */
+  display: block;
 }

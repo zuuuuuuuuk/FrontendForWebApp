@@ -23,7 +23,8 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   subCategories: CategoryInterface[] = [];
   private subscriptions: Subscription[] = [];
 
-  activePanel: string = 'categories';
+  showAddCategory: boolean = false;
+  activePanel: string = 'orders';
 
   constructor(private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
 
@@ -125,18 +126,45 @@ getSubcategoriesForParent(parentId: number): CategoryInterface[] {
   return this.subCategories?.filter(c => c.parentId === parentId) || [];
 }
 
-addCategory(category: CategoryInterface): void {
+addCategory(categoryName: string, parentId: string, description: string, imageUrl: string, subCategoryIds: string): void {
+  // Convert parentId input string to number or null if empty
+  const parsedParentId = parentId ? Number(parentId) : null;
+
+  // Convert subCategoryIds string ("1,2,3") to number array or empty array if empty
+  const subcategories = subCategoryIds
+    ? subCategoryIds.split(',').map(id => Number(id.trim())).filter(id => !isNaN(id))
+    : [];
+
+  // Create the category payload
+  const category: CategoryInterface = {
+    id: 0,                    // or omit if backend generates it
+    name: categoryName,
+    parentId: parsedParentId,
+    description,
+    image: imageUrl,
+    subcategories
+  };
+
+  // Call your service method
   this.categoryService.addCategory(category).subscribe({
     next: (response) => {
       console.log('Category added successfully:', response);
-      this.fetchCategoriesForAdmin(); 
+      this.fetchCategoriesForAdmin();
       alert('Category added successfully!');
     },
-   error: (error) => {
-console.log('error while adding');
-alert('error with adding');
-   }
+    error: (error) => {
+      console.log('Error while adding category', error);
+      alert('Error with adding category');
+    }
   });
+}
+
+removeCategory(categoryId: number) {
+ if (confirm('Are you sure you want to delete this category?')) {
+  this.categoryService.removeCategory(categoryId).subscribe(() => {
+    alert('category removed');
+  });
+ }
 }
 
   ngOnDestroy(): void {
