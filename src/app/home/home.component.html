@@ -194,12 +194,10 @@
 
 
         <div class="renderDiv" >
-          
         
-        <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
         
           <div class="card" style="width: 18rem;" *ngFor="let product of products" (click)="openProductView(product)">
-            <!-- /// -->
+
             <div class="testtt" *ngIf="!editing">
             <div class="heart-container" (click)="$event.stopPropagation()">
                 <i class="fa fa-heart" 
@@ -222,6 +220,7 @@
 
                 <div class="card-body cardEnd">
                   <p class="discounted-price" *ngIf="product.discountedPrice > 0 && product.discountedPrice != product.originalPrice">discounted price: {{product.discountedPrice}} $</p>
+                
                   <h5 *ngIf="!editing" class="card-title">{{product.name}}</h5>
                   
                   <div class="stars">

@@ -67,7 +67,7 @@ background-color: rgba(0, 255, 179, 0.576)!important;
     align-items: center;
     justify-content: center;  
     justify-self: center;    
-    gap: 0.1rem;
+    gap: 0.3rem;
     font-family: cursive;
     box-sizing: border-box;
     width: fit-content;
@@ -414,8 +414,9 @@ top: 1.1rem;
 }
 
 .discounted-price {
-  position: relative;
-  top: 1rem;
+  position: absolute;
+
+  top: -1rem;
   color: rgb(1, 208, 25);
 }
 .price {
@@ -847,8 +848,15 @@ gap: 1rem;
   .card-body {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* This pushes all content to the bottom */
+  justify-content: flex-end!important; /* This pushes all content to the bottom */
   margin-top: 1rem;
+  flex-grow: 1;
+  position: relative;
+}
+
+.cardEnd {
+  position: relative;
+  margin-top: 3.5rem;
 }
 
 
