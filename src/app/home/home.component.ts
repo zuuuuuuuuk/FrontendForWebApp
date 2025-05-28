@@ -75,7 +75,7 @@ adminLoggedIn: boolean = false;
 
  private subscriptions: Subscription[] = [];
 
- editing: boolean = true;
+ editing: boolean = false;
 
 
   minLimit = 0;
