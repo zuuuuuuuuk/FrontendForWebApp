@@ -3,7 +3,7 @@
     <h2>Your favorites</h2>
 <div class="favProdsDiv">
     <div class="favProd" *ngFor="let prod of favProds">
-        <button class="deleteFavButton">X</button>
+        <button class="deleteFavButton" (click)="toggleFavorite(prod.id)">X</button>
         <img [src]="prod.images[0].url" alt="">
         <div class="favProdInsideDiv">
         <p>name: {{prod.name}}</p>

@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { ProductService } from '../services/product.service';
 import { ProductInterface } from '../interfaces/product-interface';
 import { Subscription, forkJoin } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-favorites',
@@ -55,6 +56,26 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions.push(prodSub);
+  }
+
+
+  toggleFavorite(productId : number){
+  this.productService.toggleFavorite(this.userId, productId).subscribe({
+   next: (response) => {
+   console.log("favorite toggled! <3");
+   Swal.fire({  
+      position: 'center',  
+      icon: 'info',  
+      title: 'product removed from favorites',
+      
+      showConfirmButton: true  
+    });
+    this.favProds = this.favProds.filter(p => p.id !== productId);
+   },
+   error: (error) => {
+   console.log("error during toggling favorite ://");
+   }
+  });
   }
 
   ngOnDestroy(): void {

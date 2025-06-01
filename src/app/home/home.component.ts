@@ -224,8 +224,6 @@ toggleFavorite(productId: number): void {
     return;
   }
 
-  
-
   this.productService.toggleFavorite(this.userId, productId).subscribe({
     next: (updatedFavorites: number[]) => {
       this.favoriteProductIds = updatedFavorites; // Update local favorites
