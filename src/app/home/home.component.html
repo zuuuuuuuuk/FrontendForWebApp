@@ -97,7 +97,7 @@
 
 
 
-        <div class="productViewMainDiv" *ngIf="showProductView" @fadeInOut (click) ="showProductView = false; reviewRating = 0">
+        <div class="productViewMainDiv" *ngIf="showProductView" @fadeInOut (click)="closeProductVIew()">
           <div class="decoratorDiv" (click)="$event.stopPropagation()" @fadeInOut>
             <div class="productView" @fadeInOut>
           
@@ -159,8 +159,9 @@
             </div>
           
             </div>
+            <h2 class="seeAlso seeAlsoH2" *ngIf="suggestedProductsView.length <= 0">no similar products...</h2>
+            <div class="seeAlso" *ngIf="suggestedProductsView.length > 0">
 
-            <div class="seeAlso">
               <h4>See also:</h4>
               <div class="seeAlsoProductsDiv">
                 <div class="seeAlsoProduct" *ngFor="let product of suggestedProductsView" (click)="openProductView(product)">

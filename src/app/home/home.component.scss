@@ -539,7 +539,6 @@ top: 1.1rem;
   margin: 0!important;
 }
 .stars {
-    
     font-size: 1.21rem;
     margin-top: 0.3rem;
     
@@ -591,11 +590,18 @@ top: 1.1rem;
     gap: 0.5rem;
   }
 
+  .seeAlsoH2 {
+    position: relative;
+    left: 0%!important;
+  }
+
   .mainImg img {
     position: relative;
-
     width: 100%;
-    height: 100%;
+    justify-self: center;
+    max-height: 100%;
+    
+ 
   }
   .smallImg {
     position: relative;
@@ -672,7 +678,11 @@ top: 1.1rem;
   }
 
   .description-textView {
-    max-height: 10rem; /* limit height */
+     max-height: 5.5rem;
+      display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+   transition: max-height 0.2s ease-in-out;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #d0bb00;
@@ -683,6 +693,11 @@ top: 1.1rem;
     white-space: normal;
     width: 400px;
     
+  }
+
+ .description-textView:hover {
+      overflow-y: auto;
+  max-height: 200px; 
   }
 
   .fa-starView {
@@ -795,6 +810,9 @@ gap: 1rem;
     transform: scale(1.1);
   }
 
+  .rating {
+    cursor: pointer;
+  }
   
   .filled-heart {
     color: rgba(200, 255, 0, 0.443);

@@ -1,14 +1,17 @@
 <div class="decorDiv"></div>
 <div class="mainDiv">
+    <h2>Your favorites</h2>
 <div class="favProdsDiv">
     <div class="favProd" *ngFor="let prod of favProds">
+        <button class="deleteFavButton">X</button>
         <img [src]="prod.images[0].url" alt="">
-        <p>name:{{prod.name}}</p>
-        <p>av.rating:{{prod.averageRating}}</p>
-        <p>price:{{prod.originalPrice}}</p>
-        
-        <p>discounted price: {{prod.discountedPrice}}</p>
-        <p>description: {{prod.description}}</p>
+        <div class="favProdInsideDiv">
+        <p>name: {{prod.name}}</p>
+        <p>av.rating: {{prod.averageRating}} stars</p>
+        <p>price: {{prod.originalPrice}} $</p>
+        <p *ngIf="prod.discountedPrice" class="discounted-price">discounted price: {{prod.discountedPrice}} $</p>
+        <p class="description">description: {{prod.description}}</p>
+        </div>
     </div>
 </div>
 </div>

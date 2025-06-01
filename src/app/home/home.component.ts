@@ -13,6 +13,8 @@ import { debounceTime } from 'rxjs/operators';
 import { CartService } from '../services/cart.service';
 import { CartInterface } from '../interfaces/cart-interface';
 import { CartCreationInterface } from '../interfaces/cart-create-interface';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -61,6 +63,7 @@ activeProductId: number | null = 0;
 
  productView:ProductInterface | null = null; 
  showProductView: boolean = false;
+ openedFromSales: boolean = false;
  currentProductViewImage: string = ''; 
  suggestedProductsView: ProductInterface[] = [];
 
@@ -86,7 +89,7 @@ maxPrice = 5000;
 
 
 
-  constructor(private cartService: CartService, private categoryService: CategoryService, private productService : ProductService, private authService : AuthService) {}
+  constructor(private router: Router , private route: ActivatedRoute ,private cartService: CartService, private categoryService: CategoryService, private productService : ProductService, private authService : AuthService) {}
 
 
 
@@ -99,6 +102,27 @@ maxPrice = 5000;
     //     console.log("cart waishalaaa");
     //   }
     // });
+
+this.route.queryParams.subscribe(params => {
+  const productId = +params['productId'];
+  if (productId) {
+    if (this.products && this.products.length) {
+      this.openFromSale(productId);
+    } else {
+      // Call fetchProducts (it will populate this.products internally)
+      this.fetchProducts();
+
+      // Poll until products are available, then open the view
+      const waitForProducts = setInterval(() => {
+        if (this.products && this.products.length) {
+          clearInterval(waitForProducts);
+          this.openFromSale(productId);
+        }
+      }, 50); // check every 50ms
+    }
+  }
+});
+
     if (this.authService.getUserRole() == "Admin"){
       this.adminLoggedIn = true;
     } else {
@@ -113,6 +137,8 @@ maxPrice = 5000;
     this.getUserId();
     this.userId = this.authService.getUserId();
     
+    
+
    if (this.userId > 0) {
     const cartSubHome = this.cartService.getCartByUserrId(this.userId).subscribe({
       next: (cart: CartCreationInterface) => {
@@ -390,6 +416,25 @@ this.productService.updateProductById(id, updatedProduct).subscribe({
     console.log("error", err);
   }
 });
+}
+
+openFromSale(productId: number) {
+const product = this.products.find(p => p.id === productId);
+if(product) {
+  this.openProductView(product);
+  this.openedFromSales = true;
+}
+}
+
+closeProductVIew() {
+  this.showProductView = false;
+  this.productView = null;
+  this.reviewRating = 0;
+
+  if (this.openedFromSales) {
+    this.openedFromSales = false;
+    this.router.navigate(['/Sales']);
+  }
 }
 
 openProductView(product: ProductInterface) {

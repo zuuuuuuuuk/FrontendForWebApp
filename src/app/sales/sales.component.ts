@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { ProductInterface } from '../interfaces/product-interface';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-sales',
@@ -10,7 +12,11 @@ import { ProductInterface } from '../interfaces/product-interface';
 export class SalesComponent implements OnInit {
   productsOnSale: ProductInterface[] = [];
 
-  constructor(private productService: ProductService) {}
+   productView:ProductInterface | null = null;
+   showProductView: boolean = false;
+
+
+  constructor(private productService: ProductService, private router: Router) {}
   ngOnInit(): void {
     this.fetchProductsOnSale();
   }
@@ -25,4 +31,10 @@ export class SalesComponent implements OnInit {
       }
     );
   }
+
+
+  openProductView(productId: number) {
+    this.router.navigate([''], { queryParams: { productId }});
+  }
+
 }

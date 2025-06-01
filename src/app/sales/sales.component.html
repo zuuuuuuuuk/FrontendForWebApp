@@ -5,8 +5,13 @@
     no products on sale for now...
 </p>
 
+<div class="productView">
+
+
+</div>
+
 <div class="mainDiv">
-<div *ngFor="let product of productsOnSale">
+<div *ngFor="let product of productsOnSale" (click)="openProductView(product.id)">
   <div class="product">
     <img [src]="product.images[0].url" alt="{{ product.name }}" />
     <div class="cardEnd">
