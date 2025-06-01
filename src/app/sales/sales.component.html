@@ -9,11 +9,13 @@
 <div *ngFor="let product of productsOnSale">
   <div class="product">
     <img [src]="product.images[0].url" alt="{{ product.name }}" />
+    <div class="cardEnd">
     <h5>{{ product.name }}</h5>
     <p>Original Price: <span class="original-price">{{ product.originalPrice | currency }}</span></p>
     <p *ngIf="product.discountedPrice > 0">
       Discounted Price: <span class="discounted-price">{{ product.discountedPrice | currency }}</span>
     </p>
+    </div>
   </div>
 </div>
 </div>
