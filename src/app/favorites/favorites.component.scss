@@ -37,7 +37,6 @@ transition: 0.3s;
 z-index: 999;
 width: 20rem;
 height: 370px;
-overflow: hidden;
 }
 
 .favProd:hover {
@@ -100,7 +99,7 @@ font-size: 1.3rem;
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    
+
 }
 
 .description {
@@ -111,13 +110,13 @@ font-size: 1.3rem;
   max-width: 300px; /* if you want a limit */
   width: auto;
   text-overflow: ellipsis;
-  max-height: 5.5rem;
+  max-height: 3rem;
   transition: max-height 0.2s ease-in-out;
 }
 
 .favProd:hover .description {
   overflow-y: auto;
-  max-height: 200px; 
+  max-height: 170px; 
 }
 
 .discounted-price {
