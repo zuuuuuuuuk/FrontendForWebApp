@@ -878,4 +878,47 @@ gap: 1rem;
   margin-top: 3.5rem;
 }
 
+.filled::after {
+  content: "remove from favorites";
+  position: absolute;
+  font-size: 0.8rem;
+  width: 12.15rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.514);
+  color: white;
+  padding: 0.3rem 0rem 0.2rem 0.45rem;
+  bottom: 130%;
+  left: 170%;
+  opacity: 0;
+}
 
+.filled:hover::after {
+  opacity: 1;
+}
+
+
+.unfilled::after {
+    content: "add to favorites";
+  position: absolute;
+  font-size: 0.8rem;
+  width: 9.5rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.514);
+  color: white;
+  padding: 0.3rem 0rem 0.2rem 0.45rem;
+  bottom: 130%;
+  left: 170%;
+  opacity: 0;
+}
+
+.unfilled:hover::after {
+  opacity: 1;
+}

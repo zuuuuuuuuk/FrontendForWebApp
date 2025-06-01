@@ -201,8 +201,8 @@
 
             <div class="testtt" *ngIf="!editing">
             <div class="heart-container" (click)="$event.stopPropagation()">
-                <i class="fa fa-heart" 
-   [ngClass]="{ 'filled': isProductFavorite(product.id) }" 
+                <i class="fa fa-heart heart" 
+   [ngClass]="{ 'filled': isProductFavorite(product.id) , 'unfilled': !isProductFavorite(product.id) }" 
    (click)="toggleFavorite(product.id)">
 </i>
               </div>
