@@ -8,6 +8,8 @@ import { GetUserInterface } from '../interfaces/get-user-interface';
 import { AuthService } from '../services/auth.service';
 import { CategoryInterface } from '../interfaces/category-interface';
 import { CategoryService } from '../services/category.service';
+import { SaleService } from '../services/sale.service';
+import { SaleInterface } from '../interfaces/sale-interface';
 
 @Component({
   selector: 'app-admin-interface',
@@ -17,6 +19,7 @@ import { CategoryService } from '../services/category.service';
 export class AdminInterfaceComponent implements OnInit, OnDestroy {
   productsOnSale: ProductInterface[] = [];
   allOrders: GetorderInterface[] = [];
+  allSales: SaleInterface[] = [];
   allUsers: GetUserInterface[] = [];
   categories: CategoryInterface[] = [];
   mainCategories: CategoryInterface[] = [];
@@ -24,9 +27,10 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   showAddCategory: boolean = false;
-  activePanel: string = 'orders';
+  activePanel: string = 'sales';
+  
 
-  constructor(private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
+  constructor(private saleService: SaleService , private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
 
 
   ngOnInit(): void {
@@ -35,6 +39,8 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
     this.fetchAllUsers();
    } else if (this.activePanel === 'categories') {
     this.fetchCategoriesForAdmin();
+   } else if (this.activePanel === 'sales') {
+    this.fetchAllSales();
    }
   }
 
@@ -105,6 +111,8 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
       this.fetchAllUsers();
     } else if (panel === 'categories') {
       this.fetchCategoriesForAdmin();
+    } else if (panel === 'sales') {
+      this.fetchAllSales();
     }
   }
 
@@ -166,6 +174,20 @@ removeCategory(categoryId: number) {
   });
  }
 }
+
+
+fetchAllSales(): void {
+  this.saleService.getAllSales().subscribe({
+    next: (response) => {
+      this.allSales = response;
+      console.log("sales fetched");
+    },
+    error: (error) => {
+      console.log("error fetching sales", error);
+    }
+  });
+}
+
 
   ngOnDestroy(): void {
     // araa sachiro unsubscribe http tied requestebistvis 

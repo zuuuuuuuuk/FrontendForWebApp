@@ -3,6 +3,8 @@ import { ProductService } from '../services/product.service';
 import { ProductInterface } from '../interfaces/product-interface';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { SaleInterface } from '../interfaces/sale-interface';
+import { SaleService } from '../services/sale.service';
 
 @Component({
   selector: 'app-sales',
@@ -10,14 +12,17 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./sales.component.scss']
 })
 export class SalesComponent implements OnInit {
+
   productsOnSale: ProductInterface[] = [];
+  allSales: SaleInterface[] = [];
 
    productView:ProductInterface | null = null;
-   showProductView: boolean = false;
+  
 
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(private saleService: SaleService , private productService: ProductService, private router: Router) {}
   ngOnInit(): void {
+    this.fetchAllSales();
     this.fetchProductsOnSale();
   }
   fetchProductsOnSale(): void {
@@ -31,6 +36,19 @@ export class SalesComponent implements OnInit {
       }
     );
   }
+
+fetchAllSales(): void {
+  this.saleService.getAllSales().subscribe({
+    next: (response) => {
+     this.allSales = response;
+     console.log("sales fetched");
+    },
+    error: (error) => {
+    console.log("sales fetching error", error);
+    }
+  });
+}
+
 
 
   openProductView(productId: number) {

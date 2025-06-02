@@ -194,3 +194,25 @@ scale: 1;
   max-width: 100%; /* ensures it doesn't overflow */
   display: block;
 }
+
+.saleProdsDiv {
+    background-color: rgba(0, 113, 128, 0.069);
+    padding: 2rem;
+    border-radius: 0.7rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.productOnSale {
+        height: 25rem;
+    width: 16.7rem;
+}
+
+.saleProdImage {
+       width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+border-radius: 0.5rem;
+transition: 0.3s;
+  object-fit: cover;
+}

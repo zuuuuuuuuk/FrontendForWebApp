@@ -1,17 +1,17 @@
 <div class="decorDiv"></div>
-<h1>products on Sale</h1>
 
-<p *ngIf="productsOnSale.length === 0">
+<p *ngIf="allSales.length === 0">
     no products on sale for now...
 </p>
 
-<div class="productView">
+<div class="allSalesDiv" *ngFor="let sale of allSales">
 
 
-</div>
-
+<div class="divAboveMainDiv">
+  <h3 class="saleTitle">{{sale.name}}</h3>
+  <h4 class="saleDescription">{{sale.description}}</h4>
 <div class="mainDiv">
-<div *ngFor="let product of productsOnSale" (click)="openProductView(product.id)">
+<div *ngFor="let product of sale.productsOnThisSale" (click)="openProductView(product.id)">
   <div class="product">
     <img [src]="product.images[0].url" alt="{{ product.name }}" />
     <div class="cardEnd">
@@ -24,7 +24,9 @@
   </div>
 </div>
 </div>
+</div>
 
+</div>
 
 <div class="advertisementsDiv">
    <h4>Ads goes here O,,O</h4>

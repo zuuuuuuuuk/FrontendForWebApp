@@ -7,7 +7,7 @@
     margin: 2rem;
     display: flex;
     flex-wrap: wrap;
-    background-color: rgba(43, 103, 131, 0.068);
+
     border-radius: 0.5rem;
     padding: 2rem;
     gap: 1rem;
@@ -25,9 +25,7 @@ transition: 0.3s;
     scale: 1.1;
 }
 
-h1 {
-margin-left: 43%;
-}
+
 
 .product {
     background-color: rgba(0, 77, 119, 0.087);
@@ -53,4 +51,25 @@ margin-left: 43%;
 }
 .discounted-price {
     color: rgb(0, 220, 0);
+}
+
+.divAboveMainDiv {
+    padding-top: 1rem;
+background-color: rgba(43, 103, 131, 0.068);
+    border-radius: 0.5rem;
+}
+
+.saleTitle {
+    position: relative;
+    left: 45.9%;
+    font-family: cursive;
+    font-family: cursive;
+    color: rgb(0, 163, 155);
+}
+
+
+.saleDescription {
+    position: absolute;
+    left: 4%;
+    color: rgba(0, 198, 0, 0.501);
 }

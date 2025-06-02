@@ -139,6 +139,7 @@ this.showProdInp = !this.showProdInp;
 
     this.authService.register(this.registerData).subscribe({
       next: (response) => {
+        
        Swal.fire({  
           position: 'center',  
           icon: 'success',  

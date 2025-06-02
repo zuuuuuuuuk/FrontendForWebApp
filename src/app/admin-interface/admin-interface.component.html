@@ -6,9 +6,10 @@
 <div class="adminDiv">
 
   <div class="adminNav">
-    <ul [class.active]="activePanel === 'orders'" (click)="switchPanel('orders')">Orders</ul>
-    <ul [class.active]="activePanel === 'users'" (click)="switchPanel('users')">Users</ul>
-    <ul [class.active]="activePanel === 'categories'" (click)="switchPanel('categories')">Categories</ul>
+    <ul [class.active]="activePanel === 'orders'" (click)="switchPanel('orders')">Manage Orders</ul>
+    <ul [class.active]="activePanel === 'users'" (click)="switchPanel('users')">Manage Users</ul>
+    <ul [class.active]="activePanel === 'categories'" (click)="switchPanel('categories')">Manege Categories</ul>
+    <ul [class.active]="activePanel === 'sales'" (click)="switchPanel('sales')">Manage Sales</ul>
   </div>
 
   
@@ -96,9 +97,35 @@
     
   </div>
 </div>
+
+
+<div class="sales" *ngIf="activePanel === 'sales'">
+
+  <button class="addSaleButton">add sale</button>
+
+      <div class="saleProdsDiv" *ngFor="let sale of allSales">
+        <h3 class="saleTitle">{{sale.name}}</h3>
+        <h4 class="saleDescription">{{sale.description}}</h4>
+  
+        <div class="saleProdDiv" *ngFor="let product of sale.productsOnThisSale">
+          <div class="productOnSale">
+            <img class="saleProdImage" [src]="product.images[0].url" alt="{{ product.name }}" />
+            <div class="saleProdEnd">
+              <h5 class="saleProdName">{{product.name}}</h5>
+              <p class="saleProdRating">av.rating: {{product.averageRating}} stars</p>
+              <p class="saleProdOriginalPrice">original price: {{product.originalPrice}} $</p>
+              <p class="saleProdDiscounted">discounted price: {{product.discountedPrice}} $</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
 </div>
 
 
-<div class="advertisementsDiv">
-   <h4>Ads goes here O,,O</h4>
 </div>
+
+
+
