@@ -27,6 +27,7 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   showAddCategory: boolean = false;
+  showAddSale: boolean = true;
   activePanel: string = 'sales';
   
 

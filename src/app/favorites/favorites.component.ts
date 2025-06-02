@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 export class FavoritesComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
-
+  
   userId: number = 0;
   favProdIds: number[] = [];
   favProds: ProductInterface[] = [];

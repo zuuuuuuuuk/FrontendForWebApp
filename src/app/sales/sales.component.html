@@ -16,6 +16,7 @@
     <img [src]="product.images[0].url" alt="{{ product.name }}" />
     <div class="cardEnd">
     <h5>{{ product.name }}</h5>
+    <p>av.rating: {{product.averageRating > 0 ? (product.averageRating | number: '1.1-1') : 'not rated'}}</p>
     <p>Original Price: <span class="original-price">{{ product.originalPrice | currency }}</span></p>
     <p *ngIf="product.discountedPrice > 0">
       Discounted Price: <span class="discounted-price">{{ product.discountedPrice | currency }}</span>

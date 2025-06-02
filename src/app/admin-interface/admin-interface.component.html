@@ -101,21 +101,47 @@
 
 <div class="sales" *ngIf="activePanel === 'sales'">
 
-  <button class="addSaleButton">add sale</button>
+  <button class="addSaleButton"  (click)="showAddSale = !showAddSale" *ngIf="!showAddSale">add sale</button>
+
+  <div class="addSaleDiv" *ngIf="showAddSale">
+    <div class="saleInputs">
+      <input placeholder="sale name" type="text">
+      <input placeholder="discount value %" type="text">
+      <input placeholder="description" type="text">
+      <input placeholder="product IDs ex: ('6,7')" type="text">
+    </div>
+    <button class="addSaleFinalButton">Add</button>
+  </div>
 
       <div class="saleProdsDiv" *ngFor="let sale of allSales">
-        <h3 class="saleTitle">{{sale.name}}</h3>
-        <h4 class="saleDescription">{{sale.description}}</h4>
-  
+        <div class="saleNameEdit saleEdit">
+        <h4 class="saleTitle">name: {{sale.name}}</h4>
+        <button>edit</button>
+        </div>
+        <div class="saleDescriptionEdit saleEdit">
+        <h5 class="saleDescription">description: {{sale.description}}</h5>
+        <button>edit</button>
+        </div>
+        <div class="saleDiscountEdit saleEdit">
+        <h5 class="saleDiscountValue">discount value: {{sale.discountValue}}%</h5>
+        <button>edit</button>
+        </div>
+          <div class="saleActivity">
+        <h5 class="saleIsActive" *ngIf="sale.isActive">Active</h5>
+        <button class="saleActivateButton" *ngIf="!sale.isActive">Activate Sale</button>
+       </div>
+        <div class="saleDecorDiv">
         <div class="saleProdDiv" *ngFor="let product of sale.productsOnThisSale">
           <div class="productOnSale">
+            <button class="removeProdFromSaleButton">X</button>
             <img class="saleProdImage" [src]="product.images[0].url" alt="{{ product.name }}" />
             <div class="saleProdEnd">
               <h5 class="saleProdName">{{product.name}}</h5>
-              <p class="saleProdRating">av.rating: {{product.averageRating}} stars</p>
+              <p class="saleProdRating">  av.rating: {{ product.averageRating > 0 ? (product.averageRating | number:'1.1-1') : 'not rated' }}</p>
               <p class="saleProdOriginalPrice">original price: {{product.originalPrice}} $</p>
               <p class="saleProdDiscounted">discounted price: {{product.discountedPrice}} $</p>
             </div>
+          </div>
           </div>
         </div>
 

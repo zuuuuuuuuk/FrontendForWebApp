@@ -7,7 +7,7 @@
         <img [src]="prod.images[0].url" alt="">
         <div class="favProdInsideDiv">
         <p>name: {{prod.name}}</p>
-        <p>av.rating: {{prod.averageRating}} stars</p>
+        <p>av.rating: {{ prod.averageRating > 0 ? (prod.averageRating | number: '1.1-1') : 'not rated'}}</p>
         <p>price: {{prod.originalPrice}} $</p>
         <p *ngIf="prod.discountedPrice" class="discounted-price">discounted price: {{prod.discountedPrice}} $</p>
         <p class="description">description: {{prod.description}}</p>

@@ -33,7 +33,7 @@ transition: 0.3s;
     border-radius: 0.35rem;
     cursor: pointer;
     transition: 0.3s;
-    height: 25rem;
+    height: 26.5rem;
     width: 16.7rem;
     border: 7px solid rgba(0, 84, 101, 0.032);
 }
@@ -42,6 +42,10 @@ transition: 0.3s;
 .product:hover {
     scale: 1.1;
     background-color: rgba(0, 97, 149, 0.175);
+}
+
+p {
+    margin: 0.1rem;
 }
 
 .cardEnd {
@@ -73,3 +77,4 @@ background-color: rgba(43, 103, 131, 0.068);
     left: 4%;
     color: rgba(0, 198, 0, 0.501);
 }
+
