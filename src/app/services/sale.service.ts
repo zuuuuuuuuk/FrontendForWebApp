@@ -26,11 +26,12 @@ export class SaleService {
   }
 
   addSale(sale: AddSaleInterface): Observable<AddSaleInterface> {
+    console.log(sale);
     return this.http.post<AddSaleInterface>(this.addSaleApiUrl, sale);
   }
 
   removeSale(saleId: number): Observable<void> {
-    return this.http.delete<void>(`${this.removeSaleApiUrl}/${saleId}`, {});
+    return this.http.delete<void>(`${this.removeSaleApiUrl}${saleId}`, {});
   }
 
   activateSale(saleId: number, days: number): Observable<void> {
@@ -42,11 +43,11 @@ export class SaleService {
   }
 
   addProductToSale(saleId: number , productId: number[]): Observable<number[]> {
-    return this.http.put<number[]>(`${this.addProductToSaleApiUrl}/${saleId}/add-products`, productId);
+    return this.http.put<number[]>(`${this.addProductToSaleApiUrl}${saleId}/add-products`, productId);
   }
 
   removeProductFromSale(saleId: number, productId: number[]): Observable<number[]>{
-    return this.http.put<number[]>(`${this.removeProductFromSaleApiUrl}/${saleId}/remove-products`, productId);
+    return this.http.put<number[]>(`${this.removeProductFromSaleApiUrl}${saleId}/remove-products`, productId);
   }
 
 }

@@ -221,10 +221,12 @@ scale: 1;
     font-size: 1.7rem;
     font-family: cursive;
     color: rgba(0, 89, 136, 0.837);
+        z-index: 999999999;
 }
 .removeProdFromSaleButton:hover {
     scale: 1.15;
     color: rgb(0, 166, 255);
+        z-index: 999999999;
 }
 
 .removeProdFromSaleButton::after {
@@ -288,6 +290,20 @@ scale: 1;
     scale: 1.1;
 }
 
+.product-checkbox-list {
+position: absolute;
+left: 45rem;
+top: 10rem;
+}
+
+.checkbox-scroll {
+  max-height: 130px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-top: 5px;
+}
+
 .saleTitle {
     color: rgba(0, 70, 121, 0.71);
 }
@@ -345,9 +361,25 @@ scale: 1;
     color: rgb(125, 209, 0);
 }
 
+.saleActivateButton {
+    background-color: rgba(0, 101, 168, 0.472);
+    border-radius: 0.5rem;
+    position: relative;
+    margin-top: 0.5rem;
+    font-family: cursive;
+    cursor: pointer;
+}
+
+.saleActivateButton:hover {
+    scale: 1.05;
+    background-color: rgb(118, 227, 248);
+    color: rgb(0, 131, 124);
+}
+
 .saleInputs {
     display: flex;
     gap: 0.5rem;
+    height: 40px;
 }
 
 .saleInputs input {
@@ -358,6 +390,7 @@ scale: 1;
 .addSaleFinalButton {
     border-radius: 0.5rem;
     background-color: rgba(0, 117, 111, 0.357);
+    height: 40px;
 }
 .addSaleFinalButton:hover {
     scale: 1.1;
@@ -366,4 +399,18 @@ scale: 1;
 .addSaleFinalButton:active {
     scale: 1;
     background-color: rgba(0, 117, 111, 0.357);
+}
+
+.deleteSaleButton {
+    position: absolute;
+    right: 5rem;
+    height: 45px;
+    background-color: rgba(0, 57, 82, 0.609);
+    border-radius: 0.4rem;
+    color: rgba(0, 238, 255, 0.938);
+}
+.deleteSaleButton:hover {
+    color: rgb(227, 0, 0);
+    scale: 1.1;
+    background-color: rgba(0, 145, 173, 0.546);
 }

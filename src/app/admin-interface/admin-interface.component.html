@@ -105,15 +105,32 @@
 
   <div class="addSaleDiv" *ngIf="showAddSale">
     <div class="saleInputs">
-      <input placeholder="sale name" type="text">
-      <input placeholder="discount value %" type="text">
-      <input placeholder="description" type="text">
-      <input placeholder="product IDs ex: ('6,7')" type="text">
+      <input [(ngModel)]="saleName" name="saleName" placeholder="sale name" type="text">
+      <input [(ngModel)]="saleDiscountValue" name="DiscountValue" placeholder="discount value %" type="text">
+      <input [(ngModel)]="saleDescription" name="Description" placeholder="description" type="text">
+</div>
+      <div class="product-checkbox-list">
+  <label>Select Products: (optional)</label>
+  <div class="checkbox-scroll">
+    <div *ngFor="let p of allProducts">
+      <label>
+        <input
+          type="checkbox"
+          [value]="p.id"
+          [checked]="saleProductIds.includes(p.id)"
+          (change)="toggleProduct(p.id)"
+        />
+        {{ p.name }} (ID: {{ p.id }})
+      </label>
     </div>
-    <button class="addSaleFinalButton">Add</button>
+  </div>
+
+    </div>
+    <button class="addSaleFinalButton" (click)="addSale()">Add</button>
   </div>
 
       <div class="saleProdsDiv" *ngFor="let sale of allSales">
+          <button class="deleteSaleButton" (click)="removeSale(sale.id)">delete sale</button>
         <div class="saleNameEdit saleEdit">
         <h4 class="saleTitle">name: {{sale.name}}</h4>
         <button>edit</button>
@@ -133,7 +150,7 @@
         <div class="saleDecorDiv">
         <div class="saleProdDiv" *ngFor="let product of sale.productsOnThisSale">
           <div class="productOnSale">
-            <button class="removeProdFromSaleButton">X</button>
+            <button class="removeProdFromSaleButton" (click)="removeProductFromSale(sale.id, product.id)">X</button>
             <img class="saleProdImage" [src]="product.images[0].url" alt="{{ product.name }}" />
             <div class="saleProdEnd">
               <h5 class="saleProdName">{{product.name}}</h5>

@@ -10,6 +10,8 @@ import { CategoryInterface } from '../interfaces/category-interface';
 import { CategoryService } from '../services/category.service';
 import { SaleService } from '../services/sale.service';
 import { SaleInterface } from '../interfaces/sale-interface';
+import { AddSaleInterface } from '../interfaces/add-sale-interface';
+
 
 @Component({
   selector: 'app-admin-interface',
@@ -18,6 +20,7 @@ import { SaleInterface } from '../interfaces/sale-interface';
 })
 export class AdminInterfaceComponent implements OnInit, OnDestroy {
   productsOnSale: ProductInterface[] = [];
+  allProducts: ProductInterface[] = [];
   allOrders: GetorderInterface[] = [];
   allSales: SaleInterface[] = [];
   allUsers: GetUserInterface[] = [];
@@ -26,15 +29,24 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   subCategories: CategoryInterface[] = [];
   private subscriptions: Subscription[] = [];
 
+
+  saleName: string = '';
+  saleDiscountValue: number | null = null;
+  saleDescription: string = '';
+  saleProductIds: number[] = []; 
+
+
+
   showAddCategory: boolean = false;
   showAddSale: boolean = true;
   activePanel: string = 'sales';
-  
+  showActivateInput: boolean = false;
 
   constructor(private saleService: SaleService , private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
 
 
   ngOnInit(): void {
+    this.fetchAllProducts();
    this.fetchAllOrders();
    if (this.activePanel === 'users') {
     this.fetchAllUsers();
@@ -54,6 +66,18 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
           console.log('error fetching all orders:', err);
       }
     )
+  }
+
+  fetchAllProducts(): void {
+     this.productService.getAllProducts().subscribe({
+      next: (response) => {
+         this.allProducts = response;
+         console.log("allProds fetched");
+      },
+      error: (error) => {
+         console.log("error fetching allProds", error);
+      }
+    });
   }
 
   fetchAllUsers(): void {
@@ -185,6 +209,63 @@ fetchAllSales(): void {
     },
     error: (error) => {
       console.log("error fetching sales", error);
+    }
+  });
+}
+
+toggleProduct(productId: number): void {
+  const index = this.saleProductIds.indexOf(productId);
+  if (index === -1) {
+    this.saleProductIds.push(productId);
+  } else {
+    this.saleProductIds.splice(index, 1);
+  }
+}
+
+addSale() {
+  const payload: AddSaleInterface = {
+    name: this.saleName,
+    discountValue: this.saleDiscountValue,
+    description: this.saleDescription,
+    productIdsOnThisSale: this.saleProductIds
+  }
+this.saleService.addSale(payload).subscribe({
+   next: (response) => {
+    console.log(this.saleProductIds, typeof this.saleProductIds);
+    console.log("sale added");
+    alert("sale added succesfully!");
+    this.fetchAllSales();
+   },
+   error: (error) => {
+    console.log("error adding sale", error);
+   }
+});
+}
+
+removeSale(saleId: number) {
+    const confirmed = window.confirm("Are you sure you want to delete this sale?");
+  if (!confirmed) return;
+this.saleService.removeSale(saleId).subscribe({
+next: (response) =>{
+alert("sale removed");
+this.fetchAllSales();
+},
+error: (error) => {
+  console.log("error removing sale", error);
+}
+});
+}
+
+removeProductFromSale(saleId: number, productId: number){
+
+  this.saleService.removeProductFromSale(saleId, [productId]).subscribe({
+    next: (response) => {
+     console.log("prod removed from sale");
+     alert("product removed");
+     this.fetchAllSales();
+    },
+    error: (error) => {
+      console.log("error removing product from sale", error);
     }
   });
 }

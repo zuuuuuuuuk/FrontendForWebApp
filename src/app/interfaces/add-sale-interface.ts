@@ -1,6 +1,6 @@
 export interface AddSaleInterface {
     name: string;
-    discountValue: number;
+    discountValue: number | null;
     description: string;
-    productIds: number[];
+    productIdsOnThisSale: number[];
 }

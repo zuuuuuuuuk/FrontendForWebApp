@@ -16,6 +16,9 @@ export class SalesComponent implements OnInit {
   productsOnSale: ProductInterface[] = [];
   allSales: SaleInterface[] = [];
 
+
+
+
    productView:ProductInterface | null = null;
   
 
@@ -48,6 +51,8 @@ fetchAllSales(): void {
     }
   });
 }
+
+
 
 
 
