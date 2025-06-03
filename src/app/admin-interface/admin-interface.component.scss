@@ -360,6 +360,12 @@ top: 10rem;
 .saleIsActive {
     color: rgb(125, 209, 0);
 }
+.hideAddSaleButton {
+    margin-bottom: 0.5rem;
+}
+.hideAddCategButton {
+    margin-top: 0.3rem;
+}
 
 .saleActivateButton {
     background-color: rgba(0, 101, 168, 0.472);
@@ -413,4 +419,69 @@ top: 10rem;
     color: rgb(227, 0, 0);
     scale: 1.1;
     background-color: rgba(0, 145, 173, 0.546);
+}
+
+
+.nameEditInvisible input {
+    background-color: rgba(0, 204, 255, 0.095);
+    border-radius: 0.5rem;
+    border: none;
+  
+}
+.descriptionEditInvisible input {
+    background-color: rgba(0, 204, 255, 0.095);
+    border-radius: 0.5rem;
+    border: none;
+}
+.saleDiscountEditInvisible input {
+    background-color: rgba(0, 204, 255, 0.095);
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.activateSaleInps input {
+    background-color: rgba(0, 204, 255, 0.222);
+    border-radius: 0.5rem;
+    border: none;
+    width: 5rem;
+    height: 2rem;
+}
+.activateSaleInps button {
+    background-color: rgba(0, 204, 255, 0.095);
+    border-radius: 0.5rem;
+}
+.activateSaleInps button:hover {
+    background-color: rgba(0, 204, 255, 0.889);
+    scale: 1.05;
+}
+.activateSaleInps button:active {
+    background-color: rgba(0, 204, 255, 0.095);
+    scale: 1;
+}
+.activateSaleInps {
+    display: flex;
+    gap: 0.7rem;
+}
+
+.saleActivity {
+    display: flex;
+    gap: 0.9rem;
+}
+
+.deactivateSaleButton {
+    background-color: rgba(0, 204, 255, 0.095);
+    border-radius: 0.5rem;
+    font-size: smaller;
+    width: 4.3rem;
+    padding: 0;
+    font-weight: 500;
+    height: 1.7rem;
+}
+.deactivateSaleButton:hover {
+    background-color: rgba(0, 204, 255, 0.774);  
+    scale: 1.05; 
+}
+.deactivateSaleButton:active {
+    background-color: rgba(0, 204, 255, 0.095);
+    scale: 1;
 }

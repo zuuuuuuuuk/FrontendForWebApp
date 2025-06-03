@@ -11,6 +11,7 @@ import { CategoryService } from '../services/category.service';
 import { SaleService } from '../services/sale.service';
 import { SaleInterface } from '../interfaces/sale-interface';
 import { AddSaleInterface } from '../interfaces/add-sale-interface';
+import { NavigationEnd, Router } from '@angular/router';
 
 
 @Component({
@@ -34,28 +35,44 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   saleDiscountValue: number | null = null;
   saleDescription: string = '';
   saleProductIds: number[] = []; 
-
-
+  saleNameEditing: boolean = false;
+  saleDescriptionEditing: boolean = false;
+  saleDiscountValueEditing: boolean = false;
+  activatingSale: boolean = false;
 
   showAddCategory: boolean = false;
-  showAddSale: boolean = true;
-  activePanel: string = 'sales';
+  showAddSale: boolean = false;
+  activePanel: string = '';
   showActivateInput: boolean = false;
 
-  constructor(private saleService: SaleService , private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
+  constructor(private router: Router , private saleService: SaleService , private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
 
 
-  ngOnInit(): void {
-    this.fetchAllProducts();
-   this.fetchAllOrders();
-   if (this.activePanel === 'users') {
-    this.fetchAllUsers();
-   } else if (this.activePanel === 'categories') {
-    this.fetchCategoriesForAdmin();
-   } else if (this.activePanel === 'sales') {
-    this.fetchAllSales();
-   }
+ngOnInit(): void {
+  this.fetchAllProducts();
+  this.fetchAllOrders();
+  
+  // Check if this is a fresh navigation to admin (not a refresh)
+  const isRefresh = sessionStorage.getItem('adminPageLoaded');
+  
+  if (!isRefresh) {
+    // First time loading admin page - clear saved panel and default to orders
+    localStorage.removeItem('activePanel');
+    sessionStorage.setItem('adminPageLoaded', 'true');
+    this.activePanel = 'orders';
+  } else {
+    // This is a refresh - use saved panel
+    const savedPanel = localStorage.getItem('activePanel');
+    if(savedPanel === 'sales'){
+      this.fetchAllSales();
+    } else if(savedPanel === 'categories'){
+      this.fetchCategoriesForAdmin();
+    } else if(savedPanel === 'users') {
+      this.fetchAllUsers();
+    }
+    this.activePanel = savedPanel || 'orders';
   }
+}
 
   fetchAllOrders(): void {
     this.cartService.getAllOrders().subscribe(
@@ -129,7 +146,7 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
 
   switchPanel(panel: string): void {
     this.activePanel = panel;
-
+     localStorage.setItem('activePanel', panel);
     if (panel === 'orders') {
       this.fetchAllOrders();
     } else if (panel === 'users') {
@@ -202,6 +219,7 @@ removeCategory(categoryId: number) {
 
 
 fetchAllSales(): void {
+  this.activePanel = 'sales';
   this.saleService.getAllSales().subscribe({
     next: (response) => {
       this.allSales = response;
@@ -229,12 +247,19 @@ addSale() {
     description: this.saleDescription,
     productIdsOnThisSale: this.saleProductIds
   }
+  if(this.saleName == '' || this.saleDescription == '' || this.saleDiscountValue == null) {
+    alert("name, description and value % are required")
+  }
 this.saleService.addSale(payload).subscribe({
    next: (response) => {
     console.log(this.saleProductIds, typeof this.saleProductIds);
     console.log("sale added");
     alert("sale added succesfully!");
     this.fetchAllSales();
+    this.saleName = '';
+    this.saleDescription = '';
+    this.saleDiscountValue = null;
+    this.saleProductIds = [];
    },
    error: (error) => {
     console.log("error adding sale", error);
@@ -270,8 +295,79 @@ removeProductFromSale(saleId: number, productId: number){
   });
 }
 
+editSaleName(saleId: number, name: string) {
+this.saleService.changeSale(saleId, name, "string", 0).subscribe({
+  next: (response) => {
+    alert("sale name updated");
+    this.saleNameEditing = false;
+    this.fetchAllSales();
+  },
+  error: (error) => {
+    console.log("error updating sale name", error)
+  }
+});
+
+}
+
+editSaleDescription(saleId: number, description: string) {
+   
+this.saleService.changeSale(saleId, "string", description, 0).subscribe({
+  next: (response) => {
+    alert("sale description updated");
+    this.saleDescriptionEditing = false;
+    this.fetchAllSales();
+  },
+  error: (error) => {
+    console.log("error updating sale descruiption", error)
+  }
+});
+}
+
+editSaleDiscountValue(saleId: number, discountValue: string) {
+this.saleService.changeSale(saleId, "string", "string", +discountValue).subscribe({
+  next: (response) => {
+    this.saleDiscountValueEditing = false;
+    alert("sale discount value updated");
+    this.fetchAllSales();
+  },
+  error: (error) => {
+    console.log("error updating sale discount value", error)
+  }
+});
+}
+
+
+activateSale(saleId: number, days: string) {
+this.saleService.activateSale(saleId, +days).subscribe({
+  next: (response) => {
+    alert(`sale activated for ${days} days`);
+    this.fetchAllSales();
+    console.log("sale activated");
+    this.activatingSale = false;
+  },
+  error: (error) => {
+    console.log("error activating sale", error);
+  }
+});
+}
+
+
+deactivateSale(saleId: number) {
+  this.saleService.deactivateSale(saleId).subscribe({
+    next: (response) => {
+      alert("sale deactivated");
+      this.fetchAllSales();
+     console.log("sale deactivated");
+    },
+    error: (error) => {
+     console.log("error deactivating sale", error);
+    }
+  });
+}
+
 
   ngOnDestroy(): void {
+    sessionStorage.removeItem('adminPageLoaded');
     // araa sachiro unsubscribe http tied requestebistvis 
   }
 }

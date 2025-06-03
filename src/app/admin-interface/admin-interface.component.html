@@ -68,7 +68,9 @@
 
 <div class="categories" *ngIf="activePanel === 'categories'">
    <button class="addCategButton" *ngIf="!showAddCategory" (click)="showAddCategory = !showAddCategory">add category</button>
+   
    <div class="addCategoryDiv" *ngIf="showAddCategory">
+    <button class="hideAddCategButton addCategButton" *ngIf="showAddCategory" (click)="showAddCategory = false">hide</button>
      <input #categoryNameInput placeholder="category name" type="text">
     <input #parentIdInput placeholder="parent id (optional)" type="number">
     <input #descriptionInput placeholder="description" type="text">
@@ -102,7 +104,7 @@
 <div class="sales" *ngIf="activePanel === 'sales'">
 
   <button class="addSaleButton"  (click)="showAddSale = !showAddSale" *ngIf="!showAddSale">add sale</button>
-
+  <button class="hideAddSaleButton addSaleButton" *ngIf="showAddSale" (click)="showAddSale = false">hide</button>
   <div class="addSaleDiv" *ngIf="showAddSale">
     <div class="saleInputs">
       <input [(ngModel)]="saleName" name="saleName" placeholder="sale name" type="text">
@@ -132,21 +134,49 @@
       <div class="saleProdsDiv" *ngFor="let sale of allSales">
           <button class="deleteSaleButton" (click)="removeSale(sale.id)">delete sale</button>
         <div class="saleNameEdit saleEdit">
+          <div class="nameEditVisible saleNameEdit" *ngIf="!saleNameEditing">
         <h4 class="saleTitle">name: {{sale.name}}</h4>
-        <button>edit</button>
+        <button (click)="saleNameEditing = true">edit</button>
+        </div>
+        <div class="nameEditInvisible saleNameEdit" *ngIf="saleNameEditing">
+          <input placeholder = "{{sale.name}}" #nameinpu type="text" >
+          <button (click)="editSaleName(sale.id ,nameinpu.value)">upload</button>
+           <button (click)="saleNameEditing = false">hide</button>
+        </div>
         </div>
         <div class="saleDescriptionEdit saleEdit">
+          <div class="descriptionEditVisible saleDescriptionEdit" *ngIf="!saleDescriptionEditing">
         <h5 class="saleDescription">description: {{sale.description}}</h5>
-        <button>edit</button>
+        <button (click)="saleDescriptionEditing = true">edit</button>
+        </div>
+        <div class="descriptionEditInvisible saleDescriptionEdit" *ngIf="saleDescriptionEditing">
+          <input placeholder="{{sale.description}}" #descriptionInpu type="text">
+          <button (click)="editSaleDescription(sale.id , descriptionInpu.value)">upload</button>
+           <button (click)="saleDescriptionEditing = false">hide</button>
+        </div>
         </div>
         <div class="saleDiscountEdit saleEdit">
-        <h5 class="saleDiscountValue">discount value: {{sale.discountValue}}%</h5>
-        <button>edit</button>
+          <div class="saleDiscountEditVisible saleDiscountEdit" *ngIf="!saleDiscountValueEditing">
+         <h5 class="saleDiscountValue">discount value: {{sale.discountValue}}%</h5>
+         <button (click)="saleDiscountValueEditing = true">edit</button>
+          </div>
+          <div class="saleDiscountEditInvisible saleDiscountEdit" *ngIf="saleDiscountValueEditing">
+            <input placeholder="{{sale.discountValue}}%" #saleDiscountInpu type="text">
+            <button (click)="editSaleDiscountValue(sale.id, saleDiscountInpu.value)">upload</button>
+            <button (click)="saleDiscountValueEditing = false">hide</button>
+          </div>
+      
         </div>
           <div class="saleActivity">
         <h5 class="saleIsActive" *ngIf="sale.isActive">Active</h5>
-        <button class="saleActivateButton" *ngIf="!sale.isActive">Activate Sale</button>
+        <button class="saleActivateButton" *ngIf="!sale.isActive && !activatingSale" (click)="activatingSale = true">Activate Sale</button>
+       <div class="activateSaleInps" *ngIf="activatingSale">
+        <input placeholder=" days" #saleDaysInp type="text">
+        <button (click)="activateSale(sale.id, saleDaysInp.value)">activate</button>
+        <button (click)="activatingSale = false">hide</button>
        </div>
+       <button class="deactivateSaleButton" (click)="deactivateSale(sale.id)" *ngIf="sale.isActive">deactivate</button>
+      </div>
         <div class="saleDecorDiv">
         <div class="saleProdDiv" *ngFor="let product of sale.productsOnThisSale">
           <div class="productOnSale">

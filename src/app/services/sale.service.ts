@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SaleInterface } from '../interfaces/sale-interface';
 import { AddSaleInterface } from '../interfaces/add-sale-interface';
+import { ChangeSaleInterface } from '../interfaces/change-sale-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class SaleService {
   private deactivateSaleApiUrl = 'https://localhost:7219/api/Sale/';
   private addProductToSaleApiUrl = 'https://localhost:7219/api/Sale/';
   private removeProductFromSaleApiUrl = 'https://localhost:7219/api/Sale/';
-
+  private changeSaleApiUrl = 'https://localhost:7219/api/Sale/';
 
   constructor(private http: HttpClient) { }
 
@@ -35,11 +36,20 @@ export class SaleService {
   }
 
   activateSale(saleId: number, days: number): Observable<void> {
-    return this.http.post<void>(`${this.activateSaleApiUrl}/${saleId}/${days}/activate`, {});
+    return this.http.post<void>(`${this.activateSaleApiUrl}${saleId}/${days}/activate`, {});
   }
 
   deactivateSale(saleId: number): Observable<void> {
-    return this.http.post<void>(`${this.deactivateSaleApiUrl}/${saleId}/deactivate`, {})
+    return this.http.post<void>(`${this.deactivateSaleApiUrl}${saleId}/deactivate`, {})
+  }
+
+  changeSale(saleId: number , name: string, description: string, value: number): Observable<ChangeSaleInterface>{
+    const payload = {
+      name: name,
+      discountValue: value,
+      description: description
+    }
+    return this.http.put<ChangeSaleInterface>(`${this.changeSaleApiUrl}${saleId}`, payload)
   }
 
   addProductToSale(saleId: number , productId: number[]): Observable<number[]> {
