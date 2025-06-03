@@ -213,6 +213,7 @@ removeCategory(categoryId: number) {
  if (confirm('Are you sure you want to delete this category?')) {
   this.categoryService.removeCategory(categoryId).subscribe(() => {
     alert('category removed');
+    this.fetchCategoriesForAdmin();
   });
  }
 }

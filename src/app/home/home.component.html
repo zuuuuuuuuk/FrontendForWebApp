@@ -218,7 +218,7 @@
   </div>
 </div>
 
-
+<button class="addToSaleButton" *ngIf="adminLoggedIn"  (click)="$event.stopPropagation()">add to sale (Admin)</button>
                 <div class="card-body cardEnd">
                   <p class="discounted-price" *ngIf="product.discountedPrice > 0 && product.discountedPrice != product.originalPrice">discounted price: {{product.discountedPrice}} $</p>
                 

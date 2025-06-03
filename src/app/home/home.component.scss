@@ -922,3 +922,26 @@ gap: 1rem;
 .unfilled:hover::after {
   opacity: 1;
 }
+
+
+.addToSaleButton {
+  border-radius: 0.5rem;
+  background-color: rgba(0, 128, 0, 0.192);
+  font-weight: 300;
+  font-size: small;
+  font-family: cursive;
+  padding-left: 0.175rem;
+  padding-right: 0.175rem;
+  position: absolute;
+  top: 18.7rem;
+  left: 0.5rem;
+  height: 1.7rem;
+}
+.addToSaleButton:hover {
+  scale: 1.05;
+  background-color: rgba(0, 254, 123, 0.745);
+}
+.addToSaleButton:active {
+  scale: 1;
+  background-color: rgba(0, 128, 0, 0.192);
+}

@@ -89,12 +89,15 @@
     </div>
     <div *ngFor="let subCategory of getSubcategoriesForParent(category.id)">
       <div class="subCateg">
+        
       <p>subcategory name: {{subCategory.name}}</p>
       <p>subcategory id: {{subCategory.id}}</p>
       <p class="subDescription">description: {{subCategory.description}}</p>
+      <button class="subCategDeleteButton">remove</button>
     </div>
+    
   </div>
-   <button class="deleteCategButton" (click)="removeCategory(category.id)">remove</button>
+   <button class="deleteCategButton" (click)="removeCategory(category.id)">remove category</button>
     </div>
     
   </div>
