@@ -8,6 +8,9 @@ import { HomeComponent } from '../home/home.component';
 import { Token } from '@angular/compiler';
 import Swal from 'sweetalert2';
 import { Route, Router } from '@angular/router';
+import { ImageInterface } from '../interfaces/image-interface';
+import { AddImageInterface } from '../interfaces/add-image-interface';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-navigation',
@@ -16,6 +19,8 @@ import { Route, Router } from '@angular/router';
 })
 export class NavigationComponent implements OnInit, OnDestroy {
 
+  productAddImages: AddImageInterface[] = [];
+  newImage: AddImageInterface = { description: '', url: '' } ;
 
   userId: number = 0;
   AdminLoggedIn: boolean = false;
@@ -45,11 +50,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(private router: Router, private http: HttpClient, private authService: AuthService) {}
+  constructor(private productService: ProductService , private router: Router, private http: HttpClient, private authService: AuthService) {}
  
 
   ngOnInit(): void {
     
+
      
     const loggedInUser = localStorage.getItem('userauthinterface');
     this.showRegister = false;
@@ -70,8 +76,41 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
   }
 
+  
   goToAddProduct() {
 this.showProdInp = !this.showProdInp;
+  }
+
+  addProduct(name: string, description: string, originalPrice: string, categoryId: string, stock: string) {
+   const payload = {
+    name: name,
+    description: description,
+    originalPrice: +originalPrice,
+    categoryId: +categoryId,
+    stock: +stock,
+    images: this.productAddImages
+   }
+    this.productService.addProduct(payload).subscribe({
+      next: (response) => {
+        alert("product added successfully");
+        this.showProdInp = false;
+        console.log("product added");
+      },
+      error: (error) => {
+        console.log("error adding product", error);
+      }
+    });
+  }
+
+   addImage() {
+    if (this.newImage.url.trim()) {
+      this.productAddImages.push({ ...this.newImage });
+      this.newImage = { url: '', description: '' };
+    }
+  }
+
+  removeImage(index: number) {
+   this.productAddImages.splice(index, 1);
   }
 
   goToCart() {

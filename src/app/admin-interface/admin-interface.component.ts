@@ -296,6 +296,8 @@ removeProductFromSale(saleId: number, productId: number){
   });
 }
 
+
+
 editSaleName(saleId: number, name: string) {
 this.saleService.changeSale(saleId, name, "string", 0).subscribe({
   next: (response) => {

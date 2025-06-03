@@ -15,6 +15,7 @@ import { CartInterface } from '../interfaces/cart-interface';
 import { CartCreationInterface } from '../interfaces/cart-create-interface';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { SaleService } from '../services/sale.service';
 
 @Component({
   selector: 'app-home',
@@ -43,6 +44,8 @@ activeProductId: number | null = 0;
   cartItems: ProductInterface[] = [];
   products: ProductInterface [] = [];
   allProducts: ProductInterface[] = [];
+
+  addingProductToSale: boolean = false;
 
   private searchSubject = new Subject<void>();
 
@@ -89,7 +92,7 @@ maxPrice = 5000;
 
 
 
-  constructor(private router: Router , private route: ActivatedRoute ,private cartService: CartService, private categoryService: CategoryService, private productService : ProductService, private authService : AuthService) {}
+  constructor(private saleService: SaleService , private router: Router , private route: ActivatedRoute ,private cartService: CartService, private categoryService: CategoryService, private productService : ProductService, private authService : AuthService) {}
 
 
 
@@ -102,6 +105,10 @@ maxPrice = 5000;
     //     console.log("cart waishalaaa");
     //   }
     // });
+
+    this.productService.productAdded$.subscribe(() => {
+      this.fetchProducts();
+    })
 
 this.route.queryParams.subscribe(params => {
   const productId = +params['productId'];
@@ -604,7 +611,34 @@ private createNewCart(productId: number): void {
   
 }
 
+addProductTOSale(saleId: string ,productId: number) {
+this.saleService.addProductToSale(+saleId, [productId]).subscribe({
+  next: (response) => {
+   alert("product added to sale");
+   console.log("prod added to sale");
+   this.addingProductToSale = false;
+   this.fetchProducts();
+  },
+  error: (error) => {
+    console.log("error adding product to sale", error);
+  }
+});
+}
 
+removeProduct(productId: number) {
+    const confirmed = window.confirm("Are you sure you want to delete this product?");
+  if (!confirmed) return;
+this.productService.removeProduct(productId).subscribe({
+  next: (response) => {
+    alert(`product with id ${productId} has been removed`);
+    console.log(`product with id ${productId} has been removed`);
+    this.fetchProducts();
+  },
+  error: (error) => {
+    console.log("error removing product", error);
+  }
+});
+}
 
 
   ngOnDestroy(): void {

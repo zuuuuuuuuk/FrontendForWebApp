@@ -1,21 +1,29 @@
 import { Injectable } from '@angular/core';
+import { Subject, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductInterface } from '../interfaces/product-interface';
 import { ReviewInterface } from '../interfaces/review-interface';
 import { UpdateProductInterface } from '../interfaces/update-product-interface';
+import { AddProductInterface } from '../interfaces/add-product-interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   private apiUrl = 'https://localhost:7219/api/Product';
+  private addProductApiUrl = 'https://localhost:7219/api/Product';
   private ProductByIdApiUrl = 'https://localhost:7219/api/Product';
   private userFavProdsApiUrl = 'https://localhost:7219/api/User';
   private toggleFavoritesApiUrl = 'https://localhost:7219/api/User';
   private getProductsByCategoryApiUrl = 'https://localhost:7219/api/Product/category';
   private postReview = 'https://localhost:7219/api/Review';
   private updateProductApiUrl = 'https://localhost:7219/api/Product';
+  private removeProductApiUrl = 'https://localhost:7219/api/Product/';
+
+  private productAddedSource = new Subject<void>();
+  productAdded$ = this.productAddedSource.asObservable();
+
   constructor(private http: HttpClient) { }
 
 
@@ -34,6 +42,17 @@ export class ProductService {
   updateProductById(id: number, updatedProduct: UpdateProductInterface):Observable<UpdateProductInterface> {
   
     return this.http.put<UpdateProductInterface>(`${this.updateProductApiUrl}/${id}`, updatedProduct)
+  }
+
+  addProduct(product: AddProductInterface): Observable<AddProductInterface>{
+
+    return this.http.post<AddProductInterface>(`${this.addProductApiUrl}`, product).pipe(
+      tap(() => this.productAddedSource.next())
+    );
+  }
+
+  removeProduct(productId: number): Observable<void> {
+    return this.http.delete<void>(`${this.removeProductApiUrl}${productId}`);
   }
 
   getFavorites(userId: number): Observable<number[]> {

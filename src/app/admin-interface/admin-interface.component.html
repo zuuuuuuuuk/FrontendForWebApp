@@ -17,16 +17,21 @@
     <h1>Orders:</h1>
     <div class="ordss">
 <div *ngFor="let order of allOrders">
+
   <div class="order">
+<button class="deleteOrderButton">X</button>
 <h5>order Id: {{order.id}}</h5>
 <p>user Id: {{order.userId}}</p>
 <p>created at: {{order.createdAt}}</p>
-<li *ngFor="let item of order.orderItems">
-  <ul>product id: {{item.productId}}</ul>
-  <ul>quantity: {{item.quantity}}</ul>
-  <ul>price: {{item.price}} $</ul>
-  <ul>discounted price: {{item.discountedPrice}} $</ul>
-</li>
+
+  <div class="productScroller">
+    <div class="productCard" *ngFor="let item of order.orderItems">
+      <p>product id: {{ item.productId }}</p>
+      <p>price: {{item.price}}</p>
+      <p>quantity: {{item.quantity}}</p>
+      <p>discounted price: {{item.discountedPrice}}</p>
+    </div>
+  </div>
 <p>total amount: {{order.totalAmount}} $</p>
 <p>payment info: {{order.paymentInfo}}</p>
 <p>shipping address: {{order.shippingAddress}}</p>
@@ -42,6 +47,7 @@
 <input  #statusInput type="number" min="0" max="3">
 <button (click)="changeOrderStatus(order.id, +statusInput.value)">change</button>
 </div>
+
 </div>
   </div>
 </div>
@@ -136,7 +142,8 @@
 
       <div class="saleProdsDiv" *ngFor="let sale of allSales">
           <button class="deleteSaleButton" (click)="removeSale(sale.id)">delete sale</button>
-        <div class="saleNameEdit saleEdit">
+       <p>sale id: {{sale.id}}</p>
+          <div class="saleNameEdit saleEdit">
           <div class="nameEditVisible saleNameEdit" *ngIf="!saleNameEditing">
         <h4 class="saleTitle">name: {{sale.name}}</h4>
         <button (click)="saleNameEditing = true">edit</button>

@@ -9,7 +9,7 @@ h1 {
 }
 
 .ordss {
-    margin-left: 1rem;
+ 
     display: flex;
     flex-wrap: wrap;
     background-color: rgba(43, 103, 131, 0.068);
@@ -23,7 +23,59 @@ h1 {
         background-color: rgba(0, 78, 119, 0.162);
     padding: 0.5rem;
     border-radius: 0.35rem;
+    position: relative;
+    width: 25rem;
+    height: 33rem;
+    display: flex;
+    flex-direction: column;
 }
+.order p {
+    margin-bottom: 0.5rem;
+}
+
+.deleteOrderButton {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    font-family: cursive;
+    font-size: 1.6rem;
+    display: inline;
+    margin-left: 89%;
+    color: rgba(0, 52, 97, 0.934);
+}
+
+  .productScroller {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    background-color: rgba(102, 51, 153, 0.08);
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+        display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .productCard {
+    background-color: rgba(0, 85, 142, 0.235);
+    border-radius: 0.5rem;
+    padding-left: 0.5rem;
+    padding-bottom: 0.3rem;
+    width: 14rem;
+  }
+  .productScroller p {
+    margin-bottom: 0;
+  }
+
+.deleteOrderButton:hover {
+    font-size: 1.8rem;
+    color: rgb(163, 14, 0);
+}
+.deleteOrderButton:active {
+font-size: 1.6rem;
+color: rgba(0, 52, 97, 0.934);
+}
+
 .adminNav {
 display: flex;
 gap: 1rem;

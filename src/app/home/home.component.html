@@ -206,6 +206,7 @@
    (click)="toggleFavorite(product.id)">
 </i>
               </div>
+              <button *ngIf="adminLoggedIn" (click)="$event.stopPropagation()" (click)="removeProduct(product.id)" class="deleteProductButton">X</button>
              <div class="fitimageDiv">
   <div class="image-slider">
     <button class="slider-arrow left-arrow" (click)="prevImage(product)" (click)="$event.stopPropagation()">&#10094;</button>
@@ -218,7 +219,12 @@
   </div>
 </div>
 
-<button class="addToSaleButton" *ngIf="adminLoggedIn"  (click)="$event.stopPropagation()">add to sale (Admin)</button>
+<button class="addToSaleButton" *ngIf="adminLoggedIn && !addingProductToSale" (click)="$event.stopPropagation()" (click)="addingProductToSale = true" >add to sale (Admin)</button>
+<div class="addProductToSaleInps" *ngIf="addingProductToSale" >
+  <input #prodToSaleInp class="saleIdInpForProd" placeholder="enter sale id" type="text" (click)="$event.stopPropagation()">
+  <button (click)="addProductTOSale(prodToSaleInp.value, product.id)" (click)="$event.stopPropagation()" class="testBtn addToSaleFinalButton">add</button>
+  <button (click)="$event.stopPropagation()" (click)="addingProductToSale = false" class="addToSaleFinalButton">hide</button>
+</div>
                 <div class="card-body cardEnd">
                   <p class="discounted-price" *ngIf="product.discountedPrice > 0 && product.discountedPrice != product.originalPrice">discounted price: {{product.discountedPrice}} $</p>
                 

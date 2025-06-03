@@ -1,18 +1,29 @@
 <nav>
   <div  class="showProdInputs" *ngIf="showProdInp" (click)="goToAddProduct()">
     <div class="inps" (click)="$event.stopPropagation()">
-    <input placeholder="Name" type="text">
-    <input placeholder="Description" type="text">
-    <input placeholder="Original price" type="text">
-    <input placeholder="Category Id" type="text">
-    <input placeholder="stock" type="text">
+    <input #prodNameInp placeholder="Name" type="text">
+    <input #prodDescriptionInp placeholder="Description" type="text">
+    <input #prodOriginalPriceInp placeholder="Original price" type="text">
+    <input #prodCategoryInp placeholder="Category Id" type="text">
+    <input #prodStockInp placeholder="stock" type="text">
     <div class="imagesDiv">
-      <label for="Image">Image</label>
-    <input placeholder="Image Description" type="text">
-    <input placeholder="Image Url" type="text">
-</div>
-    <button>add product</button>
+      <div class="imageInpsFirst">
+      <input [(ngModel)]="newImage.description" placeholder="Image Description" type="text">
+      <input [(ngModel)]="newImage.url" placeholder="Image Url" type="text">
+      </div>
+          <button (click)="addImage()">add</button>
+    </div>
+     <div class="image-preview-list">
+  <div *ngFor="let img of productAddImages; let i = index" class="image-preview-item" style="display:flex; align-items:center; margin-bottom: 5px;">
+    <img [src]="img.url" alt="image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;"/>
+    <span>{{ img.description }}</span>
+    <button type="button" (click)="removeImage(i)" style="margin-left:auto;">-</button>
   </div>
+  <p *ngIf="productAddImages.length == 0">no images added</p>
+</div>
+    <button class="addProdButton" (click)="addProduct(prodNameInp.value, prodDescriptionInp.value, prodOriginalPriceInp.value, prodCategoryInp.value, prodStockInp.value)">add product</button>
+  </div>
+ 
   </div>
     <div class="navContent">
       
