@@ -23,6 +23,8 @@ position: relative;
 top: 2rem;
 }
 
+
+
 .userRole {
     color: rgb(127, 0, 0);
 }
@@ -46,38 +48,113 @@ top: 2rem;
     padding: 0.3rem;
     border-radius: 0.3rem;
     cursor: pointer;
+    background-color: rgba(0, 78, 117, 0.181);
 }
 .mainCategDiv ul.active {
-    background-color: red;
+    background-color: rgba(199, 3, 3, 0.601);
 }
 
+.editProfileButton {
+    background-color: rgb(138, 0, 0);
+    border-radius: 0.5rem;
+    width: 6.5rem;
+    cursor: pointer;
+    font-family: cursive;
+    color: rgb(255, 240, 192);
+    height: 2.5rem;
+}
+.editProfileButton:hover {
+    scale: 1.05;
+    background-color: rgb(164, 2, 2);
+}
+.editProfileButton:active {
+    scale: 1;
+    background-color: rgb(138, 0, 0);
+}
 
 .ordersDiv {
-    margin: 1rem;
     padding: 1rem;
-    display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
 }
 
 .divDec {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
     margin: 0.4rem;
 }
 .ordersContainer {
-
     display: flex;
-   gap: 2rem;
    width: 30rem;
+}
+.decorOrdersDiv {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.orderCard p {
+    width: 7.5rem;
+}
+
+
+.orderItems {
+    width: 10rem;
+
 }
 
 .orderCard {
     display: flex;
-    gap: 2rem;
     background-color: rgba(0, 100, 104, 0.436);
-
     padding: 1rem;
     border-radius: 0.5rem;
+    width: 40rem;
+    margin-bottom: -1rem;
+}
+.delivery-tracker {
+  position: relative;
+  height: 1.1rem;
+  background-color: #ddd;
+  border-radius: 8px;
+  margin-right: 3rem;
+  top: 9rem;
+  margin-left: -7rem;
+  user-select: none;
+  width: 15.8rem;
+}
+
+.fill-bar {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0;
+  background-color: #4caf50;
+  border-radius: 8px 0 0 8px;
+  transition: width 0.4s ease;
+  z-index: 0;
+}
+
+.status-steps {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+  margin-top: 1.5rem;
+  margin-left: -1rem;
+  padding: 0 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.status-step {
+  flex: 1;
+  text-align: center;
+}
+
+.deliveryman {
+  position: absolute;
+  top: -1.7rem;
+  font-size: 23px;
+  color: #868600;
+  transition: left 0.4s ease;
+  z-index: 3;
+  transform: translateX(-50%);
+  pointer-events: none;
 }

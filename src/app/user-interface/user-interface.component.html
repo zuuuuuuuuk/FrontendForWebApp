@@ -21,17 +21,34 @@
             <h6>profile created: {{user?.createdAt}}</h6>
         </div>
 
+        
     </div>
-
+<button class="editProfileButton" *ngIf="activePanel === 'userInfo'">edit profile</button>
 
     <div class="ordersDiv" *ngIf="activePanel === 'orders'">
+       
         <h4>my orders:</h4>
+      
         <div class="divDec">
-        <p *ngIf="fullOrders.length === 0">you dont have any orders</p>
-        <div class="ordersContainer" *ngFor="let order of fullOrders">
+        
+            <p *ngIf="fullOrders.length === 0">you dont have any orders</p>
+      
+            <div class="decorOrdersDiv">
+        
+                <div class="ordersContainer" *ngFor="let order of fullOrders">
             <div class="orderCard">
                 <p>order id: #{{order.id}}</p>
-                <p class="status">order status: {{ order.status === 1 ? 'paid' : order.status === 0 ? 'pending' : order.status === 2 ? 'shipped' : order.status === 3 ? 'delivered' : ''}}</p>
+       <div class="delivery-tracker">
+  <div class="fill-bar" [style.width.%]="fillWidthPercent"></div>
+
+  <div class="status-steps">
+    <div class="status-step" *ngFor="let s of statusSteps">
+      {{ s }}
+    </div>
+  </div>
+
+  <i class="fas fa-motorcycle deliveryman" [style.left.%]="fillWidthPercent"></i>
+</div>
                 <div class="orderItems" *ngFor="let item of order.orderItems">
                     <p>product name: {{item.productName}}</p>
                     <p>quantity: {{item.quantity}}</p>
@@ -39,7 +56,12 @@
                     <p *ngIf="item.discountedPrice > 0">discounted price: {{item.discountedPrice}} $</p>
                 </div>
             </div>
+            
+            </div>
             </div>
         </div>
+
     </div>
+
+
 </div>
