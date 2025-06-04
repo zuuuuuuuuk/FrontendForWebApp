@@ -39,7 +39,7 @@
             <div class="orderCard">
                 <p>order id: #{{order.id}}</p>
        <div class="delivery-tracker">
-  <div class="fill-bar" [style.width.%]="fillWidthPercent"></div>
+  <div class="fill-bar" [style.width.%]="getFillWidthPercent(order.status)"></div>
 
   <div class="status-steps">
     <div class="status-step" *ngFor="let s of statusSteps">
@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <i class="fas fa-motorcycle deliveryman" [style.left.%]="fillWidthPercent"></i>
+  <i class="fas fa-motorcycle deliveryman" [style.left.%]="getFillWidthPercent(order.status)"></i>
 </div>
                 <div class="orderItems" *ngFor="let item of order.orderItems">
                     <p>product name: {{item.productName}}</p>

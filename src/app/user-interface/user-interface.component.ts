@@ -30,7 +30,7 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   fullOrders: any[] = [];
   userId: number = 0;
   private subscriptions: Subscription[] = [];
-  statusSteps = ['Pending', 'Paid', 'Shipped', 'Delivered'];
+  statusSteps: string[] = ['Pending', 'Paid', 'Shipped', 'Delivered'];
   user: GetUserInterface | null = null;
 
   activePanel: string = '';
@@ -88,14 +88,12 @@ ngOnInit(): void {
   }
 }
 
-  order = {
-    status: 2 // example current status (0 to 3)
-  };
+getFillWidthPercent(status: number): number {
+  const totalSteps = this.statusSteps.length - 1;
+  return (status / totalSteps) * 100;
+}
 
-  get fillWidthPercent(): number {
-    // calculates % fill based on status position
-    return (this.order.status / (this.statusSteps.length - 1)) * 100;
-  }
+
 
 
 
