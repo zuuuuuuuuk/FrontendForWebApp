@@ -148,10 +148,11 @@ getProductName(productId: number) {
       next: (response) => {
       this.allUsers = response;
       console.log("user fetching worksss");
+      console.log(response);
       },
      
       error: (error) => {
-        console.log("user fetching error");
+        console.log("user fetching error", error);
       }
       
     })

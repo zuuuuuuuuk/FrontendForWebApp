@@ -79,6 +79,7 @@
   <button (click)="deleteUser(user.id)" class="deleteUserButton">X</button>
   <i class="fa-solid fa-user-tie"></i>
   <h4>user Id: {{user.id}}</h4>
+  <h6 class="usrRole">user role: {{user.role === 0 ? 'user' : user.role === 1 ? 'manager' : user.role === 2 ? 'Admin' : 'role not assigned'}}</h6>
   <h5>first name: {{user.firstName}}</h5>
   <h5>last name: {{user.lastName}}</h5>
   <h5>email: {{user.email}}</h5>

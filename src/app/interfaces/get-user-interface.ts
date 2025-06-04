@@ -4,7 +4,7 @@ export interface GetUserInterface {
     passwordHash: string;
     firstName: string;
     lastName: string;
-    userRole: number;
+    role: number;
     favoriteProductIds: number[];
     createdAt: Date;
 }
