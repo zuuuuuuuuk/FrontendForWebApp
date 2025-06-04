@@ -8,6 +8,7 @@ import { UserInterfaceComponent } from './user-interface/user-interface.componen
 import { FavoritesComponent } from './favorites/favorites.component';
 import { AboutComponent } from './about/about.component';
 import { AdminGuard } from './guards/admin.guard';
+import { UserGuard } from './guards/user.guard';
 
 const routes: Routes = [
   {
@@ -30,10 +31,7 @@ const routes: Routes = [
   {
     path: 'User',
     component: UserInterfaceComponent,
-  },
-  {
-    path: 'Admin',
-    component: AdminInterfaceComponent,
+    canActivate: [UserGuard]
   },
   {
 path: 'Favorites',

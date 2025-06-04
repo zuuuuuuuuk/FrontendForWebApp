@@ -62,6 +62,11 @@ export class AuthService {
       
   
   }
+
+  isLoggedIn(): boolean {
+  const token = localStorage.getItem('token');
+  return !!token;  // returns true if token exists and is truthy
+}
   
 
     getAllUsers(): Observable<GetUserInterface[]> {

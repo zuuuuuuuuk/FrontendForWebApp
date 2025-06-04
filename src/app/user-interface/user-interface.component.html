@@ -17,7 +17,7 @@
             <h3>e-mail: {{user?.email}}</h3>
             <h5>firstname: {{user?.firstName}}</h5>
             <h5>lastname: {{user?.lastName}}</h5>
-            <h6>user role: {{user?.role == 0 ? 'user' : user?.role == 1 ? 'manager' : user?.role == 3 ? 'Admin' : 'role not assigned'}}</h6>
+            <h6 class="userRole">user role: {{user?.role == 0 ? 'user' : user?.role == 1 ? 'manager' : user?.role == 2 ? 'Admin' : 'role not assigned'}}</h6>
             <h6>profile created: {{user?.createdAt}}</h6>
         </div>
 
