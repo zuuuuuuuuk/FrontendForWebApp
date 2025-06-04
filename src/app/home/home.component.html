@@ -14,7 +14,16 @@
 
 
 
-
+<div class="slider-container1">
+  <div class="slider-image-wrapper1">
+    <img
+      *ngFor="let img of advImages; let i = index"
+      [src]="img"
+      [class.active]="i === advCurrentIndex"
+      alt="slider image"
+    />
+  </div>
+</div>
 <nav class="navOfCategories" (mouseleave)="collapseAllCategories()">
   
   <div class="categoryDiv allCategs" (mouseleave)="collapseAllCategories()">
@@ -94,7 +103,16 @@
       <button type="button" class="resetButton" (click)="resetFilters()">Reset Filters</button>
     </div>
         </form>
-
+<div class="slider-container">
+  <div class="slider-image-wrapper">
+    <img
+      *ngFor="let img of advImages; let i = index"
+      [src]="img"
+      [class.active]="i === advCurrentIndex"
+      alt="slider image"
+    />
+  </div>
+</div>
 
 
         <div class="productViewMainDiv" *ngIf="showProductView" @fadeInOut (click)="closeProductVIew()">

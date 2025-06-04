@@ -76,6 +76,7 @@
 <h1>Users: </h1>
 <div class="userssDiv">
 <div class="userDiv" *ngFor="let user of allUsers">
+  <button (click)="deleteUser(user.id)" class="deleteUserButton">X</button>
   <h4>user Id: {{user.id}}</h4>
   <h5>first name: {{user.firstName}}</h5>
   <h5>last name: {{user.lastName}}</h5>

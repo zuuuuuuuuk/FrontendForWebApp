@@ -61,7 +61,7 @@ activeProductId: number | null = 0;
   searchName:string = '';
   
 
-
+    advCurrentIndex: number = 0;
 
 
  productView:ProductInterface | null = null; 
@@ -106,6 +106,10 @@ maxPrice = 5000;
     //     console.log("cart waishalaaa");
     //   }
     // });
+
+      setInterval(() => {
+      this.nextAdvImage();
+    }, 3000); // 3 seconds
 
     this.productService.productAdded$.subscribe(() => {
       this.fetchProducts();
@@ -190,6 +194,17 @@ this.route.queryParams.subscribe(params => {
       this.userId = this.authService.getUserId();
       this.fetchUserFavProds();
     }
+  }
+
+    advImages: string[] = [
+    'https://img.youtube.com/vi/pxPYaVOMqlY/maxresdefault.jpg',
+    'https://i.work.ua/employer_gallery/7/5/6/20756.jpg',
+    'https://hovorymo.live/assets/images/articles/cheverdak/dlya-kartinok-na-govorimo-4-1.png',
+    'https://itstep.school.ge/wp-content/uploads/2024/01/%E1%83%A1%E1%83%99%E1%83%9D%E1%83%9A%E1%83%98%E1%83%A1-%E1%83%A1%E1%83%A2%E1%83%A0%E1%83%A3%E1%83%A5%E1%83%A2%E1%83%A3%E1%83%A0%E1%83%90-.png'
+  ];
+
+    nextAdvImage(): void {
+    this.advCurrentIndex = (this.advCurrentIndex + 1) % this.advImages.length;
   }
 
 

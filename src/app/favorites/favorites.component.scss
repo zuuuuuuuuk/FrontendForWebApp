@@ -35,7 +35,7 @@ justify-content: space-between;
 cursor: pointer;
 transition: 0.3s;
 z-index: 999;
-width: 20rem;
+width: 18.5rem;
 height: 370px;
 }
 
@@ -121,4 +121,49 @@ font-size: 1.3rem;
 
 .discounted-price {
     color: green;
+}
+
+// Adv Slider /////////////////
+
+.adPlusDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+.slider-container {
+  width: 100%;
+  max-width: 225px;
+  height: 1000px;
+  overflow: hidden;
+  position: absolute;
+  margin: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  z-index: -9999;
+  left: 0.5rem;
+  top: 7.3rem;
+}
+
+.slider-image-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.slider-image-wrapper img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slider-image-wrapper img.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.mainDiv {
+    margin-left: 14rem;
 }

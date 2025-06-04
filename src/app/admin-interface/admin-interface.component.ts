@@ -430,6 +430,22 @@ this.cartService.deleteOrder(orderId).subscribe({
 }
 
 
+deleteUser(userId: number) {
+    const confirmed = window.confirm("Are you sure you want to delete this user?");
+    if(!confirmed) return;
+this.authService.deleteUser(userId).subscribe({
+  next: (response) => {
+   console.log("user deleted");
+   alert("user deleted");
+   this.fetchAllUsers();
+  },
+  error: (error) => {
+    console.log("error deleting user", error);
+  }
+});
+}
+
+
   ngOnDestroy(): void {
     sessionStorage.removeItem('adminPageLoaded');
     // araa sachiro unsubscribe http tied requestebistvis 

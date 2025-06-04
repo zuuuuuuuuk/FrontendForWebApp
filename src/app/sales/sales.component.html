@@ -10,6 +10,7 @@
 <div class="divAboveMainDiv">
   <h3 class="saleTitle">{{sale.name}}</h3>
   <h4 class="saleDescription">{{sale.description}}</h4>
+  <h5 class="saleTitle discount">{{sale.discountValue}}% discount</h5>
 <div class="mainDiv">
 <div *ngFor="let product of sale.productsOnThisSale" (click)="openProductView(product.id)">
   <div class="product">

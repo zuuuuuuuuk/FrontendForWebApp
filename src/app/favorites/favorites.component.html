@@ -1,6 +1,10 @@
 <div class="decorDiv"></div>
+<div class="adPlusDiv">
+
 <div class="mainDiv">
+    
     <h2>Your favorites</h2>
+    
 <div class="favProdsDiv">
     <div class="favProd" *ngFor="let prod of favProds" (click)="openProductView(prod.id)">
         <button class="deleteFavButton" (click)="toggleFavorite(prod.id)">X</button>
@@ -13,5 +17,15 @@
         <p class="description">description: {{prod.description}}</p>
         </div>
     </div>
+</div>
+<div class="slider-container">
+  <div class="slider-image-wrapper">
+    <img
+      *ngFor="let img of adImages; let i = index"
+      [src]="img"
+      [class.active]="i === adCurrentIndex"
+      alt="slider image"
+    />
+  </div>
 </div>
 </div>
