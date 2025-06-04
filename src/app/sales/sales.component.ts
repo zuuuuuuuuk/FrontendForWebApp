@@ -16,8 +16,7 @@ export class SalesComponent implements OnInit {
   productsOnSale: ProductInterface[] = [];
   allSales: SaleInterface[] = [];
 
-
-
+  
 
    productView:ProductInterface | null = null;
   
@@ -39,6 +38,31 @@ export class SalesComponent implements OnInit {
       }
     );
   }
+
+
+  getDaysLeft(sale: SaleInterface): number {
+  const now = new Date(); // local time
+  const endDate = new Date(sale.endsAt); // ensure it's a Date object
+
+  // Round both dates to midnight for clean day comparison
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const endMidnight = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+
+  const diffMs = endMidnight.getTime() - todayMidnight.getTime();
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+  return diffDays >= 0 ? diffDays : 0;
+}
+
+
+getSaleClass(sale: SaleInterface): string {
+  const daysLeft = this.getDaysLeft(sale);
+  if (daysLeft <= 5) return 'daysEnd0';
+  if (daysLeft <= 10) return 'daysEnd5';
+  if (daysLeft <= 20) return 'daysEnd10';
+  return 'daysEnd20';
+}
+
 
 fetchAllSales(): void {
   this.saleService.getAllSales().subscribe({

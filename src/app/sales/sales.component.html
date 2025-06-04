@@ -9,6 +9,11 @@
 
 <div class="divAboveMainDiv">
   <h3 class="saleTitle">{{sale.name}}</h3>
+  <div class="saleEndsDiv">
+  <h4 class="endsIn">Sale ends in:</h4>
+   <h4 [ngClass]="getSaleClass(sale)"> {{getDaysLeft(sale)}}</h4>
+   <h4 class="daysEnd">days</h4>
+</div>
   <h4 class="saleDescription">{{sale.description}}</h4>
   <h5 class="saleTitle discount">{{sale.discountValue}}% discount</h5>
 <div class="mainDiv">

@@ -20,7 +20,34 @@
 border-radius: 0.5rem;
 transition: 0.3s;
 }
+.endsIn {
+    color: rgb(0, 96, 105);
+}
+.saleEndsDiv {
+    position: absolute;
+    margin-left: 90rem;
+    width: 20rem;
+    display: flex;
+    gap: 0.5rem;
+    font-family: cursive;
+}
 
+.daysEnd20 {
+color: rgb(27, 231, 0);
+font-weight: 700;
+}
+.daysEnd10 {
+color: rgb(224, 213, 1);
+font-weight: 700;
+}
+.daysEnd5 {
+color: rgb(255, 153, 0);
+font-weight: 700;
+}
+.daysEnd0 {
+    color: rgb(229, 0, 0);
+    font-weight: 700;
+}
 .product img:hover {
     scale: 1.1;
 }
