@@ -77,15 +77,17 @@
 <div class="userssDiv">
 <div class="userDiv" *ngFor="let user of allUsers">
   <button (click)="deleteUser(user.id)" class="deleteUserButton">X</button>
+  <i class="fa-solid fa-user-tie"></i>
   <h4>user Id: {{user.id}}</h4>
   <h5>first name: {{user.firstName}}</h5>
   <h5>last name: {{user.lastName}}</h5>
   <h5>email: {{user.email}}</h5>
 <div class="userFavProdIdsDiv">
-  <h5>user favorite product Ids: <p *ngFor="let id of user.favoriteProductIds">{{id}}</p></h5>
+  <h5>user favorite product Ids: </h5>
+  <p *ngFor="let id of user.favoriteProductIds">{{id}}</p>
 </div>
-<p>password-hash: {{user.passwordHash}}</p>
-<p>user creation date: {{user.createdAt}}</p>
+<p class="psdHash">password-hash: {{user.passwordHash}}</p>
+<p class="usrCreationDate">user creation date: {{user.createdAt}}</p>
 </div>
 </div>
 </div>

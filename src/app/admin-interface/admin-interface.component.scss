@@ -183,14 +183,32 @@ gap: 2rem;
 }
 .userDiv {
     background-color: rgba(2, 105, 173, 0.266);
-    padding: 0.7rem;
+    padding: 1.3rem;
     border-radius: 0.5rem;
 }
 
-.userFavProdIdsDiv h5 {
-    display: flex;
-    gap: 2rem;
+.userDiv i {
+position: relative;
+font-size: 4rem;
+left: -1.5rem;
+color: #005b829e;
+}
 
+.userFavProdIdsDiv {
+    display: flex;
+    gap: 0.5rem;
+}
+.userFavProdIdsDiv p {
+    position: relative;
+    top: 0.15rem;
+    color: #928a00;
+}
+
+.psdHash {
+color: rgb(133, 0, 0);
+}
+.usrCreationDate {
+    color: #45a049b3;
 }
 
 .subCateg {
@@ -669,6 +687,7 @@ top: 10.9rem;
 .deleteUserButton {
     position: relative;
     left: 95%;
+    top: -2rem;
     cursor: pointer;
     border: none;
     background-color: transparent;
