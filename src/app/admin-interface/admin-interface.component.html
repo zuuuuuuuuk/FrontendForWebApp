@@ -162,6 +162,11 @@
   </div>
 
       <div class="saleProdsDiv" *ngFor="let sale of allSales">
+         <div class="saleEndsDiv">
+  <h4 class="endsIn">Sale ends in:</h4>
+   <h4 [ngClass]="getSaleClass(sale)"> {{getDaysLeft(sale)}}</h4>
+   <h4 class="daysEnd">days</h4>
+</div>
           <button class="deleteSaleButton" (click)="removeSale(sale.id)">delete sale</button>
        <p>sale id: {{sale.id}}</p>
           <div class="saleNameEdit saleEdit">

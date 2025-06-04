@@ -313,6 +313,38 @@ scale: 1;
 
 // Sales=====================
 
+
+.endsIn {
+    color: rgb(0, 96, 105);
+}
+.saleEndsDiv {
+    position: absolute;
+    margin-left: 85rem;
+    width: 20rem;
+    display: flex;
+    gap: 0.5rem;
+    font-family: cursive;
+    margin-top: 1rem;
+}
+
+.daysEnd20 {
+color: rgb(27, 231, 0);
+font-weight: 700;
+}
+.daysEnd10 {
+color: rgb(224, 213, 1);
+font-weight: 700;
+}
+.daysEnd5 {
+color: rgb(255, 153, 0);
+font-weight: 700;
+}
+.daysEnd0 {
+    color: rgb(229, 0, 0);
+    font-weight: 700;
+}
+
+
 .saleProdsDiv {
     background-color: rgba(0, 102, 116, 0.033);
     padding: 2rem;
