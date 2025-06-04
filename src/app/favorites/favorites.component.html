@@ -2,7 +2,7 @@
 <div class="mainDiv">
     <h2>Your favorites</h2>
 <div class="favProdsDiv">
-    <div class="favProd" *ngFor="let prod of favProds">
+    <div class="favProd" *ngFor="let prod of favProds" (click)="openProductView(prod.id)">
         <button class="deleteFavButton" (click)="toggleFavorite(prod.id)">X</button>
         <img [src]="prod.images[0].url" alt="">
         <div class="favProdInsideDiv">

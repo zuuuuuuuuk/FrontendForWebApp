@@ -67,6 +67,7 @@ activeProductId: number | null = 0;
  productView:ProductInterface | null = null; 
  showProductView: boolean = false;
  openedFromSales: boolean = false;
+ openedFromFavorites: boolean = false;
  currentProductViewImage: string = ''; 
  suggestedProductsView: ProductInterface[] = [];
 
@@ -112,9 +113,12 @@ maxPrice = 5000;
 
 this.route.queryParams.subscribe(params => {
   const productId = +params['productId'];
-  if (productId) {
+  const name = params['name'];
+  if (productId && !name) {
     if (this.products && this.products.length) {
       this.openFromSale(productId);
+    } else if (productId && name){
+     this.openFromFavorites(productId);
     } else {
       // Call fetchProducts (it will populate this.products internally)
       this.fetchProducts();
@@ -427,8 +431,18 @@ openFromSale(productId: number) {
 const product = this.products.find(p => p.id === productId);
 if(product) {
   this.openProductView(product);
+  this.openedFromSales = false;
   this.openedFromSales = true;
 }
+}
+
+openFromFavorites(productId: number) {
+  const product = this.products.find(p => p.id === productId);
+  if(product) {
+    this.openProductView(product);
+    this.openedFromSales = false;
+    this.openedFromFavorites = true;
+  }
 }
 
 closeProductVIew() {
@@ -439,6 +453,9 @@ closeProductVIew() {
   if (this.openedFromSales) {
     this.openedFromSales = false;
     this.router.navigate(['/Sales']);
+  } else if (this.openedFromFavorites) {
+    this.openedFromFavorites = false;
+    this.router.navigate(['/Favorites']);
   }
 }
 

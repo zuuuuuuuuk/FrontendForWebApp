@@ -4,6 +4,7 @@ import { ProductService } from '../services/product.service';
 import { ProductInterface } from '../interfaces/product-interface';
 import { Subscription, forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favorites',
@@ -18,7 +19,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   favProdIds: number[] = [];
   favProds: ProductInterface[] = [];
 
-  constructor(private authService: AuthService, private productService: ProductService) {}
+  constructor(private router: Router, private authService: AuthService, private productService: ProductService) {}
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
@@ -76,6 +77,11 @@ export class FavoritesComponent implements OnInit, OnDestroy {
    console.log("error during toggling favorite ://");
    }
   });
+  }
+
+
+  openProductView(productId: number) {
+    this.router.navigate([''], { queryParams: {productId: productId, name: 'favorites' }});
   }
 
   ngOnDestroy(): void {
