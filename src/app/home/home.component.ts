@@ -114,23 +114,28 @@ maxPrice = 5000;
 this.route.queryParams.subscribe(params => {
   const productId = +params['productId'];
   const name = params['name'];
-  if (productId && !name) {
-    if (this.products && this.products.length) {
-      this.openFromSale(productId);
-    } else if (productId && name){
-     this.openFromFavorites(productId);
-    } else {
-      // Call fetchProducts (it will populate this.products internally)
-      this.fetchProducts();
 
-      // Poll until products are available, then open the view
-      const waitForProducts = setInterval(() => {
-        if (this.products && this.products.length) {
-          clearInterval(waitForProducts);
-          this.openFromSale(productId);
-        }
-      }, 50); // check every 50ms
+  if (!productId) return;
+
+  const openWithProducts = () => {
+    if (name) {
+      this.openFromFavorites(productId);
+    } else {
+      this.openFromSale(productId);
     }
+  };
+
+  if (this.products && this.products.length) {
+    openWithProducts();
+  } else {
+    this.fetchProducts();
+
+    const waitForProducts = setInterval(() => {
+      if (this.products && this.products.length) {
+        clearInterval(waitForProducts);
+        openWithProducts();
+      }
+    }, 50); // check every 50ms
   }
 });
 
@@ -431,7 +436,7 @@ openFromSale(productId: number) {
 const product = this.products.find(p => p.id === productId);
 if(product) {
   this.openProductView(product);
-  this.openedFromSales = false;
+  this.openedFromFavorites = false;
   this.openedFromSales = true;
 }
 }
