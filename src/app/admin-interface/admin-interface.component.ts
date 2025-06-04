@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef  } from '@angular/core';
 import { ProductInterface } from '../interfaces/product-interface';
 import { ProductService } from '../services/product.service';
 import { CartService } from '../services/cart.service';
@@ -14,7 +14,6 @@ import { AddSaleInterface } from '../interfaces/add-sale-interface';
 import { NavigationEnd, Router } from '@angular/router';
 import { ItemStatInterface } from '../interfaces/item-stat-interface';
 
-
 @Component({
   selector: 'app-admin-interface',
   templateUrl: './admin-interface.component.html',
@@ -28,7 +27,7 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   
   itemStats: ItemStatInterface[] = [];
 
-
+  userEditing: boolean = false;
 
   allSales: SaleInterface[] = [];
   allUsers: GetUserInterface[] = [];
@@ -54,13 +53,13 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   activePanel: string = '';
   showActivateInput: boolean = false;
 
-  constructor(private router: Router , private saleService: SaleService , private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
+  constructor(private cd: ChangeDetectorRef, private router: Router , private saleService: SaleService , private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
 
 
 ngOnInit(): void {
   this.fetchAllProducts();
   this.fetchAllOrders();
-  
+
   // Check if this is a fresh navigation to admin (not a refresh)
   const isRefresh = sessionStorage.getItem('adminPageLoaded');
   
@@ -126,6 +125,7 @@ getProductName(productId: number) {
       percentage: (count / maxCount) * 100
     }));
 
+    this.cd.detectChanges();
     console.log('Item Statistics:', this.itemStats);
   }
 
@@ -468,6 +468,34 @@ getSaleClass(sale: SaleInterface): string {
   if (daysLeft <= 10) return 'daysEnd5';
   if (daysLeft <= 20) return 'daysEnd10';
   return 'daysEnd20';
+}
+
+
+updateUser(userId: number, role: string | null, firstName: string | null, lastName: string | null) {
+    const confirmed = window.confirm("Are you sure you want to apply edit to this user?");
+    if(!confirmed) return;
+  this.authService.getUserById(userId).subscribe({
+    next: (user) => {
+      const payload = {
+        role: role && role.trim() !== '' ? role : user.role,
+        firstName: firstName && firstName.trim() !== '' ? firstName : user.firstName,
+        lastName: lastName && lastName.trim() !== '' ? lastName : user.lastName
+      };
+
+      this.authService.updateUser(userId, payload).subscribe({
+        next: (res) => {
+          alert("user updated");
+          this.userEditing = false;
+          this.fetchAllUsers();
+          console.log('User updated:', res)
+        },
+        error: (err) => console.error('Update failed:', err)
+      });
+    },
+    error: (error) => {
+      console.error("User not found", error);
+    }
+  });
 }
 
 

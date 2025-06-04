@@ -75,9 +75,15 @@
 <div class="Users" *ngIf="activePanel === 'users'">
 <h1>Users: </h1>
 <div class="userssDiv">
-<div class="userDiv" *ngFor="let user of allUsers">
+<div class="userIfDiv" *ngFor="let user of allUsers" >
+
+
+
+  <div class="userDiv" *ngIf="!userEditing">
   <button (click)="deleteUser(user.id)" class="deleteUserButton">X</button>
-  <i class="fa-solid fa-user-tie"></i>
+  <i *ngIf="!userEditing" (click)="userEditing = true" class="editLogo fa-solid fa-user-pen"></i>
+  <i class="userLogo fa-solid fa-user-tie"></i>
+  <i *ngIf="userEditing" (click)="userEditing = false" class="hideEditLogo fa-solid fa-eye-slash"></i>
   <h4>user Id: {{user.id}}</h4>
   <h6 class="usrRole">user role: {{user.role === 0 ? 'user' : user.role === 1 ? 'manager' : user.role === 2 ? 'Admin' : 'role not assigned'}}</h6>
   <h5>first name: {{user.firstName}}</h5>
@@ -90,6 +96,34 @@
 <p class="psdHash">password-hash: {{user.passwordHash}}</p>
 <p class="usrCreationDate">user creation date: {{user.createdAt}}</p>
 </div>
+
+
+ <div class="userDiv" *ngIf="userEditing">
+  <button (click)="deleteUser(user.id)" class="deleteUserButton">X</button>
+  <i *ngIf="!userEditing"  (click)="userEditing = true" class="editLogo fa-solid fa-user-pen"></i>
+  <i  class="userLogo1 fa-solid fa-user-tie"></i>
+  <i *ngIf="userEditing" (click)="userEditing = false" class="hideEditLogo fa-solid fa-eye-slash"></i>
+  <h4>user Id: {{user.id}}</h4>
+  <div class="inps">
+  <input #userRoleInp placeholder="0 - user | 2 - Admin" class="userRoleInp" type="text">
+  <input #userFirsnameInp placeholder="{{user.firstName}}" class="userFirstnameInp" type="text">
+  <input #userLastnameInp placeholder="{{user.lastName}}" class="userLastnameInp" type="text">
+<button class="userApplyButton" (click)="updateUser(user.id, userRoleInp.value, userFirsnameInp.value, userLastnameInp.value)">apply changes</button>
+  </div>
+  <h5>email: {{user.email}}</h5>
+<div class="userFavProdIdsDiv">
+  <h5>user favorite product Ids: </h5>
+  <p *ngFor="let id of user.favoriteProductIds">{{id}}</p>
+</div>
+<p class="psdHash">password-hash: {{user.passwordHash}}</p>
+<p class="usrCreationDate">user creation date: {{user.createdAt}}</p>
+</div>
+
+
+
+
+</div>
+
 </div>
 </div>
 

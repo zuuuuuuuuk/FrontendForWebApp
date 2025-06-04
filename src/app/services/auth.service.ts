@@ -18,6 +18,7 @@ export class AuthService {
   private getAllUsersApiUrl = 'https://localhost:7219/api/User';
   private deleteUserApiUrl = 'https://localhost:7219/api/User/';
   private getUserByIdApiUrl = 'https://localhost:7219/api/User/';
+  private updateUserApiUrl = 'https://localhost:7219/api/User/';
 
   private userId: number = 0;
   private email: string = '';
@@ -75,6 +76,11 @@ export class AuthService {
 
     getUserById(userId: number): Observable<GetUserInterface> {
       return this.http.get<GetUserInterface>(`${this.getUserByIdApiUrl}${userId}`);
+    }
+
+    updateUser(userId: number, payload: any): Observable<any> {
+
+      return this.http.put<any>(`${this.updateUserApiUrl}${userId}`, payload)
     }
 
     deleteUser(userId:number): Observable<void> {
