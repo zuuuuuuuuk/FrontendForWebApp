@@ -524,7 +524,6 @@ loadCart(): void {
 
 
 addToCart(productId: number): void {
-  // Check if user is logged in
   if (!this.userId) {
     Swal.fire({
       position: 'center',
@@ -532,63 +531,64 @@ addToCart(productId: number): void {
       title: `Please log in to add products to cart`,
       showConfirmButton: true
     });
-    return; // Exit if not logged in
+    return;
   }
-  
-  // Check if there's a valid cart with an ID > 0
-  if (this.cart && this.cart.id && this.cart.id > 0) {
-    console.log("Adding to existing cart:", this.cart.id);
-    
-    this.cartService.addToCart(this.cart.id, [productId]).subscribe({
-      next: () => {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: `Product added successfully`,
-          showConfirmButton: false,
-          timer: 3000
-        });
-      },
-      error: (err) => {
-        console.error('Failed to add to cart:', err);
-        
-        // If we get a 404, it means the cart was deleted on the server
-        if (err.status === 404) {
-          console.log('Cart not found on server, creating new one');
-          this.createNewCart(productId);
-        } else {
-          Swal.fire({
-            position: 'center',
-            icon: 'error',
-            title: `Failed to add product to cart`,
-            showConfirmButton: true
-          });
-        }
+
+  // Always check server first for existing cart
+  this.cartService.getCartByUserId(this.userId).subscribe({
+    next: (existingCart) => {
+      if (existingCart && existingCart.id > 0) {
+        // Cart exists, add to it
+        this.addProductToExistingCart(existingCart.id, productId);
+      } else {
+        // No cart, create new one
+        this.createNewCart(productId);
       }
-    });
-  } else {
-    // No valid cart, create a new one
-    console.log('No valid cart exists, creating new one');
-    this.createNewCart(productId);
-  }
+    },
+    error: (err) => {
+      if (err.status === 404) {
+        // No cart found, create new one
+        this.createNewCart(productId);
+      } else {
+        console.error('Error checking for cart:', err);
+      }
+    }
+  });
 }
 
-
+private addProductToExistingCart(cartId: number, productId: number): void {
+  this.cartService.addToCart(cartId, [productId]).subscribe({
+    next: () => {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: `Product added successfully`,
+        showConfirmButton: false,
+        timer: 3000
+      });
+    },
+    error: (err) => {
+      console.error('Failed to add to cart:', err);
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: `Failed to add product to cart`,
+        showConfirmButton: true
+      });
+    }
+  });
+}
 
 private createNewCart(productId: number): void {
-  // Ensure we have the product data
   const productIdToAdd = this.productView?.id || productId;
   
   const newCart: CartCreationInterface = {
     userId: this.userId,
     cartItems: [{ productId: productIdToAdd, quantity: 1 }]
   };
-  
-  const cartSub = this.cartService.initiateCart(newCart).subscribe({
+
+  this.cartService.initiateCart(newCart).subscribe({
     next: (createdCart) => {
-      console.log('New cart created:', createdCart);
-      // The cart will be updated through the subscription to cartUpdated$
-      
       Swal.fire({
         position: 'center',
         icon: 'success',
@@ -607,8 +607,6 @@ private createNewCart(productId: number): void {
       });
     }
   });
-    this.subscriptions.push(cartSub);
-  
 }
 
 addProductTOSale(saleId: string ,productId: number) {

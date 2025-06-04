@@ -15,25 +15,42 @@
   
   <div class="ords" *ngIf="activePanel === 'orders'">
     <h1>Orders:</h1>
+
+  <div class="stats-chart">
+  <h3>most to least ordered items for managing sales</h3>
+  
+  <div class="chart-container">
+    <div *ngFor="let item of itemStats" class="chart-column">
+      <div class="bar-container">
+        <div class="bar" [style.height.%]="item.percentage"></div>
+      </div>
+      <div class="item-count">{{ item.count }}</div>
+      <div class="item-name">{{ item.name }}</div>
+    </div>
+  </div>
+</div>
+
     <div class="ordss">
 <div *ngFor="let order of allOrders">
 
   <div class="order">
-<button class="deleteOrderButton">X</button>
+<button class="deleteOrderButton" (click)="removeOrder(order.id)">X</button>
 <h5>order Id: {{order.id}}</h5>
 <p>user Id: {{order.userId}}</p>
 <p>created at: {{order.createdAt}}</p>
 
   <div class="productScroller">
     <div class="productCard" *ngFor="let item of order.orderItems">
-      <p>product id: {{ item.productId }}</p>
-      <p>price: {{item.price}}</p>
+      <p>product name: {{ getProductName(item.productId) }}</p>
+      <p>price: {{item.price}} $</p>
       <p>quantity: {{item.quantity}}</p>
       <p>discounted price: {{item.discountedPrice}}</p>
     </div>
   </div>
+  <p>promo code: {{order.promoCode == null ? 'promo code not available' : order.promoCode }}</p>
 <p>total amount: {{order.totalAmount}} $</p>
 <p>payment info: {{order.paymentInfo}}</p>
+<p></p>
 <p>shipping address: {{order.shippingAddress}}</p>
 <p>order status: {{ order.status === 1 ? 'paid' : order.status === 0 ? 'pending' : order.status === 2 ? 'shipped' : order.status === 3 ? 'delivered' : ''}}</p>
 <div class="changeOrderStatus">

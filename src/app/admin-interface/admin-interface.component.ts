@@ -12,6 +12,7 @@ import { SaleService } from '../services/sale.service';
 import { SaleInterface } from '../interfaces/sale-interface';
 import { AddSaleInterface } from '../interfaces/add-sale-interface';
 import { NavigationEnd, Router } from '@angular/router';
+import { ItemStatInterface } from '../interfaces/item-stat-interface';
 
 
 @Component({
@@ -22,7 +23,13 @@ import { NavigationEnd, Router } from '@angular/router';
 export class AdminInterfaceComponent implements OnInit, OnDestroy {
   productsOnSale: ProductInterface[] = [];
   allProducts: ProductInterface[] = [];
+  
   allOrders: GetorderInterface[] = [];
+  
+itemStats: ItemStatInterface[] = [];
+
+
+
   allSales: SaleInterface[] = [];
   allUsers: GetUserInterface[] = [];
   categories: CategoryInterface[] = [];
@@ -30,6 +37,8 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   subCategories: CategoryInterface[] = [];
   private subscriptions: Subscription[] = [];
 
+
+  
 
   saleName: string = '';
   saleDiscountValue: number | null = null;
@@ -74,16 +83,53 @@ ngOnInit(): void {
   }
 }
 
+getProductName(productId: number) {
+  const product = this.allProducts.find(p => p.id === productId);
+  return product ? product.name : 'unknown';
+}
+
+
   fetchAllOrders(): void {
     this.cartService.getAllOrders().subscribe(
       (orders: GetorderInterface[]) => {
         this.allOrders = orders;
+        this.createStats();
       },
       (err) => {
           console.log('error fetching all orders:', err);
       }
     )
   }
+
+   createStats(): void {
+    const itemCounts = new Map<string, number>();
+
+    // Count items
+    this.allOrders.forEach(order => {
+      order.orderItems?.forEach(item => {
+        const name = this.getProductName(item.productId);
+        itemCounts.set(name, (itemCounts.get(name) || 0) + (item.quantity || 1));
+      });
+    });
+
+    // Convert to array and sort
+    const sorted = Array.from(itemCounts.entries())
+      .sort((a, b) => b[1] - a[1]);
+
+    // Get max count for percentage calculation
+    const maxCount = sorted[0]?.[1] || 1;
+
+    // Create stats with percentages
+    this.itemStats = sorted.map(([name, count]) => ({
+      name,
+      count,
+      percentage: (count / maxCount) * 100
+    }));
+
+    console.log('Item Statistics:', this.itemStats);
+  }
+
+
 
   fetchAllProducts(): void {
      this.productService.getAllProducts().subscribe({
@@ -366,6 +412,21 @@ deactivateSale(saleId: number) {
      console.log("error deactivating sale", error);
     }
   });
+}
+
+removeOrder(orderId: number) {
+   const confirmed = window.confirm("Are you sure you want to remove this order?");
+   if(!confirmed) return;
+this.cartService.deleteOrder(orderId).subscribe({
+  next: (response) => {
+    alert("order removed");
+    console.log("order removed");
+    this.fetchAllOrders();
+  },
+  error: (error) => {
+    console.log("error removing order", error);
+  }
+});
 }
 
 

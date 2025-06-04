@@ -28,6 +28,7 @@ private createOrderApiUrl = 'https://localhost:7219/api/Order';
 private processPaymentApiUrl = 'https://localhost:7219/api/Payment/process';
 private getAllOrdersApiUrl = 'https://localhost:7219/api/Order';
 private getOrdersByUserIdApiUrl = 'https://localhost:7219/api/Order/get-orders';
+private deleteOrderApiUrl = 'https://localhost:7219/api/Order/';
 
   constructor(private http: HttpClient) { }
 
@@ -141,6 +142,10 @@ private getOrdersByUserIdApiUrl = 'https://localhost:7219/api/Order/get-orders';
       promoCode: promoCode
     };
     return this.http.post<any>(`${this.createOrderApiUrl}`, order);
+  }
+
+  deleteOrder(orderId: number): Observable<void> {
+    return this.http.delete<void>(`${this.deleteOrderApiUrl}${orderId}`);
   }
 
   clearCart(): void {
