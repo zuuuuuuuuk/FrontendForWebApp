@@ -87,7 +87,7 @@ top: 2rem;
 .decorOrdersDiv {
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 3rem;
 }
 
 .orderCard p {
@@ -97,16 +97,20 @@ top: 2rem;
 
 .orderItems {
     width: 10rem;
-
+}
+.orderItems p {
+width: 11rem;
 }
 
 .orderCard {
     display: flex;
     background-color: rgba(0, 100, 104, 0.436);
-    padding: 1rem;
+    padding: 1.5rem;
     border-radius: 0.5rem;
     width: 40rem;
     margin-bottom: -1rem;
+    height: 17rem;
+    font-family: cursive;
 }
 .delivery-tracker {
   position: relative;
@@ -114,7 +118,7 @@ top: 2rem;
   background-color: #ddd;
   border-radius: 8px;
   margin-right: 3rem;
-  top: 9rem;
+  top: 12rem;
   margin-left: -7rem;
   user-select: none;
   width: 15.8rem;
