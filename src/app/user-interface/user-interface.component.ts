@@ -95,8 +95,6 @@ getFillWidthPercent(status: number): number {
 
 
 
-
-
   switchPanel(panel: string): void {
   this.activePanel = panel;
   sessionStorage.setItem('userActivePanel', panel);

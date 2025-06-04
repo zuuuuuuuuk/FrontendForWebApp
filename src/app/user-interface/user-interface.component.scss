@@ -29,10 +29,29 @@ top: 2rem;
     color: rgb(127, 0, 0);
 }
 
-.userDiv i {
+.profilePic {
     font-size: 4.7rem;
     color: rgba(0, 73, 62, 0.848);
 }
+.editLogo {
+    position: absolute;
+    top: 1.1rem;
+    left: 27.3rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #002ba1a3;
+}
+
+.editLogo:hover {
+   scale: 1.1;
+   color: #9ab806;
+}
+
+.editLogo:active {
+    scale: 1;
+    color: #002ba1a3;
+}
+
 .userDiv {
     padding: 1rem;
     background-color: rgba(0, 174, 255, 0.161);
@@ -54,23 +73,6 @@ top: 2rem;
     background-color: rgba(199, 3, 3, 0.601);
 }
 
-.editProfileButton {
-    background-color: rgb(138, 0, 0);
-    border-radius: 0.5rem;
-    width: 6.5rem;
-    cursor: pointer;
-    font-family: cursive;
-    color: rgb(255, 240, 192);
-    height: 2.5rem;
-}
-.editProfileButton:hover {
-    scale: 1.05;
-    background-color: rgb(164, 2, 2);
-}
-.editProfileButton:active {
-    scale: 1;
-    background-color: rgb(138, 0, 0);
-}
 
 .myOrdersh4 {
     margin-left: 0.7rem;
