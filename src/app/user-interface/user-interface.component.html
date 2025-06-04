@@ -27,7 +27,7 @@
 
     <div class="ordersDiv" *ngIf="activePanel === 'orders'">
        
-        <h4>my orders:</h4>
+        <h4 class="myOrdersh4">my orders:</h4>
       
         <div class="divDec">
         
@@ -37,7 +37,7 @@
         
                 <div class="ordersContainer" *ngFor="let order of fullOrders">
             <div class="orderCard">
-                <p>order id: #{{order.id}}</p>
+                <p class="orderId">order id: #{{order.id}}</p>
        <div class="delivery-tracker">
   <div class="fill-bar" [style.width.%]="getFillWidthPercent(order.status)"></div>
 
