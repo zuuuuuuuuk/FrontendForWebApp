@@ -17,6 +17,7 @@ export class AuthService {
   private registerUrl = 'https://localhost:7219/api/Auth/register';
   private getAllUsersApiUrl = 'https://localhost:7219/api/User';
   private deleteUserApiUrl = 'https://localhost:7219/api/User/';
+  private getUserByIdApiUrl = 'https://localhost:7219/api/User/';
 
   private userId: number = 0;
   private email: string = '';
@@ -65,6 +66,10 @@ export class AuthService {
 
     getAllUsers(): Observable<GetUserInterface[]> {
       return this.http.get<GetUserInterface[]>(this.getAllUsersApiUrl);
+    }
+
+    getUserById(userId: number): Observable<GetUserInterface> {
+      return this.http.get<GetUserInterface>(`${this.getUserByIdApiUrl}${userId}`);
     }
 
     deleteUser(userId:number): Observable<void> {

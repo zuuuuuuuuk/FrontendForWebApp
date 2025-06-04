@@ -1,6 +1,29 @@
 <div class="decorDiv"></div>
+
+<div class="userCategNav">
+      <div class="mainCategDiv">
+    <ul [class.active]="activePanel === 'userInfo'" (click)="switchPanel('userInfo')">Profile Info</ul>
+    <ul [class.active]="activePanel === 'orders'" (click)="switchPanel('orders')">My Orders</ul>
+  </div>
+</div>
+
 <div class="mainDiv">
-    <div class="ordersDiv">
+
+
+    <div class="userInfoDiv">
+          
+        <div class="userDiv">
+            <i class="fa-solid fa-user-tie"></i>
+            <h3>e-mail: {{user?.email}}</h3>
+            <h5>firstname: {{user?.firstName}}</h5>
+            <h5>lastname: {{user?.lastName}}</h5>
+            <h6>user role: {{user?.role == 0 ? 'user' : user?.role == 1 ? 'manager' : user?.role == 3 ? 'Admin' : 'role not assigned'}}</h6>
+        </div>
+        
+    </div>
+
+
+    <div class="ordersDiv" *ngIf="activePanel === 'orders'">
         <h4>my orders:</h4>
         <div class="divDec">
         <p *ngIf="fullOrders.length === 0">you dont have any orders</p>

@@ -68,15 +68,15 @@
         <div class="log">
 
          
-          <button (click)="goToAddProduct()" *ngIf="AdminLoggedIn" class="adminButtonn">add product</button>
-          <button  class="adminButton" *ngIf="AdminLoggedIn" (click)="goToAdminPanel()">Admin Panel</button>
-          <button class="userButton" *ngIf="!AdminLoggedIn && loggedIn" (click)="goToUserPanel()">My Orders</button>
-        <div class="loggedInDiv" *ngIf="loggedIn">
-          
-          
-            <i class="fa-solid fa-circle-user primaryLoginButton"></i>
-            <p>{{userResponse.email}}</p>
-        </div>
+       <button (click)="goToAddProduct()" *ngIf="AdminLoggedIn" class="adminButtonn">add product</button>
+<button class="adminButton" *ngIf="AdminLoggedIn" (click)="goToAdminPanel()">Admin Panel</button>
+<button class="userButton" *ngIf="!AdminLoggedIn && loggedIn" (click)="goToUserPanel('orders')">My Orders</button>
+
+<div class="loggedInDiv" *ngIf="loggedIn">
+  <i class="fa-solid fa-circle-user primaryLoginButton" (click)="goToUserPanel('userInfo')"></i>
+  <p>{{userResponse.email}}</p>
+</div>
+
         <i class="fa-solid fa-arrow-right-from-bracket logOutIcon" (click)="logout()" *ngIf="loggedIn"></i>
     </div>
        

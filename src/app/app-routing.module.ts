@@ -7,6 +7,7 @@ import { AdminInterfaceComponent } from './admin-interface/admin-interface.compo
 import { UserInterfaceComponent } from './user-interface/user-interface.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { AboutComponent } from './about/about.component';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
   {
     path: 'Admin',
     component: AdminInterfaceComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'User',

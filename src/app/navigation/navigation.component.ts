@@ -7,7 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { HomeComponent } from '../home/home.component';
 import { Token } from '@angular/compiler';
 import Swal from 'sweetalert2';
-import { Route, Router } from '@angular/router';
+import { Router, Route, ActivatedRoute } from '@angular/router';
 import { ImageInterface } from '../interfaces/image-interface';
 import { AddImageInterface } from '../interfaces/add-image-interface';
 import { ProductService } from '../services/product.service';
@@ -54,6 +54,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
  
 
   ngOnInit(): void {
+    
     
 
      
@@ -123,8 +124,14 @@ this.showProdInp = !this.showProdInp;
     }
   }
 
-  goToUserPanel(): void {
-    this.router.navigate(['/User']); 
+ goToUserPanel(panel?: string): void {
+    if (panel) {
+      // Navigate with query parameter to specify which panel to show
+      this.router.navigate(['/User'], { queryParams: { panel: panel } });
+    } else {
+      // Default navigation without specifying panel
+      this.router.navigate(['/User']);
+    }
   }
   goToAdminPanel(): void {
     this.router.navigate(['/Admin']);

@@ -7,11 +7,47 @@
     margin-left: 5rem;
  gap: 2rem;
 display: flex;
-
-    background-color: rgba(0, 255, 255, 0.123);
+border-radius: 0.5rem;
+    background-color: rgba(0, 255, 255, 0.049);
     position: relative;
     width: 90%;
 }
+
+
+.mainCategDiv {
+display: flex;
+gap: 1rem;
+width: 20rem;
+margin-left: 5.1rem;
+position: relative;
+top: 2rem;
+}
+
+.userDiv i {
+    font-size: 4.7rem;
+    color: rgba(0, 73, 62, 0.848);
+}
+.userDiv {
+    padding: 1rem;
+    background-color: rgba(0, 174, 255, 0.161);
+    border-radius: 0.5rem;
+}
+.userInfoDiv {
+    border-radius: 0.5rem;
+    width: 30rem;
+}
+
+.mainCategDiv ul {
+    border: 0.5px solid rgb(0, 71, 80);
+    padding: 0.3rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+.mainCategDiv ul.active {
+    background-color: red;
+}
+
+
 .ordersDiv {
     margin: 1rem;
     padding: 1rem;

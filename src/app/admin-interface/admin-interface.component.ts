@@ -26,7 +26,7 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   
   allOrders: GetorderInterface[] = [];
   
-itemStats: ItemStatInterface[] = [];
+  itemStats: ItemStatInterface[] = [];
 
 
 

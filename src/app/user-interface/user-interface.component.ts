@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
+import { filter } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { ProductInterface } from '../interfaces/product-interface';
 import { GetorderInterface } from '../interfaces/getorder-interface';
 import { Subscription, forkJoin } from 'rxjs';
 import { ProductService } from '../services/product.service';
+import { GetUserInterface } from '../interfaces/get-user-interface';
 
 @Component({
   selector: 'app-user-interface',
@@ -15,7 +17,9 @@ import { ProductService } from '../services/product.service';
 })
 export class UserInterfaceComponent implements OnInit, OnDestroy {
   constructor(
+    
     private router: Router,
+    private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: CartService,
     private http: HttpClient,
@@ -27,10 +31,73 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   userId: number = 0;
   private subscriptions: Subscription[] = [];
 
-  ngOnInit(): void {
-    this.userId = this.authService.getUserId();
+  user: GetUserInterface | null = null;
+
+  activePanel: string = '';
+
+ngOnInit(): void {
+
+
+
+  this.router.events
+  .pipe(filter(event => event instanceof NavigationStart))
+  .subscribe((event) => {
+  if (event instanceof NavigationStart) {
+    if (!event.url.startsWith('/User')) {
+      sessionStorage.removeItem('userPageLoaded');
+      sessionStorage.removeItem('userManualSwitch');
+      sessionStorage.removeItem('userActivePanel');
+      console.log('Left /User — session state cleared');
+    }
+  }
+});
+
+  this.userId = this.authService.getUserId();
+
+    this.authService.getUserById(this.userId).subscribe({
+    next: (response) => {
+      this.user = response;
+      console.log("user fetched", response);
+    },
+    error: (error) => {
+      console.log("error fetching user", error);
+    }
+  });
+
+  const requestedPanel = this.route.snapshot.queryParams['panel'];
+  const isFirstLoad = !sessionStorage.getItem('userPageLoaded');
+  const manualSwitch = sessionStorage.getItem('userManualSwitch') === 'true';
+
+  if (isFirstLoad && !manualSwitch) {
+
+    let initialPanel = requestedPanel === 'userInfo' ? 'userInfo' : 'orders';
+    this.activePanel = initialPanel;
+    sessionStorage.setItem('userActivePanel', initialPanel);
+    console.log('First load from nav - panel:', initialPanel);
+  } else {
+
+    const savedPanel = sessionStorage.getItem('userActivePanel');
+    this.activePanel = savedPanel || 'orders';
+    console.log('Reload or post-switch - panel:', this.activePanel);
+  }
+
+  sessionStorage.setItem('userPageLoaded', 'true');
+
+  if (this.activePanel === 'orders') {
     this.getOrders();
   }
+}
+
+  switchPanel(panel: string): void {
+  this.activePanel = panel;
+  sessionStorage.setItem('userActivePanel', panel);
+  sessionStorage.setItem('userManualSwitch', 'true'); // <-- flag manual switch
+  console.log('Manually switched to panel:', panel);
+
+  if (panel === 'orders') {
+    this.getOrders();
+  }
+}
 
   getOrders() {
     const orderSub = this.cartService.getOrdersByUserId(this.userId).subscribe({
@@ -40,23 +107,19 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
 
         // Process each order
         orders.forEach(order => {
-          // Create initial order payload
+   
           const orderPayload: any = {
             id: order.id,
             status: order.status,
-            orderItems: [] // Initialize as empty array to avoid duplication
+            orderItems: [] 
           };
 
-          // Create an array of product observables for this order
           const productObservables = order.orderItems.map(orderItem => 
             this.productService.getProductById(orderItem.productId)
           );
-
-          // If there are order items, fetch their details
           if (productObservables.length > 0) {
             const productsSub = forkJoin(productObservables).subscribe({
               next: (products) => {
-                // Combine order items with product details
                 orderPayload.orderItems = order.orderItems.map((orderItem, index) => {
                   return {
                     id: orderItem.productId,
@@ -67,13 +130,10 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
                     productName: products[index]?.name || 'Unknown Product'
                   };
                 });
-                
-                // Add the complete order to fullOrders
                 this.fullOrders.push(orderPayload);
               },
               error: (err) => {
                 console.error('Failed to fetch product details for order', order.id, err);
-                // Still add the order but with limited product info
                 orderPayload.orderItems = order.orderItems.map(item => ({
                   ...item,
                   productName: 'Product info unavailable'
@@ -81,10 +141,9 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
                 this.fullOrders.push(orderPayload);
               }
             });
-            
             this.subscriptions.push(productsSub);
           } else {
-            // If no order items, just add the order with empty items array
+
             this.fullOrders.push(orderPayload);
           }
         });
@@ -102,6 +161,7 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    sessionStorage.removeItem('userPageLoaded');
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
