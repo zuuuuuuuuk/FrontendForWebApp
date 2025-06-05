@@ -83,7 +83,7 @@
   <div class="userDiv" *ngIf="!userEditing">
   <button (click)="deleteUser(user.id)" class="deleteUserButton">X</button>
   <i *ngIf="!userEditing" (click)="userEditing = true" class="editLogo fa-solid fa-user-pen"></i>
-  <i class="userLogo fa-solid fa-user-tie"></i>
+  <i class="uneditTie userLogo fa-solid fa-user-tie"></i>
   <i *ngIf="userEditing" (click)="userEditing = false" class="hideEditLogo fa-solid fa-eye-slash"></i>
   <h4>user Id: {{user.id}}</h4>
   <h6 class="usrRole">user role: {{user.role === 0 ? 'user' : user.role === 1 ? 'manager' : user.role === 2 ? 'Admin' : 'role not assigned'}}</h6>
