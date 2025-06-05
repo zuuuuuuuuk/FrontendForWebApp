@@ -16,6 +16,7 @@ import { CartCreationInterface } from '../interfaces/cart-create-interface';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { SaleService } from '../services/sale.service';
+import { GettingReviewInterface } from '../interfaces/getting-review-interface';
 
 @Component({
   selector: 'app-home',
@@ -65,8 +66,9 @@ activeProductId: number | null = 0;
 
 
  productView:ProductInterface | null = null; 
- showProductView: boolean = false;
+ showProductView: boolean = true;
  productReviewTexts: string[] = [];
+ productReviews: GettingReviewInterface[] = [];
 
  openedFromSales: boolean = false;
  openedFromFavorites: boolean = false;
@@ -486,6 +488,7 @@ loadReviews(productId: number) {
     next: (reviews) => {
       console.log(reviews);
       this.productReviewTexts = reviews.map(r => r.reviewText);
+      this.productReviews = reviews;
     },
     error: (err) => {
       console.error('Failed to load reviews:', err);

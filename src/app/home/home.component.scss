@@ -1058,7 +1058,26 @@ gap: 1rem;
 }
 
 
+.reviews-box {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
 
+.review-item {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// ////////////////////////////////////////rreviewwww
 
 .slider-container1 {
   width: 100%;
