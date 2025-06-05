@@ -34,7 +34,7 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   user: GetUserInterface | null = null;
   userEditing: boolean = false;
 
-  deliveryAddresses: string[] = '';
+  deliveryAddresses: string[] = [];
   newDeliveryAddress: string = '';
 
   activePanel: string = '';
