@@ -493,14 +493,14 @@ loadReviews(productId: number) {
       this.productReviewTexts = reviews.map(r => r.reviewText);
       this.productReviews = reviews;
       
-      // Get unique user IDs to avoid duplicate API calls
+
       const uniqueUserIds = [...new Set(reviews.map(review => review.userId))];
       
       // Fetch usernames for all unique user IDs
       for (const userId of uniqueUserIds) {
         if (!this.userNames[userId]) {
           try {
-            // Replace 'userService' with your actual user service
+ 
             const user = await this.authService.getUserById(userId).toPromise();
             this.userNames[userId] = user?.firstName || user?.firstName || 'Unknown User';
           } catch (error) {
@@ -568,9 +568,10 @@ saveReviewToServer() {
     return;
   } else {
     
- const review: ReviewInterface = {
+// CORRECT - this sends 'reviewText' field
+const review: ReviewInterface = {
   rating: this.reviewRating,
-  comment: this.reviewText, 
+  reviewText: this.reviewText,  // ✅ Changed from 'comment' to 'reviewText'
 };
 
 this.productService.submitReview(this.userId, this.productView?.id, review)
@@ -583,7 +584,7 @@ this.productService.submitReview(this.userId, this.productView?.id, review)
     alert('you already submitted review on this product');
   }
 }); // You can call your service here to save the review
-  console.log('Review submitted with rating:', review.rating, 'and text:', review.comment);
+  console.log('Review submitted with rating:', review.rating, 'and text:', review.reviewText);
 
   // Example: this.productService.submitReview(this.productView.id, rating, text).subscribe(...);
 }

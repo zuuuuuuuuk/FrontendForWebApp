@@ -793,10 +793,12 @@ gap: 1rem;
     text-align: top; /* Aligns text inside the input box */
     background-color: rgba(0, 140, 178, 0.165);
     resize: none;
+    z-index: 999;
   }
   
   .addReview button {
     position: absolute;
+    z-index: 999;
     bottom: -0.3rem;
     right: -9rem;
     height: 2.5rem;
