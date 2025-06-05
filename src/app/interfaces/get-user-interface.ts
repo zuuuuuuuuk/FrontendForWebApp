@@ -7,4 +7,6 @@ export interface GetUserInterface {
     role: number;
     favoriteProductIds: number[];
     createdAt: Date;
+
+    deliveryAddress?: string;
 }
