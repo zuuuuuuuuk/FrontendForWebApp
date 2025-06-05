@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { ProductInterface } from '../interfaces/product-interface';
@@ -9,6 +9,8 @@ import { GetorderInterface } from '../interfaces/getorder-interface';
 import { Subscription, forkJoin } from 'rxjs';
 import { ProductService } from '../services/product.service';
 import { GetUserInterface } from '../interfaces/get-user-interface';
+import { GetAddressInterface } from '../interfaces/get-address-interface';
+import { PostAddressInterface } from '../interfaces/post-address-interface';
 
 @Component({
   selector: 'app-user-interface',
@@ -34,12 +36,12 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   user: GetUserInterface | null = null;
   userEditing: boolean = false;
 
-  
+  deliveryAddresses: GetAddressInterface[] = [];
+  deliveryAddress: string = ''; 
 
   activePanel: string = '';
   
 ngOnInit(): void {
-
 
 
   this.router.events
@@ -89,7 +91,60 @@ ngOnInit(): void {
   if (this.activePanel === 'orders') {
     this.getOrders();
   }
+
+
+this.getAllAddressesForUser(this.userId);
+
+
 }
+
+
+
+async getAllAddressesForUser(userId: number) {
+  try {
+    const response = await lastValueFrom(
+      this.authService.getDeliveryAddressesByUserId(userId)
+    );
+    this.deliveryAddresses = response;
+    console.log("addresses work", response);
+  } catch (error) {
+    console.log("error fetching userAddresses", error);
+  }
+}
+
+async postAddressByUserId(userId: number, newAddress: PostAddressInterface) {
+  try {
+    const response = await lastValueFrom(this.authService.postDeliveryAddressByUserId(userId, newAddress));
+    console.log('Address POST response:', response);
+    // Now fetch all addresses again to update the list:
+    await this.getAllAddressesForUser(userId);
+  } catch (error) {
+    console.error('Error adding address:', error);
+  }
+}
+
+async putAddressByUserId(userId: number, addressId: number, updatedAddress: PostAddressInterface) {
+  try {
+    const response = await lastValueFrom(this.authService.putDeliveryAddressByUserId(addressId, addressId , updatedAddress));
+    console.log('Update response:', response);
+    // Refresh the whole address list after update
+    await this.getAllAddressesForUser(userId);
+  } catch (error) {
+    console.error('Error updating address:', error);
+  }
+}
+
+async deleteAddressByUserId(addressId: number, userId: number) {
+  try {
+    const response = await lastValueFrom(this.authService.deleteDeliveryAddressByUserId(userId, addressId));
+    console.log('Delete response:', response);
+    // Refresh the whole address list after delete
+    await this.getAllAddressesForUser(userId);
+  } catch (error) {
+    console.error('Error deleting address:', error);
+  }
+}
+
 
 getFillWidthPercent(status: number): number {
   const totalSteps = this.statusSteps.length - 1;

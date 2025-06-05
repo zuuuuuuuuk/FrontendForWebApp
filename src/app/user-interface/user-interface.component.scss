@@ -159,6 +159,7 @@ z-index: 9999999;
 .userInfoDiv {
     border-radius: 0.5rem;
     width: 30rem;
+    height: 80rem;
 }
 
 .mainCategDiv ul {
@@ -320,4 +321,145 @@ margin-bottom: -0.2rem;
   z-index: 3;
   transform: translateX(-50%);
   pointer-events: none;
+}
+
+
+//////////////////////////////delivery section 
+/// 
+
+.deliveryAddressMainDiv {
+    position: absolute;
+    left: 33rem;
+    top: 0;
+    font-family: cursive;
+    width: 40rem;
+}
+.deliveryDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.deleteAddressButton {
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    right: 0.5rem;
+    top: 2.5rem;
+    font-size: 1.3rem;
+    color:#006678;
+}
+
+.deleteAddressButton:hover {
+color: rgb(0, 187, 255);
+font-size: 1.5rem;
+}
+
+.deleteAddressButton:active {
+    color:#006678;
+    font-size: 1.3rem;
+}
+
+.deleteAddressButton::after {
+      content: "delete address";
+  position: absolute;
+    bottom: 90%;
+    font-size: 0.9rem;
+    margin-left: -2rem; 
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+    transform: translateX(-50%);
+    border-radius: 0.3rem;
+    background-color: #0000009f;
+    color: rgb(255, 255, 255);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 999999999;
+}
+
+.deleteAddressButton:hover::after {
+    opacity: 1;
+    z-index: 99999999;
+}
+
+
+.makeDefaultButton {
+    border-radius: 0.5rem;
+    background-color: #0066783b;
+    margin-top: 1rem;
+}
+
+.makeDefaultButton:hover {
+background-color: rgb(0, 187, 255);
+scale: 1.1;
+}
+.makeDefaultButton:active {
+    background-color: #0066783b;
+    scale: 1;
+}
+
+.singleDeliveryAddress {
+    background-color: #00667853;
+    border-radius: 0.5rem;
+    padding-top: 0.4rem;
+    padding-left: 0.4rem;
+    padding-bottom: 1rem;
+    width: auto;
+}
+
+.singleDeliveryAddress p {
+    color: #06aa00;
+}
+
+.deliveryAddressMainDiv h5 {
+    font-weight: 600;
+    color: #006678;
+}
+
+
+//// adding 
+/// 
+/// 
+
+.addingAddressSecondDiv {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    max-height: 20rem;
+    gap: 1rem;
+}
+
+.addAddressButton {
+    border-radius: 0.5rem;
+    background-color: #00d9ff3b;
+    width: 5rem;
+}
+
+.addAddressButton:hover {
+    background-color: #00d8fee8;
+    scale: 1.1;
+}
+
+.addAddressButton:active {
+    background-color: #00d9ff3b;
+    scale: 1;
+}
+
+.addAddressMainDiv {
+    max-height: 20rem;
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+.addressInput {
+    font-family: cursive;
+    font-weight: 500;
+    font-size: larger;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    height: 5rem;
+    background-color: #0066783c;
+    color: rgb(0, 60, 81);
+    border-radius: 0.5rem;
 }

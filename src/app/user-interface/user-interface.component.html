@@ -38,7 +38,25 @@
             <i *ngIf="activePanel === 'userInfo' && !userEditing" class="editLogo fa-solid fa-user-pen"></i>
         </div>
 
-        
+        <div class="addAddressMainDiv">
+            <h4>Add delivery address</h4>
+            <div class="addingAddressSecondDiv">
+            <textarea [(ngModel)]="deliveryAddress" class="addressInput" type="text"></textarea>
+            <button class="addAddressButton">add</button>
+            </div>
+        </div>
+
+        <div class="deliveryAddressMainDiv">
+            <h5>your delivery addresses</h5>
+            <div class="deliveryDiv">
+            <div class="singleDeliveryAddress" *ngFor="let address of deliveryAddresses">
+                <button class="deleteAddressButton">X</button>
+                <p>{{address.isDefault ? 'default address' : 'non default'}}</p>
+                <h6>address: {{address.address}}</h6>
+                <button class="makeDefaultButton">make default</button>
+            </div>
+            </div>
+        </div>
     </div>
 
     <div class="ordersDiv" *ngIf="activePanel === 'orders'">
