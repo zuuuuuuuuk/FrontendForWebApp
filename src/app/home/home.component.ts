@@ -48,6 +48,7 @@ activeProductId: number | null = 0;
   allProducts: ProductInterface[] = [];
 
    userNames: { [key: string]: string } = {};
+   userLastnames: {[key: string]: string } = {};
 
   addingProductToSale: boolean = false;
 
@@ -503,6 +504,7 @@ loadReviews(productId: number) {
  
             const user = await this.authService.getUserById(userId).toPromise();
             this.userNames[userId] = user?.firstName || user?.firstName || 'Unknown User';
+            this.userLastnames[userId] = user?.lastName || user?.lastName || '';        
           } catch (error) {
             console.error(`Failed to load username for userId ${userId}:`, error);
             this.userNames[userId] = 'Unknown User';
@@ -556,11 +558,10 @@ submitReview() {
   } else {
     alert("please fill rating as well");
   }
-  // Code to submit the review, e.g., call a service to save it.
   
 }
 
-// Method to save the review to the backend (e.g., update the product in the database)
+// Method to save the review to the backend
 saveReviewToServer() {
  
   if (!this.productView?.id) {
@@ -571,7 +572,7 @@ saveReviewToServer() {
 // CORRECT - this sends 'reviewText' field
 const review: ReviewInterface = {
   rating: this.reviewRating,
-  reviewText: this.reviewText,  // ✅ Changed from 'comment' to 'reviewText'
+  reviewText: this.reviewText, 
 };
 
 this.productService.submitReview(this.userId, this.productView?.id, review)
@@ -583,10 +584,9 @@ this.productService.submitReview(this.userId, this.productView?.id, review)
   error: (error) => {
     alert('you already submitted review on this product');
   }
-}); // You can call your service here to save the review
+}); 
   console.log('Review submitted with rating:', review.rating, 'and text:', review.reviewText);
 
-  // Example: this.productService.submitReview(this.productView.id, rating, text).subscribe(...);
 }
 }
 
