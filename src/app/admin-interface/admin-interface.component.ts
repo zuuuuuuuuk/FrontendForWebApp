@@ -26,6 +26,7 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   allOrders: GetorderInterface[] = [];
   
   itemStats: ItemStatInterface[] = [];
+  isLoading: boolean = false;
 
   userEditing: boolean = false;
 
@@ -56,9 +57,8 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   constructor(private cd: ChangeDetectorRef, private router: Router , private saleService: SaleService , private categoryService: CategoryService, private productService: ProductService, private cartService: CartService, private authService: AuthService) {}
 
 
-ngOnInit(): void {
-  this.fetchAllProducts();
-  this.fetchAllOrders();
+  async ngOnInit(): Promise<void> {
+   await this.createChartWithSimpleRetry();
 
   // Check if this is a fresh navigation to admin (not a refresh)
   const isRefresh = sessionStorage.getItem('adminPageLoaded');
@@ -82,6 +82,10 @@ ngOnInit(): void {
   }
 }
 
+private sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 getProductName(productId: number) {
   const product = this.allProducts.find(p => p.id === productId);
   return product ? product.name : 'unknown';
@@ -98,6 +102,87 @@ getProductName(productId: number) {
           console.log('error fetching all orders:', err);
       }
     )
+  }
+ 
+
+  ///////// chart funqcia ////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+
+  async createChartWithSimpleRetry(): Promise<void> {
+    console.log('Creating chart...');
+    
+    // Try 3 times
+    for (let i = 1; i <= 3; i++) {
+      console.log(`Attempt ${i}/3`);
+      
+      try {
+        await this.createStatsWithFreshData();
+        
+        // Check if we got good results
+        if (this.itemStats.length > 0) {
+          console.log('Chart created successfully!');
+          return; // Success! Stop trying
+        }
+        
+      } catch (error) {
+        console.log(`Attempt ${i} failed:`, error);
+      }
+      
+      // Wait 1 second before trying again (except on last attempt)
+      if (i < 3) {
+        console.log('Waiting 1 second...');
+        await this.sleep(1000);
+      }
+    }
+    
+    console.log('All attempts failed');
+  }
+
+
+
+  async createStatsWithFreshData(): Promise<void> {
+    this.isLoading = true;
+    
+    try {
+      // Step 1: Get fresh data from server (no cache)
+      console.log('Loading fresh data...');
+      await this.loadFreshData();
+      
+      // Step 2: Make sure we actually got data
+      if (this.allOrders.length === 0) {
+        throw new Error('No orders loaded');
+      }
+      
+      if (this.allProducts.length === 0) {
+        throw new Error('No products loaded');
+      }
+      
+      // Step 3: Create the chart (your original logic)
+      console.log('Creating chart...');
+      this.createStatsOriginal();
+      
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+
+
+    private async loadFreshData(): Promise<void> {
+    // Clear old data first
+    this.allOrders = [];
+    this.allProducts = [];
+    
+    // Load orders
+    console.log('Loading orders...');
+    this.allOrders = await this.cartService.getAllOrders().toPromise() || [];
+    console.log(`Got ${this.allOrders.length} orders`);
+    
+    // Load products
+    console.log('Loading products...');
+    this.allProducts = await this.productService.getAllProducts().toPromise() || [];
+    console.log(`Got ${this.allProducts.length} products`);
   }
 
    createStats(): void {
@@ -129,7 +214,32 @@ getProductName(productId: number) {
     console.log('Item Statistics:', this.itemStats);
   }
 
-
+  private createStatsOriginal(): void {
+    const itemCounts = new Map<string, number>();
+    
+    this.allOrders.forEach(order => {
+      order.orderItems?.forEach(item => {
+        const name = this.getProductName(item.productId);
+        // Only count items that have real names (not 'unknown')
+        if (name && name !== 'unknown') {
+          itemCounts.set(name, (itemCounts.get(name) || 0) + (item.quantity || 1));
+        }
+      });
+    });
+    
+    const sorted = Array.from(itemCounts.entries())
+      .sort((a, b) => b[1] - a[1]);
+    
+    const maxCount = sorted[0]?.[1] || 1;
+    
+    this.itemStats = sorted.map(([name, count]) => ({
+      name,
+      count,
+      percentage: (count / maxCount) * 100
+    }));
+    
+    console.log(`Created chart with ${this.itemStats.length} items`);
+  }
 
   fetchAllProducts(): void {
      this.productService.getAllProducts().subscribe({
@@ -142,6 +252,12 @@ getProductName(productId: number) {
       }
     });
   }
+
+   async refreshChart(): Promise<void> {
+    console.log('Manual refresh triggered');
+    await this.createChartWithSimpleRetry();
+  }
+
 
   fetchAllUsers(): void {
     this.authService.getAllUsers().subscribe({
