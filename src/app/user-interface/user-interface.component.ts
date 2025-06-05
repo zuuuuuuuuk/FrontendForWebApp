@@ -32,9 +32,10 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   statusSteps: string[] = ['Pending', 'Paid', 'Shipped', 'Delivered'];
   user: GetUserInterface | null = null;
+  userEditing: boolean = false;
 
   activePanel: string = '';
-
+  
 ngOnInit(): void {
 
 
@@ -166,6 +167,44 @@ getFillWidthPercent(status: number): number {
   getStatusLabel(status: number): string {
     return status === 1 ? 'paid' : status === 0 ? 'pending' : 'unknown';
   }
+
+  updateUser(firstName: string | null, lastName: string | null) {
+     const confirmed = window.confirm("Are you sure you want to apply edit to your profile?");
+    if(!confirmed) return;
+  this.authService.getUserById(this.userId).subscribe({
+    next: (response) => {
+    const payload = {
+        role: response.role,
+        firstName: firstName && firstName.trim() !== '' ? firstName : response.firstName,
+        lastName: lastName && lastName.trim() !== '' ? lastName : response.lastName
+    };
+
+    
+  this.authService.updateUser(this.userId, payload).subscribe({
+    next: (res) => {
+    alert("changes applied to your profile");
+    this.userEditing = false;
+    this.authService.getUserById(this.userId).subscribe({
+      next: (res) =>{
+        this.user = res; ///////
+      },
+     error: (err) => {
+      console.log("error fetching user", err);
+     }
+    });
+    },
+    error: (err) => {
+      console.log("error updating user", err);
+    }
+  });
+    },
+    error: (error) => {
+      console.log("user not found", error);
+    }
+  });
+
+  }
+
 
   ngOnDestroy(): void {
     sessionStorage.removeItem('userPageLoaded');

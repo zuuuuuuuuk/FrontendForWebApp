@@ -47,10 +47,109 @@ top: 2rem;
    color: #9ab806;
 }
 
+.editLogo::after {
+ content: "edit profile";
+  position: absolute;
+    bottom: 125%;
+    font-size: 0.7rem;
+    margin-left: -2rem; 
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+    transform: translateX(-50%);
+    border-radius: 0.3rem;
+    background-color: #0000009f;
+    color: rgb(255, 255, 255);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 999999999;
+}
+
+.editLogo:hover::after {
+opacity: 1;
+z-index: 9999999;
+}
+
+.hideEditLogo {
+    position: absolute;
+    top: 1.35rem;
+    margin-left: 26.15rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: #002ba1a3;
+}
+
+.hideEditLogo:hover {
+scale: 1.1;
+color: #9ab806;
+}
+
+.hideEditLogo::after {
+ content: "h i d e";
+  position: absolute;
+    bottom: 125%;
+    font-size: 0.7rem;
+    margin-left: -1rem; 
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+    transform: translateX(-50%);
+    border-radius: 0.3rem;
+    background-color: #0000009f;
+    color: rgb(255, 255, 255);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 999999999;
+}
+
+.hideEditLogo:hover::after {
+opacity: 1;
+z-index: 9999999;
+}
+
 .editLogo:active {
     scale: 1;
     color: #002ba1a3;
 }
+
+
+.userEditDiv {
+    display: flex;
+    gap: 0.35rem;
+}
+.userEditDiv button {
+    border-radius: 0.5rem;
+    width: 4.1rem;
+    padding-left: 0.1rem;
+    border: 1px solid rgb(0, 135, 67);
+    background-color: #0049616f;
+    font-family: cursive;
+}
+
+.userEditDiv button:hover {
+    background-color: #22a6e3d5;
+    scale: 1.1;
+}
+.userEditDiv button:active {
+    background-color: #0049616f;
+    scale: 1;
+}
+
+
+
+.inps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.inps input {
+    background-color: #00517313;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 67, 95, 0.557);
+}
+
 
 .userDiv {
     padding: 1rem;

@@ -12,14 +12,30 @@
 
     <div class="userInfoDiv">
           
-        <div class="userDiv">
+        <div class="userDiv" *ngIf="!userEditing">
             <i class="profilePic fa-solid fa-user-tie"></i>
             <h3>e-mail: {{user?.email}}</h3>
             <h5>firstname: {{user?.firstName}}</h5>
             <h5>lastname: {{user?.lastName}}</h5>
             <h6 class="userRole">user role: {{user?.role == 0 ? 'user' : user?.role == 1 ? 'manager' : user?.role == 2 ? 'Admin' : 'role not assigned'}}</h6>
             <h6>profile created: {{user?.createdAt}}</h6>
-            <i *ngIf="activePanel === 'userInfo'" class="editLogo fa-solid fa-user-pen"></i>
+            <i (click)="userEditing = true"  *ngIf="activePanel === 'userInfo' && !userEditing" class="editLogo fa-solid fa-user-pen"></i>
+        </div>
+
+                <div class="userDiv" *ngIf="userEditing">
+           <i class="profilePic fa-solid fa-user-tie"></i>
+            <h3>e-mail: {{user?.email}}</h3>
+            <div class="userEditDiv">
+                <div class="inps">
+            <input placeholder="{{user?.firstName}}" #firstnameInp class="firstnameInp" type="text">
+            <input placeholder="{{user?.lastName}}" #lastnameInp class="lastnameInp" type="text">
+            </div>
+            <button (click)="updateUser(firstnameInp.value, lastnameInp.value)">apply changes</button>
+            </div>
+            <h6 class="userRole">user role: {{user?.role == 0 ? 'user' : user?.role == 1 ? 'manager' : user?.role == 2 ? 'Admin' : 'role not assigned'}}</h6>
+            <h6>profile created: {{user?.createdAt}}</h6>
+             <i *ngIf="userEditing" (click)="userEditing = false" class="hideEditLogo fa-solid fa-eye-slash"></i>
+            <i *ngIf="activePanel === 'userInfo' && !userEditing" class="editLogo fa-solid fa-user-pen"></i>
         </div>
 
         
