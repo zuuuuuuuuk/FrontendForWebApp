@@ -204,9 +204,17 @@ z-index: 9999999;
     width: 7.5rem;
 }
 
+.scrollerOrd {
+    display: flex;
+    flex-direction: column;
+    width: 10rem;
+    overflow: hidden;
+    overflow-y: auto;
+}
 
 .orderItems {
     width: 10rem;
+    
 }
 .orderItems p {
 width: 14rem;

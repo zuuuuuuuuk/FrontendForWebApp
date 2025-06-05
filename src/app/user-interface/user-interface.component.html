@@ -65,11 +65,13 @@
 
   <i class="fas fa-motorcycle deliveryman" [style.left.%]="getFillWidthPercent(order.status)"></i>
 </div>
+<div class="scrollerOrd">
                 <div class="orderItems" *ngFor="let item of order.orderItems">
                     <p>product name: {{item.productName}}</p>
                     <p>quantity: {{item.quantity}}</p>
                     <p>price: {{item.price}} $</p>
                     <p *ngIf="item.discountedPrice > 0">discounted price: {{item.discountedPrice}} $</p>
+                </div>
                 </div>
             </div>
             
