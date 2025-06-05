@@ -66,6 +66,8 @@ activeProductId: number | null = 0;
 
  productView:ProductInterface | null = null; 
  showProductView: boolean = false;
+ productReviewTexts: string[] = [];
+
  openedFromSales: boolean = false;
  openedFromFavorites: boolean = false;
  currentProductViewImage: string = ''; 
@@ -479,10 +481,26 @@ closeProductVIew() {
   }
 }
 
+loadReviews(productId: number) {
+  this.productService.getReviewsByProductId(productId).subscribe({
+    next: (reviews) => {
+      console.log(reviews);
+      this.productReviewTexts = reviews.map(r => r.reviewText);
+    },
+    error: (err) => {
+      console.error('Failed to load reviews:', err);
+      this.productReviewTexts = [];
+    }
+  });
+}
+
 openProductView(product: ProductInterface) {
   this.productView = product;
   this.currentProductViewImage = product.images[0]?.url || 'assets/no-image.jpg'; // default main image
   this.showProductView = true;
+  
+     this.loadReviews(product.id);
+
 
   this.suggestedProductsView = this.products
     .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
@@ -513,7 +531,7 @@ submitReview() {
     this.saveReviewToServer();
     console.log('Review submitted:', this.reviewText, this.reviewRating);
   } else {
-    alert("no");
+    alert("please fill rating as well");
   }
   // Code to submit the review, e.g., call a service to save it.
   
