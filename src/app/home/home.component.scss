@@ -401,6 +401,7 @@ top: 1.1rem;
   overflow: hidden;
   text-overflow: ellipsis;
   color: #588d99;
+  width: 8rem;
 }
 
 
@@ -559,6 +560,7 @@ top: 1.1rem;
     z-index: 999;
     top: 0;
     left: 0;
+    
     background-color: #002633cc;
     position: fixed;
     width: 100%;
@@ -570,9 +572,11 @@ top: 1.1rem;
     padding: 1rem;
     z-index: 1000;
     background-color: #2a6071ce;
-    left: 17%;
+    left: 15vw;
+    right: 25vw;
+    width: 70%;
     top: 13%;
-    width: 67.1%;
+
     height: 85%;
     position: fixed;
   }
@@ -669,7 +673,7 @@ top: 1.1rem;
     position: relative;
     left: 0;
     padding: 1rem;
- 
+    width: 10rem;
     gap: 0.3rem;
   }
 
@@ -691,7 +695,7 @@ top: 1.1rem;
   word-break: break-word; /* break long words if needed */
   
     white-space: normal;
-    width: 400px;
+    width: 280px;
     
   }
 
@@ -779,13 +783,12 @@ justify-self: center;
 
   .addReview {
     position: relative;
-    
     display: flex;
     flex-direction: column;
 gap: 1rem;
   }
   .addReview textarea {
-    width: 80%;
+    width: 17rem;
     height: 8rem;
     text-align: top; /* Aligns text inside the input box */
     background-color: rgba(0, 140, 178, 0.165);
@@ -795,7 +798,7 @@ gap: 1rem;
   .addReview button {
     position: absolute;
     bottom: -0.3rem;
-    right: 5rem;
+    right: -9rem;
     height: 2.5rem;
     position: absolute;
     height: 2.7rem;
@@ -1058,25 +1061,40 @@ gap: 1rem;
 }
 
 
-.reviews-box {
-  max-height: 300px;
+// ////////////////////////////////////////rreviewwww
+.reviewScrollMain {
+  border-radius: 0.5rem;
+  background-color: rgba(0, 131, 70, 0.285);
+  padding: 0.3rem;
+  position: sticky;
+  margin-left: 17%;
+  width: 33rem;
+  height: 30rem;
+  
+}
+
+
+.decorInsideDiv {
+  border: 1px solid rgba(0, 117, 125, 0.133);
+  margin: 0.3rem;
+  padding: 0.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   overflow-y: auto;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
+  
 }
 
-.review-item {
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eee;
 
-  &:last-child {
-    border-bottom: none;
-  }
+.reviewDiv {
+  border: 1px solid rgba(0, 106, 122, 0.254);
+  border-radius: 0.5rem;
+  background-color: #00597691;
 }
-
+.reviewDiv p {
+  margin-bottom: 0;
+  
+}
 // ////////////////////////////////////////rreviewwww
 
 .slider-container1 {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CategoryInterface } from '../interfaces/category-interface';
 import { CategoryService } from '../services/category.service';
-import { subscribeOn, Subscription } from 'rxjs';
+import { Observable, of, subscribeOn, Subscription } from 'rxjs';
 import { ProductInterface } from '../interfaces/product-interface';
 import { ProductService } from '../services/product.service';
 import { AuthService } from '../services/auth.service';
@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ReviewInterface } from '../interfaces/review-interface';
 import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { catchError, debounceTime, map } from 'rxjs/operators';
 import { CartService } from '../services/cart.service';
 import { CartInterface } from '../interfaces/cart-interface';
 import { CartCreationInterface } from '../interfaces/cart-create-interface';
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { SaleService } from '../services/sale.service';
 import { GettingReviewInterface } from '../interfaces/getting-review-interface';
+import { GetUserInterface } from '../interfaces/get-user-interface';
 
 @Component({
   selector: 'app-home',
@@ -46,6 +47,8 @@ activeProductId: number | null = 0;
   products: ProductInterface [] = [];
   allProducts: ProductInterface[] = [];
 
+  usernames: { [key: number]: string } = {};
+
   addingProductToSale: boolean = false;
 
   private searchSubject = new Subject<void>();
@@ -66,7 +69,7 @@ activeProductId: number | null = 0;
 
 
  productView:ProductInterface | null = null; 
- showProductView: boolean = true;
+ showProductView: boolean = false;
  productReviewTexts: string[] = [];
  productReviews: GettingReviewInterface[] = [];
 
@@ -695,6 +698,7 @@ this.productService.removeProduct(productId).subscribe({
   }
 });
 }
+
 
 
   ngOnDestroy(): void {

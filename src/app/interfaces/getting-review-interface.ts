@@ -3,6 +3,6 @@ export interface GettingReviewInterface {
   productId: number;
   userId: number;
   rating: number;
-  reviewText: string; // <-- updated from comment
+  reviewText: string;
 }
 
