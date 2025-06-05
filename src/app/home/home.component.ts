@@ -47,7 +47,7 @@ activeProductId: number | null = 0;
   products: ProductInterface [] = [];
   allProducts: ProductInterface[] = [];
 
-  usernames: { [key: number]: string } = {};
+   userNames: { [key: string]: string } = {};
 
   addingProductToSale: boolean = false;
 
@@ -488,10 +488,27 @@ closeProductVIew() {
 
 loadReviews(productId: number) {
   this.productService.getReviewsByProductId(productId).subscribe({
-    next: (reviews) => {
+    next: async (reviews) => {
       console.log(reviews);
       this.productReviewTexts = reviews.map(r => r.reviewText);
       this.productReviews = reviews;
+      
+      // Get unique user IDs to avoid duplicate API calls
+      const uniqueUserIds = [...new Set(reviews.map(review => review.userId))];
+      
+      // Fetch usernames for all unique user IDs
+      for (const userId of uniqueUserIds) {
+        if (!this.userNames[userId]) {
+          try {
+            // Replace 'userService' with your actual user service
+            const user = await this.authService.getUserById(userId).toPromise();
+            this.userNames[userId] = user?.firstName || user?.firstName || 'Unknown User';
+          } catch (error) {
+            console.error(`Failed to load username for userId ${userId}:`, error);
+            this.userNames[userId] = 'Unknown User';
+          }
+        }
+      }
     },
     error: (err) => {
       console.error('Failed to load reviews:', err);

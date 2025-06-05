@@ -181,7 +181,7 @@
           <h5 *ngIf="productReviews.length <= 0">no reviews on this one yet</h5>
           <div class="decorInsideDiv" *ngIf="productReviews.length > 0">
             <div class="reviewDiv" *ngFor="let review of productReviews">
-            <h5>user: </h5>
+            <h5>user: {{userNames[review.userId] || 'Loading...'}}</h5>
             <p>user id: {{review.userId}}</p>
             <p>rated with {{review.rating}} stars</p>
             <p>comment: {{review.reviewText}}</p>
