@@ -7,6 +7,8 @@ import { RegisterRequest } from '../interfaces/Auth-interfaces/register-request'
 import { BehaviorSubject } from 'rxjs';
 import { Token } from '@angular/compiler';
 import { GetUserInterface } from '../interfaces/get-user-interface';
+import { GetAddressInterface } from '../interfaces/get-address-interface';
+import { PostAddressInterface } from '../interfaces/post-address-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,10 @@ export class AuthService {
   private deleteUserApiUrl = 'https://localhost:7219/api/User/';
   private getUserByIdApiUrl = 'https://localhost:7219/api/User/';
   private updateUserApiUrl = 'https://localhost:7219/api/User/';
+  private getUserAddressesApiUrl = 'https://localhost:7219/api/User/';
+  private postUserAddressApiUrl = 'https://localhost:7219/api/User/';
+  private putUserAddressApiUrl = 'https://localhost:7219/api/User/';
+  private deleteUserAddressApiUrl = 'https://localhost:7219/api/User/';
 
   private userId: number = 0;
   private email: string = '';
@@ -68,7 +74,25 @@ export class AuthService {
   const token = localStorage.getItem('token');
   return !!token;  // returns true if token exists and is truthy
 }
-  
+
+    
+
+    getDeliveryAddressesByUserId(userId: number): Observable<GetAddressInterface[]> {
+      return this.http.get<GetAddressInterface[]>(`${this.getUserAddressesApiUrl}${userId}/deliveryAddresses`);
+    }
+
+    postDeliveryAddressByUserId(userId: number, address: PostAddressInterface): Observable<PostAddressInterface> {
+      return this.http.post<PostAddressInterface>(`${this.postDeliveryAddressByUserId}${userId}/deliveryAddresses`, address)
+    }
+
+    putDeliveryAddressByUserId(userId: number, addressId: number, address: PostAddressInterface): Observable<PostAddressInterface> {
+      return this.http.put<PostAddressInterface>(`${this.putDeliveryAddressByUserId}${userId}/deliveryAddresses/${addressId}`, address)
+    }
+
+    deleteDeliveryAddressByUserId(userId: number, addressId: number): Observable<void> {
+      return this.http.delete<void>(`${this.deleteDeliveryAddressByUserId}${userId}/deliveryAddresses/${addressId}`)
+    }
+
 
     getAllUsers(): Observable<GetUserInterface[]> {
       return this.http.get<GetUserInterface[]>(this.getAllUsersApiUrl);

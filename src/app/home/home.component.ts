@@ -580,6 +580,10 @@ this.productService.submitReview(this.userId, this.productView?.id, review)
   next: (response) => {
     console.log(response.message);
     alert('review added <3');
+    if(this.productView?.id)
+    this.loadReviews(this.productView.id);
+    this.reviewText = '';
+    this. reviewRating = 0;
   },
   error: (error) => {
     alert('you already submitted review on this product');
@@ -599,6 +603,10 @@ loadCart(): void {
       this.cart = null; // no cart yet
     }
   });
+}
+
+deleteReview(reviewId: number) {
+
 }
 
 
