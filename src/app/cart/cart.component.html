@@ -4,22 +4,25 @@
 <div class="cartMainDiv" *ngIf="cart">
     <div class="cartItemDiv" *ngFor="let item of cartItemsDetailed">
         <img [src]="item.images[0].url" alt="img">
-<h5>{{item.name}}</h5>
+        <div class="nameStars">
+<h5 class="cartProdName">{{item.name}}</h5>
 <div class="stars">
     <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
       <i 
         class="fa"
         [ngClass]="{
-          'fa-star full-star': item.averageRating >= star,  
-          'fa-star-half-o half-star': item.averageRating >= star - 0.5 && item.averageRating < star,
+          'fas fa-star full-star': item.averageRating >= star,  
+          'fa-star-half-alt half-star': item.averageRating >= star - 0.5 && item.averageRating < star,
           'fa-star-o empty-star': item.averageRating < star - 0.5  
         }"
         aria-hidden="true">
       </i>
     </ng-container>
   </div>
+  </div>
   
 <p class="description-text">description: {{item.description}}</p>
+
 <div class="rightProd">
 <div class="quantityDiv">
     <button (click)="removeQuantityFromProduct(item.id)">-</button>
