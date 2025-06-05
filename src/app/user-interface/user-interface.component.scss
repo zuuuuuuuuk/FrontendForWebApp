@@ -202,6 +202,7 @@ z-index: 9999999;
 
 .orderCard p {
     width: 7.5rem;
+    word-wrap: break-word;
 }
 
 .scrollerOrd {
@@ -212,12 +213,25 @@ z-index: 9999999;
     overflow-y: auto;
 }
 
+.totalAmount {
+    position: absolute;
+    margin-top: 0.3rem;
+    margin-left: 6rem;
+    color: green;
+}
+.ifLambda {
+        position: absolute;
+    margin-top: 2.3rem;
+    margin-left: 6rem;
+    color: rgb(208, 223, 0);
+}
 .orderItems {
     width: 10rem;
     
 }
 .orderItems p {
-width: 14rem;
+width: 9rem;
+margin-bottom: 0.4rem;
 }
 
 .orderCard {

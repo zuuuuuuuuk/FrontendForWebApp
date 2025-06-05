@@ -119,7 +119,10 @@ getFillWidthPercent(status: number): number {
           const orderPayload: any = {
             id: order.id,
             status: order.status,
-            orderItems: [] 
+            orderItems: [] ,
+            promoCode: order.promoCode,
+            totalAmount: order.totalAmount,
+            createdAt: order.createdAt
           };
 
           const productObservables = order.orderItems.map(orderItem => 
