@@ -635,9 +635,16 @@ top: 10.9rem;
     scale: 1;
 }
 
+.ordersTitle {
+    font-family: cursive;
+    font-weight: 600;
+}
+
 .stats-chart {
   padding: 20px;
   max-width: 800px;
+  margin-top: -2rem;
+  font-family: cursive;
 }
 
 .chart-container {
@@ -648,6 +655,7 @@ top: 10.9rem;
   padding: 20px 0;
   border-bottom: 2px solid #ddd;
   overflow-x: auto;
+  
   background-color: #00538f34;
 }
 
