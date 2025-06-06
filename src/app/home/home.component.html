@@ -180,11 +180,11 @@
          <div class="reviewScrollMain">
           <h5 *ngIf="productReviews.length <= 0">no reviews on this one yet</h5>
           <div class="decorInsideDiv" *ngIf="productReviews.length > 0">
-            <div class="reviewDiv" *ngFor="let review of productReviews">
+            <div class="reviewDiv" *ngFor="let review of productReviews.slice().reverse()">
               <button (click)="deleteReview(review.userId, review.id, review.productId)" *ngIf="userId === review.userId || adminLoggedIn" class="homeReviewDeleteButton">X</button>
             <i [ngClass]="getReviewClass(review.user.role) === 'Admin' ? 'admin-class fa-solid fa-user-tie' : 'user-class fa-solid fa-user-tie' " ></i>
             <span *ngIf="getReviewClass(review.user.role) === 'Admin'" class="spanAdmin">Admin</span> 
-            <h5>user: {{userNames[review.userId] || 'Loading...'}} {{userLastnames[review.userId] || 'tvirtavs...'}}</h5>
+            <h5>name: {{userNames[review.userId] || 'Loading...'}} {{userLastnames[review.userId] || 'tvirtavs...'}}</h5>
             <p>user id: {{review.userId}}</p>
             <p>rated with {{review.rating}} stars</p>
             <p>comment: {{review.reviewText}}</p>

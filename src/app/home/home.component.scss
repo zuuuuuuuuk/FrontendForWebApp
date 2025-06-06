@@ -1072,7 +1072,21 @@ gap: 1rem;
   margin-left: 17%;
   width: 33rem;
   height: 30rem;
-  
+  overflow-y: auto;
+}
+
+.reviewScrollMain::-webkit-scrollbar {
+  width: 12px; /* Adjust width here */
+}
+
+.reviewScrollMain::-webkit-scrollbar-track {
+  background: #00b9aa; /* Track color */
+}
+
+.reviewScrollMain::-webkit-scrollbar-thumb {
+  background-color: #9fb9d0; /* Scroll thumb */
+  border-radius: 4px;
+  border: 2px solid #00a7c4; /* Space around thumb */
 }
 
 .admin-class {
@@ -1089,7 +1103,8 @@ font-size: 2.3rem;
 .spanAdmin {
   margin-left: 0.5rem;
   font-size: larger;
-  margin-top: 0.2rem;
+  position: relative;
+  top: 0.25rem;
 }
 
 .homeReviewDeleteButton {
@@ -1110,7 +1125,7 @@ font-size: larger;
 .decorInsideDiv {
   border: 1px solid rgba(0, 117, 125, 0.133);
   margin: 0.3rem;
-  padding: 0.1rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

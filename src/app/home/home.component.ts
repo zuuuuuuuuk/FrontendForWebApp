@@ -552,46 +552,49 @@ setReviewRating(rating: number) {
 // Submit the review
 submitReview() {
   if (this.reviewText && this.reviewRating > 0) {
-    
     this.saveReviewToServer();
     console.log('Review submitted:', this.reviewText, this.reviewRating);
   } else {
-    alert("please fill rating as well");
+    alert("Please fill rating as well");
   }
-  
 }
 
-// Method to save the review to the backend
 saveReviewToServer() {
- 
-  if (!this.productView?.id) {
+  const productId = this.productView?.id;
+  if (!productId) {
     console.error('Product ID is missing');
     return;
-  } else {
-    
-// CORRECT - this sends 'reviewText' field
-const review: ReviewInterface = {
-  rating: this.reviewRating,
-  reviewText: this.reviewText, 
-};
-
-this.productService.submitReview(this.userId, this.productView?.id, review)
-.subscribe({
-  next: (response) => {
-    console.log(response.message);
-    alert('review added <3');
-    if(this.productView?.id)
-    this.loadReviews(this.productView.id);
-    this.reviewText = '';
-    this. reviewRating = 0;
-  },
-  error: (error) => {
-    alert('you already submitted review on this product');
   }
-}); 
-  console.log('Review submitted with rating:', review.rating, 'and text:', review.reviewText);
 
-}
+  this.authService.getUserById(this.userId).subscribe({
+    next: (user) => {
+      const review = {
+        rating: this.reviewRating,
+        reviewText: this.reviewText,
+        userId: this.userId,
+        productId: productId,
+        user: user  // Full user object as required by backend
+      };
+
+      this.productService.submitReview(this.userId, productId, review).subscribe({
+        next: (response) => {
+          console.log(response.message);
+          alert('Review added <3');
+          this.loadReviews(productId);
+          this.reviewText = '';
+          this.reviewRating = 0;
+        },
+        error: (error) => {
+          console.error(error);
+          alert('You already submitted a review on this product or other error');
+        }
+      });
+    },
+    error: (err) => {
+      console.error('Failed to load user info', err);
+      alert('Failed to load user info. Cannot submit review.');
+    }
+  });
 }
 
 loadCart(): void {
@@ -606,7 +609,6 @@ loadCart(): void {
 }
 
 getReviewClass(role: number): string {
-  console.log(role);
   if (role === 2) return 'Admin';
   return 'user';
   
