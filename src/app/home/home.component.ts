@@ -605,6 +605,13 @@ loadCart(): void {
   });
 }
 
+getReviewClass(role: number): string {
+  console.log(role);
+  if (role === 2) return 'Admin';
+  return 'user';
+  
+}
+
 deleteReview(userId: number, reviewId: number, productId: number) {
   const confirmed = window.confirm("Are you sure you want to remove this review?");
   if (!confirmed) return;

@@ -1075,6 +1075,23 @@ gap: 1rem;
   
 }
 
+.admin-class {
+color: rgb(150, 0, 0);
+font-size: 2.3rem;
+margin: 0.3rem;
+
+}
+.user-class {
+color: green;
+margin: 0.3rem;
+font-size: 2.3rem;
+}
+.spanAdmin {
+  margin-left: 0.5rem;
+  font-size: larger;
+  margin-top: 0.2rem;
+}
+
 .homeReviewDeleteButton {
 position: absolute;
 right: 1.5rem;
