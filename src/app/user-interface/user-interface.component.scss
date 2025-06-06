@@ -345,7 +345,7 @@ margin-bottom: -0.2rem;
     border: none;
     position: absolute;
     right: 0.5rem;
-    top: 2.5rem;
+    
     font-size: 1.3rem;
     color:#006678;
 }
@@ -436,6 +436,10 @@ scale: 1.1;
     background-color: #00d9ff3b;
     width: 5rem;
 }
+.addAddressMainDiv h4 {
+    font-weight: 600;
+    color: #003038d3;
+}
 
 .addAddressButton:hover {
     background-color: #00d8fee8;
@@ -447,10 +451,63 @@ scale: 1.1;
     scale: 1;
 }
 
+.buyPromoCodeDiv {
+    position: relative;
+    left: 1rem;
+    top: 1rem;
+    font-family: cursive;
+    background-color: rgba(0, 157, 105, 0.075);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+.buyPromoButton {
+    border-radius: 0.5rem;
+    background-color: #00d9ff3b;
+    width: 5rem;
+}
+
+.buyPromoButton:hover {
+    background-color: #00d8fee8;
+    scale: 1.1;
+}
+.buyPromoButton:active {
+    background-color: #00d9ff3b;
+    scale: 1;
+}
+
+.buyLastPromoButton {
+    border-radius: 0.5rem;
+    background-color: #00d9ff3b;
+    width: 5rem;
+}
+
+.buyLastPromoButton:hover {
+    background-color: #00d8fee8;
+    scale: 1.1;
+}
+.buyLastPromoButton:active {
+    background-color: #00d9ff3b;
+    scale: 1;
+}
+.lastPromoInp {
+    background-color: #0066784d;
+    border-radius: 0.5rem;
+}
+
+
+.cardDivForPromo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+
 .addAddressMainDiv {
     max-height: 20rem;
     margin-left: 1rem;
     margin-top: 1rem;
+    font-family: cursive;
 }
 .addressInput {
     font-family: cursive;

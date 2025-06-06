@@ -38,26 +38,45 @@
             <i *ngIf="activePanel === 'userInfo' && !userEditing" class="editLogo fa-solid fa-user-pen"></i>
         </div>
 
-        <div class="addAddressMainDiv">
-            <h4>Add delivery address</h4>
+        <div class="addAddressMainDiv" *ngIf="activePanel === 'userInfo'">
+            <h4>Add a delivery address</h4>
             <div class="addingAddressSecondDiv">
             <textarea [(ngModel)]="deliveryAddress" class="addressInput" type="text"></textarea>
-            <button class="addAddressButton">add</button>
+            <button class="addAddressButton" (click)="postAddressByUserId()">add</button>
             </div>
         </div>
+          <div class="buyPromoCodeDiv">
+            <div class="promoDiv">
+        <h3>buy promocode for 5$</h3>
+        <h4>and get 1 week benefits</h4>
+        <h5 *ngIf="promoSuccess">your promo code: {{promoCode}}</h5>
+        <button (click)="buyingPromo = true" *ngIf="!buyingPromo" class="buyPromoButton">buy now</button>
+        <div class="cardDivForPromo" *ngIf="buyingPromo">
+        <input placeholder="payment method" class="lastPromoInp" #paymentMethodInp type="text">   
+        <input placeholder="card number (16 digits)" class="lastPromoInp" #cardNumInp type="text">
+        <input placeholder="cvv" class="lastPromoInp" #cvvInp type="text">
+        <input placeholder="expiration date(/)" class="lastPromoInp" #expInp type="text">
+        <button class="buyLastPromoButton">buy</button>
+    <button *ngIf="buyingPromo" (click)="buyingPromo = false" class="buyLastPromoButton hideButton">hide</button>   
+    </div>
+        </div>
+    </div>
 
-        <div class="deliveryAddressMainDiv">
+        <div class="deliveryAddressMainDiv" *ngIf="activePanel === 'userInfo'">
             <h5>your delivery addresses</h5>
             <div class="deliveryDiv">
             <div class="singleDeliveryAddress" *ngFor="let address of deliveryAddresses">
-                <button class="deleteAddressButton">X</button>
+                <button (click)="deleteAddressByUserId(address.id)" class="deleteAddressButton">X</button>
                 <p>{{address.isDefault ? 'default address' : 'non default'}}</p>
                 <h6>address: {{address.address}}</h6>
-                <button class="makeDefaultButton">make default</button>
+                <button (click)="this.setDefaultAddress(address.id);" class="makeDefaultButton">make default</button>
+                
             </div>
             </div>
         </div>
     </div>
+
+  
 
     <div class="ordersDiv" *ngIf="activePanel === 'orders'">
        

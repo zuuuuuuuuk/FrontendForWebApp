@@ -82,15 +82,15 @@ export class AuthService {
     }
 
     postDeliveryAddressByUserId(userId: number, address: PostAddressInterface): Observable<PostAddressInterface> {
-      return this.http.post<PostAddressInterface>(`${this.postDeliveryAddressByUserId}${userId}/deliveryAddresses`, address)
+      return this.http.post<PostAddressInterface>(`${this.postUserAddressApiUrl}${userId}/deliveryAddresses`, address)
     }
 
     putDeliveryAddressByUserId(userId: number, addressId: number, address: PostAddressInterface): Observable<PostAddressInterface> {
-      return this.http.put<PostAddressInterface>(`${this.putDeliveryAddressByUserId}${userId}/deliveryAddresses/${addressId}`, address)
+      return this.http.put<PostAddressInterface>(`${this.putUserAddressApiUrl}${userId}/deliveryAddresses/${addressId}`, address)
     }
 
     deleteDeliveryAddressByUserId(userId: number, addressId: number): Observable<void> {
-      return this.http.delete<void>(`${this.deleteDeliveryAddressByUserId}${userId}/deliveryAddresses/${addressId}`)
+      return this.http.delete<void>(`${this.deleteUserAddressApiUrl}${userId}/deliveryAddresses/${addressId}`)
     }
 
 

@@ -39,6 +39,9 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   deliveryAddresses: GetAddressInterface[] = [];
   deliveryAddress: string = ''; 
 
+  buyingPromo: boolean = false;
+  promoSuccess: boolean = false;
+  promoCode: string = '';
   activePanel: string = '';
   
 ngOnInit(): void {
@@ -112,34 +115,67 @@ async getAllAddressesForUser(userId: number) {
   }
 }
 
-async postAddressByUserId(userId: number, newAddress: PostAddressInterface) {
+async postAddressByUserId() {
+  const address = {
+    address: this.deliveryAddress,
+    isDefault: false
+  }
   try {
-    const response = await lastValueFrom(this.authService.postDeliveryAddressByUserId(userId, newAddress));
+    const response = await lastValueFrom(this.authService.postDeliveryAddressByUserId(this.userId, address));
     console.log('Address POST response:', response);
     // Now fetch all addresses again to update the list:
-    await this.getAllAddressesForUser(userId);
+    await this.getAllAddressesForUser(this.userId);
   } catch (error) {
     console.error('Error adding address:', error);
   }
 }
 
-async putAddressByUserId(userId: number, addressId: number, updatedAddress: PostAddressInterface) {
+
+async getAddressById(userId: number, addressId: number): Promise<GetAddressInterface | undefined> {
   try {
-    const response = await lastValueFrom(this.authService.putDeliveryAddressByUserId(addressId, addressId , updatedAddress));
-    console.log('Update response:', response);
-    // Refresh the whole address list after update
-    await this.getAllAddressesForUser(userId);
+    const addresses = await lastValueFrom(this.authService.getDeliveryAddressesByUserId(userId));
+    return addresses.find(addr => addr.id === addressId);
   } catch (error) {
-    console.error('Error updating address:', error);
+    console.error("Error fetching addresses:", error);
+    return undefined;
   }
 }
 
-async deleteAddressByUserId(addressId: number, userId: number) {
+async setDefaultAddress(addressId: number) {
   try {
-    const response = await lastValueFrom(this.authService.deleteDeliveryAddressByUserId(userId, addressId));
+    // Get all addresses first
+    const allAddresses = await lastValueFrom(this.authService.getDeliveryAddressesByUserId(this.userId));
+
+    // Loop and update each one
+    for (const addr of allAddresses) {
+      const isDefault = addr.id === addressId;
+
+      const updated = {
+        address: addr.address,
+        isDefault: isDefault
+      };
+
+      await lastValueFrom(
+        this.authService.putDeliveryAddressByUserId(this.userId, addr.id, updated)
+      );
+    }
+
+    // Refresh list after all updates
+    await this.getAllAddressesForUser(this.userId);
+    console.log('Default address updated.');
+  } catch (error) {
+    console.error('Error updating default address:', error);
+  }
+}
+
+async deleteAddressByUserId(addressId: number) {
+    const confirmed = window.confirm("Are you sure you want to delete this address?");
+    if(!confirmed) return;
+  try {
+    const response = await lastValueFrom(this.authService.deleteDeliveryAddressByUserId(this.userId, addressId));
     console.log('Delete response:', response);
     // Refresh the whole address list after delete
-    await this.getAllAddressesForUser(userId);
+    await this.getAllAddressesForUser(this.userId);
   } catch (error) {
     console.error('Error deleting address:', error);
   }
