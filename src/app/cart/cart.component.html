@@ -56,9 +56,13 @@
 
     <div class="paymentDiv" (click)="$event.stopPropagation()">
         <div class="shippingAddress">
-            <label for="shippingAddress">enter shipping address</label>
-            <input type="text" name="shippingAddress"  [(ngModel)]="shippingAddress">
-        </div>
+<label for="shippingAddress">Select shipping address</label>
+<select [(ngModel)]="selectedAddressId" name="shippingAddress">
+  <option *ngFor="let addr of deliveryAddresses" [value]="addr.id">
+    {{ addr.address }} <span *ngIf="addr.isDefault">(default)</span>
+  </option>
+</select>
+</div>
         <div class="paymentMethodAndCardNumber">
             <label for="paymentMethod">enter payment method</label>
             <input type="text" name="paymentMethod"  [(ngModel)]="paymentMethod">

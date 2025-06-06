@@ -4,7 +4,7 @@ import { CartInterface } from '../interfaces/cart-interface';
 import { CartItemInterface } from '../interfaces/cart-item-interface'; // You can define a CartItemInterface if necessary
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Observable, of, throwError } from 'rxjs';
+import { lastValueFrom, Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProductInterface } from '../interfaces/product-interface';
 import { ProductService } from '../services/product.service';
@@ -12,6 +12,7 @@ import { CartItemCreateInterface } from '../interfaces/cart-item-create-interfac
 import { CartCreationInterface } from '../interfaces/cart-create-interface';
 import { Subscription } from 'rxjs';
 import { GetorderInterface } from '../interfaces/getorder-interface';
+import { GetAddressInterface } from '../interfaces/get-address-interface';
 
 
 @Component({
@@ -44,10 +45,17 @@ export class CartComponent implements OnInit, OnDestroy {
   total: number = 0;
   router: any;
   
+  deliveryAddresses: GetAddressInterface[] = [];
+  selectedAddressId?: number;
+
+
 
   constructor(private cartService: CartService, private productService: ProductService,private authService: AuthService) { }
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
+
+  
+    this.loadUserAddresses();
 
     if(this.userId > 0){
       
@@ -109,13 +117,28 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
+
+async loadUserAddresses() {
+  try {
+    this.deliveryAddresses = await lastValueFrom(this.authService.getDeliveryAddressesByUserId(this.userId));
+    // Optionally pre-select default address
+    const defaultAddr = this.deliveryAddresses.find(addr => addr.isDefault);
+    if (defaultAddr) {
+      this.selectedAddressId = defaultAddr.id;
+    }
+  } catch (error) {
+    console.error('Failed to load addresses', error);
+  }
+}
+
+
 addQuantityToProduct(productId: number) {
-  if (!this.cart || !this.cart.id) {  // Properly check if cart and id exist
+  if (!this.cart || !this.cart.id) {  
     console.error("Cart or Cart ID is undefined");
     return;
   }
 
-  const cartId = this.cart.id; // Store the ID to use safely
+  const cartId = this.cart.id; 
   
   this.productService.getProductById(productId).subscribe({
     next: (product: ProductInterface) => {
@@ -152,7 +175,7 @@ recalculateCartTotal(): void {
   this.cartTotalPrice = 0;
   
   this.cartItemsDetailed.forEach(item => {
-    // Use discounted price if available, otherwise use original price
+
     const price = item.discountedPrice > 0 ? item.discountedPrice : item.originalPrice;
     this.cartTotalPrice += price * item.quantity;
   });
@@ -241,49 +264,61 @@ this.checkOutPage = true;
 
 }
 
-checkOut() {
-  const orderSub = this.cartService.createOrder(this.userId,this.cartItems,this.shippingAddress,this.paymentMethod,this.promoCode).subscribe({
-    next: (order) => {
+async checkOut() {
+  if (!this.selectedAddressId) {
+    alert('Please select a shipping address.');
+    return;
+  }
 
-      console.log("order: ", order)
-      console.log("total", this.total);
-      const paymentSub = this.cartService.processPayment(order.id,this.cardNumber,this.expirationDate,this.cvv,this.total).subscribe({
-        next: (payment) => {
-          alert("order paid <3");
-          console.log('Payment successful', payment);
-         
-          this.cartService.clearCart();   /// importaaaaaaaaaaaaaaaaaaaaaaant
-        },
-        error: (error) => {
-          console.log("totaaaaaaaaaaaaaal",this.total,"cardnum",this.cardNumber,"exp",this.expirationDate,"cvv",this.cvv,);
-          console.error('Payment error:', error);
-         
-        }
-        
-        
-      });
-      this.subscriptions.push(paymentSub);
+  const selectedAddressObj = this.deliveryAddresses.find(addr => addr.id === this.selectedAddressId);
+  if (!selectedAddressObj) {
+    alert('Selected address not found!');
+    return;
+  }
 
-      console.log('Order created successfully', order);
-      this.order = order;
-    
-    
-      this.cartItemsDetailed = [];
-      this.total = 0;
-      this.checkOutPage = false;
-      this.cartId = 0;
-      this.cart = null;
-    },
-    error: (error) => {
-      console.error('Order creation failed', error);
-    
-    }
-  });
-  
-  this.subscriptions.push(orderSub);
-  
-  
+  const addressString = selectedAddressObj.address;
 
+  try {
+    // Create the order
+    const order = await lastValueFrom(
+      this.cartService.createOrder(
+        this.userId,
+        this.cartItems,
+        addressString, //  stringad gzavni
+        this.paymentMethod,
+        this.promoCode
+      )
+    );
+
+    console.log("order:", order);
+    console.log("total:", this.total);
+
+    // Process payment
+    const payment = await lastValueFrom(
+      this.cartService.processPayment(
+        order.id,
+        this.cardNumber,
+        this.expirationDate,
+        this.cvv,
+        this.total
+      )
+    );
+
+    alert("Order paid ❤️");
+    console.log("Payment successful:", payment);
+
+    this.cartService.clearCart();
+    this.cartItemsDetailed = [];
+    this.total = 0;
+    this.checkOutPage = false;
+    this.cartId = 0;
+    this.cart = null;
+    this.order = order;
+
+  } catch (error) {
+    console.error('Checkout error:', error);
+    alert("Something went wrong during checkout.");
+  }
 }
 
 
