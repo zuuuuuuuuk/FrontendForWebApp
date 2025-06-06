@@ -605,8 +605,23 @@ loadCart(): void {
   });
 }
 
-deleteReview(reviewId: number) {
+deleteReview(userId: number, reviewId: number, productId: number) {
+  const confirmed = window.confirm("Are you sure you want to remove this review?");
+  if (!confirmed) return;
 
+  if (userId === this.userId) {
+    this.productService.removeReviewbyId(reviewId).subscribe({
+      next: () => {
+        this.loadReviews(productId);
+        alert("review deleted");
+      },
+      error: (error) => {
+        console.log("error deleting review", error);
+      }
+    });
+  } else {
+    console.log("userId won't match with reviewUserId");
+  }
 }
 
 

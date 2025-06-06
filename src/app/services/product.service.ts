@@ -22,6 +22,8 @@ export class ProductService {
   private updateProductApiUrl = 'https://localhost:7219/api/Product';
   private removeProductApiUrl = 'https://localhost:7219/api/Product/';
   private getReviewsByProductIdApiUrl = 'https://localhost:7219/api/Review/product/';
+  private removeReviewByIdApiUrl = 'https://localhost:7219/api/Review/';
+
 
   private productAddedSource = new Subject<void>();
   productAdded$ = this.productAddedSource.asObservable();
@@ -75,6 +77,10 @@ export class ProductService {
 
   getReviewsByProductId(productId: number): Observable<GettingReviewInterface[]>{
     return this.http.get<GettingReviewInterface[]>(`${this.getReviewsByProductIdApiUrl}${productId}`);
+  }
+
+  removeReviewbyId(reviewId: number): Observable<void>{
+    return this.http.delete<void>(`${this.removeReviewByIdApiUrl}${reviewId}`);
   }
 
 }
