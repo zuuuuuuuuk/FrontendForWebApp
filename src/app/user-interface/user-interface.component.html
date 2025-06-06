@@ -47,13 +47,14 @@
         </div>
           <div class="buyPromoCodeDiv">
             <div class="promoDiv">
-        <h3>buy promocode for 5$</h3>
+        <h3>buy promocode</h3>
         <h4>and get 1 week benefits</h4>
         <p>(demo) code: Lambda works for 2 weeks</p>
         <h5 *ngIf="promoSuccess">your promo code: {{promoCode}}</h5>
         <button (click)="buyingPromo = true" *ngIf="!buyingPromo" class="buyPromoButton">buy now</button>
         <div class="cardDivForPromo" *ngIf="buyingPromo">
-        <input placeholder="payment method" class="lastPromoInp" #paymentMethodInp type="text">   
+       <p>5$</p>
+            <input placeholder="payment method" class="lastPromoInp" #paymentMethodInp type="text">   
         <input placeholder="card number (16 digits)" class="lastPromoInp" #cardNumInp type="text">
         <input placeholder="cvv" class="lastPromoInp" #cvvInp type="text">
         <input placeholder="expiration date(/)" class="lastPromoInp" #expInp type="text">

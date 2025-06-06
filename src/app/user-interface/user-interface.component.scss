@@ -440,6 +440,13 @@ scale: 1.1;
     font-weight: 600;
     color: #003038d3;
 }
+.addAddressMainDiv {
+    opacity: 0.35;
+    cursor: pointer;
+}
+.addAddressMainDiv:hover {
+    opacity: 1;
+}
 
 .addAddressButton:hover {
     background-color: #00d8fee8;
@@ -458,6 +465,16 @@ scale: 1.1;
     background-color: rgba(0, 157, 105, 0.075);
     padding: 0.5rem;
     border-radius: 0.5rem;
+    width: 23rem;
+    opacity: 0.35;
+    cursor: pointer;
+}
+.buyPromoCodeDiv:hover {
+    opacity: 1;
+}
+.buyPromoCodeDiv h3 {
+    font-weight: 600;
+    color: rgba(57, 0, 127, 0.554);
 }
 .buyPromoButton {
     border-radius: 0.5rem;
