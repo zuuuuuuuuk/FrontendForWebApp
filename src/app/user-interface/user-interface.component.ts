@@ -11,6 +11,8 @@ import { ProductService } from '../services/product.service';
 import { GetUserInterface } from '../interfaces/get-user-interface';
 import { GetAddressInterface } from '../interfaces/get-address-interface';
 import { PostAddressInterface } from '../interfaces/post-address-interface';
+import { BuyVoucherInterface } from '../interfaces/buy-voucher-interface';
+import { GetVoucherInterface } from '../interfaces/get-voucher-interface';
 
 @Component({
   selector: 'app-user-interface',
@@ -36,14 +38,24 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   user: GetUserInterface | null = null;
   userEditing: boolean = false;
 
+  userVouchers: BuyVoucherInterface[] = []; 
+  availableNonGlobalVouchers: GetVoucherInterface[] = [];
+
   deliveryAddresses: GetAddressInterface[] = [];
   deliveryAddress: string = ''; 
 
   buyingPromo: boolean = false;
+  promoToBuyId: number = 0;
   promoSuccess: boolean = false;
   promoCode: string = '';
   activePanel: string = '';
   
+  voucherPaymentMethod: string = '';
+  voucherCardNumber: string = '';
+  voucherCvv: number | null = null;
+  voucherExpiration: string = '';
+  
+
 ngOnInit(): void {
 
 
@@ -98,10 +110,38 @@ ngOnInit(): void {
 
 this.getAllAddressesForUser(this.userId);
 
-
 }
 
 
+buyPromoVoucher(promoId: number) {
+  const userId = this.userId;
+  const confirmed = window.confirm("do you want to proceed and buy?");
+    if(!confirmed) return;
+
+    // virtual payment check for voucher only endpoint
+    // =======
+    if(this.voucherCardNumber.length < 16 || !this.voucherCvv || this.voucherCvv < 1 || !this.voucherExpiration){
+    alert("fields must be filled correctly");
+    }  
+this.authService.buyPromoVoucher(userId, promoId).subscribe({
+  next: (response) => {
+    alert("voucher has been bought successfully");
+   console.log("voucher bought", response);
+  },
+  error: (error) => {
+    alert(error?.error.message);
+    console.log("error buying voucher", error);
+  }
+});
+}
+
+fetchVouchersForUser(){
+
+}
+fetchNonGlobalPromos(){
+  this.availableNonGlobalVouchers = [];
+this.authService.getAllPromos()
+}
 
 async getAllAddressesForUser(userId: number) {
   try {

@@ -158,7 +158,6 @@ this.route.queryParams.subscribe(params => {
     }
     const cartSubscription = this.cartService.cartUpdated$.subscribe(cart => {
       this.cart = cart;
-      console.log('Cart updated in home component:', cart);
     });
     this.fetchCategories();
     this.fetchProducts();

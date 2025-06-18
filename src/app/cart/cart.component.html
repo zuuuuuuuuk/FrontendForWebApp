@@ -57,11 +57,16 @@
     <div class="paymentDiv" (click)="$event.stopPropagation()">
         <div class="shippingAddress">
 <label for="shippingAddress">Select shipping address</label>
-<select [(ngModel)]="selectedAddressId" name="shippingAddress">
+<select [(ngModel)]="selectedAddressId" name="shippingAddress" (change)="onAddressChange($event)">
   <option *ngFor="let addr of deliveryAddresses" [value]="addr.id">
     {{ addr.address }} <span *ngIf="addr.isDefault">(default)</span>
   </option>
+  <option [value]="'new'">➕ Add new address</option>
 </select>
+<div *ngIf="isAddingNewAddress">
+  <input type="text" [(ngModel)]="newAddressText" placeholder="Enter new address" />
+  <button >Add Address</button>
+</div>
 </div>
         <div class="paymentMethodAndCardNumber">
             <label for="paymentMethod">enter payment method</label>

@@ -47,18 +47,17 @@
         </div>
           <div class="buyPromoCodeDiv">
             <div class="promoDiv">
-        <h3>buy promocode</h3>
+        <h3>buy promo voucher</h3>
         <h4>and get 1 week benefits</h4>
-        <p>(demo) code: Lambda works for 2 weeks</p>
-        <h5 *ngIf="promoSuccess">your promo code: {{promoCode}}</h5>
+        <p>(demo) test promo code: 'Lambda' with 20% discount</p>
         <button (click)="buyingPromo = true" *ngIf="!buyingPromo" class="buyPromoButton">buy now</button>
         <div class="cardDivForPromo" *ngIf="buyingPromo">
-       <p>5$</p>
-            <input placeholder="payment method" class="lastPromoInp" #paymentMethodInp type="text">   
-        <input placeholder="card number (16 digits)" class="lastPromoInp" #cardNumInp type="text">
-        <input placeholder="cvv" class="lastPromoInp" #cvvInp type="text">
-        <input placeholder="expiration date(/)" class="lastPromoInp" #expInp type="text">
-        <button class="buyLastPromoButton">buy</button>
+       
+            <input placeholder="payment method" class="lastPromoInp" [(ngModel)]="voucherPaymentMethod" type="text">   
+        <input placeholder="card number (16 digits)" class="lastPromoInp" [(ngModel)]="voucherCardNumber" type="text">
+        <input placeholder="cvv" class="lastPromoInp" [(ngModel)]="voucherCvv" type="text">
+        <input placeholder="expiration date ( / )" class="lastPromoInp" [(ngModel)]="voucherExpiration" type="text">
+        <button class="buyLastPromoButton" >buy</button>
     <button *ngIf="buyingPromo" (click)="buyingPromo = false" class="buyLastPromoButton hideButton">hide</button>   
     </div>
         </div>

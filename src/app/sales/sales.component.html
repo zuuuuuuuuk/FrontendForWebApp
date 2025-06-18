@@ -7,13 +7,15 @@
 <div class="allSalesDiv" *ngFor="let sale of allSales">
 
 
+  
 <div class="divAboveMainDiv">
   <h5 class="demo">demo: promocode "Lambda"</h5>
   <h3 class="saleTitle">{{sale.name}}</h3>
   <div class="saleEndsDiv">
-  <h4 class="endsIn">Sale ends in:</h4>
-   <h4 [ngClass]="getSaleClass(sale)"> {{getDaysLeft(sale)}}</h4>
-   <h4 class="daysEnd">days</h4>
+  <h4 class="endsIn" *ngIf="getDaysLeft(sale) > 0">Sale ends in:</h4>
+   <h4 [ngClass]="getSaleClass(sale)" *ngIf="getDaysLeft(sale) > 0"> {{getDaysLeft(sale)}}</h4>
+   <h4 class="daysEnd" *ngIf="getDaysLeft(sale) > 0">days</h4>
+   <h4 *ngIf="getDaysLeft(sale) === 0">sale ended</h4>
 </div>
   <h4 class="saleDescription">{{sale.description}}</h4>
   <h5 class="saleTitle discount">{{sale.discountValue}}% discount</h5>

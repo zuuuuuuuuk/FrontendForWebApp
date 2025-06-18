@@ -38,6 +38,8 @@ export class CartComponent implements OnInit, OnDestroy {
   error: string = '';
   promoCode: string = '';
   shippingAddress: string = '';
+  newAddressText: string = '';
+  isAddingNewAddress: boolean = false;
   paymentMethod: string = '';
   cardNumber: string = '';
   expirationDate: string = '';
@@ -130,6 +132,15 @@ async loadUserAddresses() {
     console.error('Failed to load addresses', error);
   }
 }
+
+onAddressChange(event: any): void {
+  const selectedValue = event.target.value;
+  this.isAddingNewAddress = selectedValue === 'new';
+  if (this.isAddingNewAddress) {
+    this.selectedAddressId = undefined;
+  }
+}
+
 
 
 addQuantityToProduct(productId: number) {
@@ -276,15 +287,15 @@ async checkOut() {
     return;
   }
 
-  const addressString = selectedAddressObj.address;
+  // ✅ Assign to class-level variable instead of creating a local one
+  this.shippingAddress = selectedAddressObj.address;
 
   try {
-    // Create the order
     const order = await lastValueFrom(
       this.cartService.createOrder(
         this.userId,
         this.cartItems,
-        addressString, //  stringad gzavni
+        this.shippingAddress, // ✅ Use class-level variable
         this.paymentMethod,
         this.promoCode
       )
@@ -293,7 +304,6 @@ async checkOut() {
     console.log("order:", order);
     console.log("total:", this.total);
 
-    // Process payment
     const payment = await lastValueFrom(
       this.cartService.processPayment(
         order.id,
@@ -315,15 +325,19 @@ async checkOut() {
     this.cart = null;
     this.order = order;
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Checkout error:', error);
-    alert("Something went wrong during checkout.");
+    if (error?.error && typeof error.error === 'string') {
+      alert(`checkout failed: ${error.error}`);
+    } else if (error?.error?.message) {
+      alert(`checkout failed: ${error.error.message}`);
+    } else {
+      alert('An unexpected error occurred during checkout');
+    }
   }
 }
 
 
-
-  
 
 
 

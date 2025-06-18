@@ -9,6 +9,8 @@ import { Token } from '@angular/compiler';
 import { GetUserInterface } from '../interfaces/get-user-interface';
 import { GetAddressInterface } from '../interfaces/get-address-interface';
 import { PostAddressInterface } from '../interfaces/post-address-interface';
+import { BuyVoucherInterface } from '../interfaces/buy-voucher-interface';
+import { GetVoucherInterface } from '../interfaces/get-voucher-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,8 @@ export class AuthService {
   private postUserAddressApiUrl = 'https://localhost:7219/api/User/';
   private putUserAddressApiUrl = 'https://localhost:7219/api/User/';
   private deleteUserAddressApiUrl = 'https://localhost:7219/api/User/';
+  private buyPromoVoucherApiUrl = 'https://localhost:7219/api/PromoCode/buy/2/25';
+  private getAllPromosApiUrl = 'https://localhost:7219/api/PromoCode';
 
   private userId: number = 0;
   private email: string = '';
@@ -93,6 +97,15 @@ export class AuthService {
       return this.http.delete<void>(`${this.deleteUserAddressApiUrl}${userId}/deliveryAddresses/${addressId}`)
     }
 
+
+    buyPromoVoucher(userId: number, promoId: number): Observable<BuyVoucherInterface> {
+      return this.http.post<BuyVoucherInterface>(`${this.buyPromoVoucherApiUrl}${promoId}/${userId}`, {})
+    }
+
+    getAllPromos(): Observable<GetVoucherInterface[]> {
+    return this.http.get<GetVoucherInterface[]>(this.getAllPromosApiUrl);
+   }
+    
 
     getAllUsers(): Observable<GetUserInterface[]> {
       return this.http.get<GetUserInterface[]>(this.getAllUsersApiUrl);
