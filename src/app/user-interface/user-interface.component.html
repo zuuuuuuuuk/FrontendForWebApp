@@ -54,7 +54,7 @@
         <div class="cardDivForPromo" *ngIf="buyingPromo">
        
             <div class="nonGlobals">
-                <div (click)="selectedVoucherId = voucher.id" class="voucher" *ngFor="let voucher of availableNonGlobalVouchers">
+                <div   [ngClass]="{'selected-voucher': selectedVoucherId === voucher.id}" (click)="selectedVoucherId = voucher.id" class="voucher" *ngFor="let voucher of availableNonGlobalVouchers">
 
                     <h5 class="voucherHs">voucher: {{voucher.name}}</h5>
                     <h6 class="voucherHs">description: {{voucher.description}}</h6>

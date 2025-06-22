@@ -44,7 +44,7 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   deliveryAddresses: GetAddressInterface[] = [];
   deliveryAddress: string = ''; 
 
-  buyingPromo: boolean = true;
+  buyingPromo: boolean = false;
   promoToBuyId: number = 0;
   promoSuccess: boolean = false;
   promoCode: string = '';
@@ -144,7 +144,8 @@ fetchNonGlobalPromos(){
 this.authService.getAllPromos().subscribe({
   next: (response) => {
   console.log("all Promos Fetched");
-  this.availableNonGlobalVouchers = response.filter(promo => !promo.isGlobal && promo.sourcePromoId == null && promo.isUsed == false);
+  // logic for prohibiting already bought coucher source display
+  this.availableNonGlobalVouchers = response.filter(promo => !promo.isGlobal && promo.sourcePromoId == null && promo.isUsed == false && promo.ownerUserId != this.userId);
 
 },
   error: (error) => {
