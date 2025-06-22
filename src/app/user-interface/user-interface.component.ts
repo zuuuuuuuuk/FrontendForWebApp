@@ -44,7 +44,7 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   deliveryAddresses: GetAddressInterface[] = [];
   deliveryAddress: string = ''; 
 
-  buyingPromo: boolean = false;
+  buyingPromo: boolean = true;
   promoToBuyId: number = 0;
   promoSuccess: boolean = false;
   promoCode: string = '';
@@ -54,7 +54,7 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   voucherCardNumber: string = '';
   voucherCvv: number | null = null;
   voucherExpiration: string = '';
-  
+  selectedVoucherId: number = 0;
 
 ngOnInit(): void {
 
@@ -109,6 +109,7 @@ ngOnInit(): void {
 
 
 this.getAllAddressesForUser(this.userId);
+this.fetchNonGlobalPromos();
 
 }
 
@@ -140,7 +141,16 @@ fetchVouchersForUser(){
 }
 fetchNonGlobalPromos(){
   this.availableNonGlobalVouchers = [];
-this.authService.getAllPromos()
+this.authService.getAllPromos().subscribe({
+  next: (response) => {
+  console.log("all Promos Fetched");
+  this.availableNonGlobalVouchers = response.filter(promo => !promo.isGlobal && promo.sourcePromoId == null && promo.isUsed == false);
+
+},
+  error: (error) => {
+    console.log("error fetching all promos", error);
+  }
+});
 }
 
 async getAllAddressesForUser(userId: number) {

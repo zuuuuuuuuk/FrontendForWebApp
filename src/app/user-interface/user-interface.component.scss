@@ -544,3 +544,70 @@ scale: 1.1;
     color: rgb(0, 60, 81);
     border-radius: 0.5rem;
 }
+
+.nonGlobals {
+background-color: rgba(98, 54, 119, 0.138);
+padding: 0.5rem 2rem 0 0.5rem;
+border-radius: 0.5rem;
+overflow-y: auto;
+max-height: 15rem;
+}
+
+.voucher {
+background-color: #00a7c457;
+padding: 0.3rem 0.3rem 0.3rem 0.7rem;
+border-radius: 0.7rem;
+max-height: 7rem;
+overflow-x: hidden;
+overflow-y: auto;
+margin: 0.7rem 0rem 0.7rem 0rem;
+}
+
+
+.nonGlobals::-webkit-scrollbar {
+  width: 12px; /* Adjust width here */
+}
+
+.nonGlobals::-webkit-scrollbar-track {
+  background: #00b9aa; /* Track color */
+}
+
+.nonGlobals::-webkit-scrollbar-thumb {
+  background-color: #9fb9d0; /* Scroll thumb */
+  border-radius: 4px;
+  border: 2px solid #00a7c4; /* Space around thumb */
+}
+
+
+.voucher::-webkit-scrollbar {
+  width: 12px; /* Adjust width here */
+}
+
+.voucher::-webkit-scrollbar-track {
+  background: #00b9aa; /* Track color */
+}
+
+.voucher::-webkit-scrollbar-thumb {
+  background-color: #9fb9d0; /* Scroll thumb */
+  border-radius: 4px;
+  border: 2px solid #00a7c4; /* Space around thumb */
+}
+
+.voucher:hover {
+    background-color: #79269772;
+    scale: 1.03;
+}
+
+.voucher:active {
+    scale: 1;
+    background-color: #00a7c457;
+}
+
+.voucherHs {
+    margin-bottom: 0.1rem;
+    width: 17.5rem;
+}
+
+.voucherDiscount {
+    color: rgb(0, 255, 42);
+}
