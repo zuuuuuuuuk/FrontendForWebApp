@@ -130,7 +130,7 @@ this.authService.buyPromoVoucher(userId, promoId).subscribe({
    console.log("voucher bought", response);
   },
   error: (error) => {
-    alert(error?.error.message);
+    alert(error?.error?.message);
     console.log("error buying voucher", error);
   }
 });

@@ -27,7 +27,7 @@ export class AuthService {
   private postUserAddressApiUrl = 'https://localhost:7219/api/User/';
   private putUserAddressApiUrl = 'https://localhost:7219/api/User/';
   private deleteUserAddressApiUrl = 'https://localhost:7219/api/User/';
-  private buyPromoVoucherApiUrl = 'https://localhost:7219/api/PromoCode/buy/2/25';
+  private buyPromoVoucherApiUrl = 'https://localhost:7219/api/PromoCode/buy/';
   private getAllPromosApiUrl = 'https://localhost:7219/api/PromoCode';
 
   private userId: number = 0;

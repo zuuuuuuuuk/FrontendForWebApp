@@ -45,16 +45,16 @@
             <button class="addAddressButton" (click)="postAddressByUserId()">add</button>
             </div>
         </div>
-          <div class="buyPromoCodeDiv">
+          <div class="buyPromoCodeDiv" tabindex="0">
             <div class="promoDiv">
         <h3>buy promo voucher</h3>
         <h4>and get 1 week benefits</h4>
         <p>(demo) test promo code: 'Lambda' with 20% discount</p>
-        <button (click)="buyingPromo = true" *ngIf="!buyingPromo" class="buyPromoButton">buy now</button>
+        <button  (click)="buyingPromo = true" *ngIf="!buyingPromo" class="buyPromoButton">buy now</button>
         <div class="cardDivForPromo" *ngIf="buyingPromo">
        
-            <div class="nonGlobals">
-                <div   [ngClass]="{'selected-voucher': selectedVoucherId === voucher.id}" (click)="selectedVoucherId = voucher.id" class="voucher" *ngFor="let voucher of availableNonGlobalVouchers">
+            <div class="nonGlobals" tabindex="0">
+                <div tabindex="0"  [ngClass]="{'selected-voucher': selectedVoucherId === voucher.id}"  (click)="selectedVoucherId = voucher.id" class="voucher" *ngFor="let voucher of availableNonGlobalVouchers">
 
                     <h5 class="voucherHs">voucher: {{voucher.name}}</h5>
                     <h6 class="voucherHs">description: {{voucher.description}}</h6>
@@ -66,7 +66,7 @@
         <input placeholder="card number (16 digits)" class="lastPromoInp" [(ngModel)]="voucherCardNumber" type="text">
         <input placeholder="cvv" class="lastPromoInp" [(ngModel)]="voucherCvv" type="text">
         <input placeholder="expiration date ( / )" class="lastPromoInp" [(ngModel)]="voucherExpiration" type="text">
-        <button class="buyLastPromoButton" >buy</button>
+        <button class="buyLastPromoButton" (click)="buyPromoVoucher(this.selectedVoucherId)">buy</button>
     <button *ngIf="buyingPromo" (click)="buyingPromo = false" class="buyLastPromoButton hideButton">hide</button>   
     </div>
         </div>
