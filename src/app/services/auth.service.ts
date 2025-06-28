@@ -29,6 +29,7 @@ export class AuthService {
   private deleteUserAddressApiUrl = 'https://localhost:7219/api/User/';
   private buyPromoVoucherApiUrl = 'https://localhost:7219/api/PromoCode/buy/';
   private getAllPromosApiUrl = 'https://localhost:7219/api/PromoCode';
+  private getPromosByUserIdApiUrl = 'https://localhost:7219/api/PromoCode/PromosByUserId/'
 
   private userId: number = 0;
   private email: string = '';
@@ -106,6 +107,9 @@ export class AuthService {
     return this.http.get<GetVoucherInterface[]>(this.getAllPromosApiUrl);
    }
     
+   getPromosByUserId(userId: number): Observable<GetVoucherInterface[]> {
+    return this.http.get<GetVoucherInterface[]>(`${this.getPromosByUserIdApiUrl}${userId}`)
+   }
 
     getAllUsers(): Observable<GetUserInterface[]> {
       return this.http.get<GetUserInterface[]>(this.getAllUsersApiUrl);

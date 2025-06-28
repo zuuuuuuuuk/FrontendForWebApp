@@ -38,7 +38,7 @@ export class UserInterfaceComponent implements OnInit, OnDestroy {
   user: GetUserInterface | null = null;
   userEditing: boolean = false;
 
-  userVouchers: BuyVoucherInterface[] = []; 
+  userVouchers: GetVoucherInterface[] = []; 
   availableNonGlobalVouchers: GetVoucherInterface[] = [];
 
   deliveryAddresses: GetAddressInterface[] = [];
@@ -110,7 +110,7 @@ ngOnInit(): void {
 
 this.getAllAddressesForUser(this.userId);
 this.fetchNonGlobalPromos();
-
+this.fetchVouchersForUser();
 }
 
 
@@ -137,8 +137,18 @@ this.authService.buyPromoVoucher(userId, promoId).subscribe({
 }
 
 fetchVouchersForUser(){
-
+  
+this.authService.getPromosByUserId(this.userId).subscribe({
+  next: (response) => {
+    this.userVouchers = response;
+    console.log("user vouchers fetched");
+  },
+  error: (error) => {
+    console.log("error fetching userPromos", error);
+  }
+});
 }
+
 fetchNonGlobalPromos(){
   this.availableNonGlobalVouchers = [];
 this.authService.getAllPromos().subscribe({
