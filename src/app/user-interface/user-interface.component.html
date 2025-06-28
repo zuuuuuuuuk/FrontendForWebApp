@@ -48,7 +48,8 @@
           <div class="buyPromoCodeDiv" tabindex="0">
             <div class="promoDiv">
         <h3>buy promo voucher</h3>
-        <h4>use it only once</h4>
+        <h4>get benefits on any product</h4>
+        <p class="saneVoucherWarn">can't purchase same voucher again</p>
         <p>(demo) test promo code: 'Lambda' with 20% discount</p>
         <button  (click)="buyingPromo = true" *ngIf="!buyingPromo" class="buyPromoButton">buy now</button>
         <div class="cardDivForPromo" *ngIf="buyingPromo">
