@@ -625,3 +625,57 @@ margin: 0.7rem 0rem 0.7rem 0rem;
     opacity: 1;
 }
 
+.userVouchersDiv {
+background-color: #a5d9e300;
+margin-top: 2.5rem;
+
+border-radius: 0.7rem;
+padding: 0.7rem 0.7rem 0.7rem 0.7rem;
+font-family: cursive;
+}
+.vouchersTitleH4 {
+font-weight: 800;
+color: rgb(0, 78, 81);
+margin-left: 0.3rem;
+}
+.vouchersList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+.singleVoucher{
+    background-color: #00667817;
+    border-radius: 0.8rem;
+    padding: 0.3rem 0.3rem 0.3rem 0.7rem;
+}
+.singleVoucher p {
+    margin-bottom: 0.1rem;
+}
+
+.voucherNameH5 {
+    color: rgba(106, 0, 255, 0.752);
+}
+.voucherDescription {
+    word-wrap: break-word;
+    width: 21rem;
+}
+.voucherCode {
+    color: red;
+}
+.voucherDiscountValue {
+    color: green;
+}
+.voucherReady {
+    color: green;
+}
+.voucherUsed {
+    color: #006678;
+}
+
+.noVouchersH4 {
+    margin-top: 2.5rem;
+    margin-left: 0.5rem;
+    font-family: cursive;
+    color: #0021276d;
+    font-weight: bolder;
+}

@@ -48,7 +48,7 @@
           <div class="buyPromoCodeDiv" tabindex="0">
             <div class="promoDiv">
         <h3>buy promo voucher</h3>
-        <h4>and get 1 week benefits</h4>
+        <h4>use it only once</h4>
         <p>(demo) test promo code: 'Lambda' with 20% discount</p>
         <button  (click)="buyingPromo = true" *ngIf="!buyingPromo" class="buyPromoButton">buy now</button>
         <div class="cardDivForPromo" *ngIf="buyingPromo">
@@ -72,19 +72,19 @@
         </div>
     </div>
     <div class="userVouchersDiv" *ngIf="userVouchers.length > 0">
-        <h4 class="vouchersTitle">your vouchers</h4>
+        <h4 class="vouchersTitleH4">your vouchers</h4>
         <div class="vouchersList">
             <div class="singleVoucher" *ngFor="let voucher of userVouchers">
-                <h6 class="voucherNameH6">Voucher: {{voucher.name}}</h6>
+                <h5 class="voucherNameH5">Voucher: {{voucher.name}}</h5>
                 <p class="voucherDescription">Description: {{voucher.description}}</p>
                 <p class="voucherCode">code: {{voucher.code}}</p>
-                <p class="voucherDiscount">discount value: {{voucher.discountValue}} %</p>
+                <p class="voucherDiscountValue">discount value: {{voucher.discountValue}} %</p>
                 <p class="voucherReady" *ngIf="!voucher.isUsed">ready to use</p>
                 <p class="voucherUsed" *ngIf="voucher.isUsed">already used</p>
             </div>
         </div>
     </div>
-    <h4 class="noVouchersH4" *ngIf="userVouchers.length == 0">no vouchers</h4>
+    <h4 class="noVouchersH4" *ngIf="userVouchers.length == 0">you have no vouchers</h4>
 
         <div class="deliveryAddressMainDiv" *ngIf="activePanel === 'userInfo'">
             <h5>your delivery addresses</h5>
