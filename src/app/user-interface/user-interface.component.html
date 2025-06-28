@@ -71,6 +71,20 @@
     </div>
         </div>
     </div>
+    <div class="userVouchersDiv" *ngIf="userVouchers.length > 0">
+        <h4 class="vouchersTitle">your vouchers</h4>
+        <div class="vouchersList">
+            <div class="singleVoucher" *ngFor="let voucher of userVouchers">
+                <h6 class="voucherNameH6">Voucher: {{voucher.name}}</h6>
+                <p class="voucherDescription">Description: {{voucher.description}}</p>
+                <p class="voucherCode">code: {{voucher.code}}</p>
+                <p class="voucherDiscount">discount value: {{voucher.discountValue}} %</p>
+                <p class="voucherReady" *ngIf="!voucher.isUsed">ready to use</p>
+                <p class="voucherUsed" *ngIf="voucher.isUsed">already used</p>
+            </div>
+        </div>
+    </div>
+    <h4 class="noVouchersH4" *ngIf="userVouchers.length == 0">no vouchers</h4>
 
         <div class="deliveryAddressMainDiv" *ngIf="activePanel === 'userInfo'">
             <h5>your delivery addresses</h5>
@@ -82,8 +96,11 @@
                 <button (click)="this.setDefaultAddress(address.id);" class="makeDefaultButton">make default</button>
                 
             </div>
+            
             </div>
+            
         </div>
+        
     </div>
 
   
@@ -113,6 +130,9 @@
   </div>
 
   <i class="fas fa-motorcycle deliveryman" [style.left.%]="getFillWidthPercent(order.status)"></i>
+
+
+
 </div>
 
 <div class="scrollerOrd">

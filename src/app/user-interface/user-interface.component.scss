@@ -407,6 +407,7 @@ scale: 1.1;
     padding-left: 0.4rem;
     padding-bottom: 1rem;
     width: auto;
+    position: relative;
 }
 
 .singleDeliveryAddress p {
@@ -623,3 +624,4 @@ margin: 0.7rem 0rem 0.7rem 0rem;
 .voucher:focus-within {
     opacity: 1;
 }
+
