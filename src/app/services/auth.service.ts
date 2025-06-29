@@ -111,6 +111,8 @@ export class AuthService {
     return this.http.get<GetVoucherInterface[]>(`${this.getPromosByUserIdApiUrl}${userId}`)
    }
 
+   
+
     getAllUsers(): Observable<GetUserInterface[]> {
       return this.http.get<GetUserInterface[]>(this.getAllUsersApiUrl);
     }
