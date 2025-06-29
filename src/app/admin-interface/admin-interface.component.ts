@@ -13,6 +13,7 @@ import { SaleInterface } from '../interfaces/sale-interface';
 import { AddSaleInterface } from '../interfaces/add-sale-interface';
 import { NavigationEnd, Router } from '@angular/router';
 import { ItemStatInterface } from '../interfaces/item-stat-interface';
+import { GetVoucherInterface } from '../interfaces/get-voucher-interface';
 
 @Component({
   selector: 'app-admin-interface',
@@ -38,7 +39,8 @@ export class AdminInterfaceComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
 
-  
+  globalPromos: GetVoucherInterface[] = [];
+  nonGlobalPromos: GetVoucherInterface[] = [];
 
   saleName: string = '';
   saleDiscountValue: number | null = null;
@@ -610,6 +612,19 @@ updateUser(userId: number, role: string | null, firstName: string | null, lastNa
     },
     error: (error) => {
       console.error("User not found", error);
+    }
+  });
+}
+
+
+fetchPromos() {
+  this.authService.getAllPromos().subscribe({
+    next: (response) => {
+      this.globalPromos = response.filter(promo => promo.isGlobal);
+      this.nonGlobalPromos = response.filter(promo => !promo.isGlobal && promo.isUsed)
+    },
+    error: (error) => {
+      console.log("error fetching promos", error);
     }
   });
 }

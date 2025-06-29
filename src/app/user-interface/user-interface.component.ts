@@ -148,7 +148,7 @@ this.authService.getPromosByUserId(this.userId).subscribe({
   }
 });
 }
-
+ 
 fetchNonGlobalPromos(){
   this.availableNonGlobalVouchers = [];
 this.authService.getAllPromos().subscribe({
